@@ -1,10 +1,7 @@
 #include "raylib.h"
 #include <stdio.h>
 
-int menuOption = 0;
-// Option that is selected in menu
-
-void MenuScreen(int *screen) {
+void MenuScreen(int *screen, int *menuOption) {
 
     //------------- UPDATING --------------//
     int screenWidth = GetScreenWidth();
@@ -14,18 +11,18 @@ void MenuScreen(int *screen) {
     Color colors[options];
 
     if(IsKeyPressed(KEY_DOWN))
-        menuOption = (menuOption + 1) % options;
+        *menuOption = (*menuOption + 1) % options;
     if(IsKeyPressed(KEY_UP))
-        menuOption = (menuOption + options - 1) % options;
+        *menuOption = (*menuOption + options - 1) % options;
 
     for(i = 0; i < options; i++) {
-        if(i == menuOption) colors[i] = BLACK;
+        if(i == *menuOption) colors[i] = BLACK;
         else colors[i] = GRAY;
     }
 
     if(IsKeyPressed(KEY_ENTER)) {
 
-        switch(menuOption) {
+        switch(*menuOption) {
 
         case 0: *screen = 2;  // GameScreen
         break;

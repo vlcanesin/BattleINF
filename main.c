@@ -1,16 +1,18 @@
 #include "raylib.h"
 #include <stdio.h>
 
-const int screenWidth = 1200;
-const int screenHeight = 600;
-
 void MenuScreen();
 
 int main(void) {
 
+    const int screenWidth = 1200;
+    const int screenHeight = 600;
+
     InitWindow(screenWidth, screenHeight, "BattleINF 1.0");
     SetTargetFPS(60);
 
+    int menuOption = 0;
+    // Option that is selected in menu
     int screen = 1;
     // Determines what screen should be displayed
     /*
@@ -29,7 +31,7 @@ int main(void) {
     //------------- UPDATING --------------//
         switch(screen) {
 
-        case 1: MenuScreen(&screen); // MenuScreen() returns the next screen to be displayed
+        case 1: MenuScreen(&screen, &menuOption); // MenuScreen() returns the next screen to be displayed
         break;
         default: quit = 1; // MenuScreen() returned QuitScreen, so program should quit
         break;
