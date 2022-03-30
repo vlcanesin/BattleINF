@@ -4,7 +4,7 @@
 int menuOption = 0;
 // Option that is selected in menu
 
-int MenuScreen(int screen) {
+void MenuScreen(int *screen) {
 
     //------------- UPDATING --------------//
     int screenWidth = GetScreenWidth();
@@ -27,15 +27,15 @@ int MenuScreen(int screen) {
 
         switch(menuOption) {
 
-        case 0: screen = 2;  // GameScreen
+        case 0: *screen = 2;  // GameScreen
         break;
-        case 1: screen = 3;  // LoadedGameScreen
+        case 1: *screen = 3;  // LoadedGameScreen
         break;
-        case 2: screen = 4;  // LoadMapScreen
+        case 2: *screen = 4;  // LoadMapScreen
         break;
-        case 3: screen = 5;  // RankingScreen
+        case 3: *screen = 5;  // RankingScreen
         break;
-        case 4: screen = 6;  // QuitScreen
+        case 4: *screen = 6;  // QuitScreen
         break;
 
         }
@@ -62,7 +62,5 @@ int MenuScreen(int screen) {
              (screenWidth-MeasureText("Sair", 20))/2, 420, 20, colors[4]);
 
     EndDrawing();
-
-    return screen;
 
 }

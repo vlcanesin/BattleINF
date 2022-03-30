@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1648056866 source:d:\Área de trabalho\battleinf\main.c
+1648665201 source:d:\Área de trabalho\battleinf\main.c
 	"raylib.h"
 	<stdio.h>
 

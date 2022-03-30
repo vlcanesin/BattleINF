@@ -4,7 +4,7 @@
 const int screenWidth = 1200;
 const int screenHeight = 600;
 
-int MenuScreen();
+void MenuScreen();
 
 int main(void) {
 
@@ -29,7 +29,7 @@ int main(void) {
     //------------- UPDATING --------------//
         switch(screen) {
 
-        case 1: screen = MenuScreen(screen); // MenuScreen() returns the next screen to be displayed
+        case 1: MenuScreen(&screen); // MenuScreen() returns the next screen to be displayed
         break;
         default: quit = 1; // MenuScreen() returned QuitScreen, so program should quit
         break;
