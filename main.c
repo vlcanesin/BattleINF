@@ -33,6 +33,8 @@ int main(void) {
 
         case MENU: MenuScreen(&screen, &menuOption);
         break;
+        case GAME: Game_screen();
+        break;
         default: quit = 1; // MenuScreen() returned QuitScreen, so program should quit
         break;
 

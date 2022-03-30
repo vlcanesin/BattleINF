@@ -14,3 +14,19 @@
 
 1648671086 d:\Área de trabalho\battleinf\defines.h
 
+1648672810 source:c:\users\user\battleinf\ler_usuario.c
+
+1648672810 source:c:\users\user\battleinf\main.c
+	"raylib.h"
+	<stdio.h>
+
+1648672810 source:c:\users\user\battleinf\menu.c
+	"raylib.h"
+	<stdio.h>
+
+1648672810 source:c:\users\user\battleinf\movimentacao.c
+	<stdio.h>
+
+1648673018 source:c:\users\user\battleinf\game.c
+	"raylib.h"
+
