@@ -1,29 +1,29 @@
 #include "raylib.h"
 #include <stdio.h>
 
+#define MENU 1
+#define GAME 2
+#define LOADED_GAME 3
+#define LOAD_MAP 4
+#define RANKING 5
+#define QUIT 6
+#define ASK_NAME 7
+
 void MenuScreen();
 
 int main(void) {
 
-    const int screenWidth = 1200;
-    const int screenHeight = 600;
+    const int screenWidth = 1000;
+    const int screenHeight = 700;
 
     InitWindow(screenWidth, screenHeight, "BattleINF 1.0");
     SetTargetFPS(60);
 
     int menuOption = 0;
     // Option that is selected in menu
-    int screen = 1;
+    int screen = MENU;
     // Determines what screen should be displayed
-    /*
-        SCREEN TABLE:
-        - 1: MenuScreen
-        - 2: GameScreen
-        - 3: LoadedGameScreen
-        - 4: LoadMapScreen
-        - 5: RankingScreen
-        - 6: QuitScreen - might not be an actual screen
-    */
+
     int quit = 0;
 
     while (!WindowShouldClose() && !quit) {
@@ -31,7 +31,7 @@ int main(void) {
     //------------- UPDATING --------------//
         switch(screen) {
 
-        case 1: MenuScreen(&screen, &menuOption); // MenuScreen() returns the next screen to be displayed
+        case MENU: MenuScreen(&screen, &menuOption);
         break;
         default: quit = 1; // MenuScreen() returned QuitScreen, so program should quit
         break;

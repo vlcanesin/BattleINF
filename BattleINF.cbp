@@ -31,6 +31,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="defines.h" />
 		<Unit filename="ler_usuario.c">
 			<Option compilerVar="CC" />
 		</Unit>

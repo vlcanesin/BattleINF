@@ -1,6 +1,14 @@
 #include "raylib.h"
 #include <stdio.h>
 
+#define MENU 1
+#define GAME 2
+#define LOADED_GAME 3
+#define LOAD_MAP 4
+#define RANKING 5
+#define QUIT 6
+#define ASK_NAME 7
+
 void MenuScreen(int *screen, int *menuOption) {
 
     //------------- UPDATING --------------//
@@ -24,15 +32,15 @@ void MenuScreen(int *screen, int *menuOption) {
 
         switch(*menuOption) {
 
-        case 0: *screen = 2;  // GameScreen
+        case 0: *screen = GAME;  // GameScreen
         break;
-        case 1: *screen = 3;  // LoadedGameScreen
+        case 1: *screen = LOADED_GAME;  // LoadedGameScreen
         break;
-        case 2: *screen = 4;  // LoadMapScreen
+        case 2: *screen = LOAD_MAP;  // LoadMapScreen
         break;
-        case 3: *screen = 5;  // RankingScreen
+        case 3: *screen = RANKING;  // RankingScreen
         break;
-        case 4: *screen = 6;  // QuitScreen
+        case 4: *screen = QUIT;  // QuitScreen
         break;
 
         }
@@ -44,19 +52,19 @@ void MenuScreen(int *screen, int *menuOption) {
     ClearBackground(RAYWHITE);
     // Title
     DrawText("BattleINF v1.0",
-             (screenWidth-MeasureText("BattleINF v1.0", 62))/2, 100, 62, RED);
+             (screenWidth-MeasureText("BattleINF v1.0", 62))/2, 150, 62, RED);
 
     // Options
     DrawText("Novo Jogo",
-             (screenWidth-MeasureText("Novo Jogo", 20))/2, 220, 20, colors[0]);
+             (screenWidth-MeasureText("Novo Jogo", 20))/2, 270, 20, colors[0]);
     DrawText("Continuar",
-             (screenWidth-MeasureText("Continuar", 20))/2, 270, 20, colors[1]);
+             (screenWidth-MeasureText("Continuar", 20))/2, 320, 20, colors[1]);
     DrawText("Carregar mapa",
-             (screenWidth-MeasureText("Carregar mapa", 20))/2, 320, 20, colors[2]);
+             (screenWidth-MeasureText("Carregar mapa", 20))/2, 370, 20, colors[2]);
     DrawText("Ranking",
-             (screenWidth-MeasureText("Ranking", 20))/2, 370, 20, colors[3]);
+             (screenWidth-MeasureText("Ranking", 20))/2, 420, 20, colors[3]);
     DrawText("Sair",
-             (screenWidth-MeasureText("Sair", 20))/2, 420, 20, colors[4]);
+             (screenWidth-MeasureText("Sair", 20))/2, 470, 20, colors[4]);
 
     EndDrawing();
 

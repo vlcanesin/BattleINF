@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1648666711 source:d:\햞ea de trabalho\battleinf\main.c
+1648671550 source:d:\햞ea de trabalho\battleinf\main.c
 	"raylib.h"
 	<stdio.h>
 
@@ -8,7 +8,9 @@
 1647890221 source:d:\햞ea de trabalho\battleinf\movimentacao.c
 	<stdio.h>
 
-1647982913 source:d:\햞ea de trabalho\battleinf\menu.c
+1648671577 source:d:\햞ea de trabalho\battleinf\menu.c
 	"raylib.h"
 	<stdio.h>
+
+1648671086 d:\햞ea de trabalho\battleinf\defines.h
 
