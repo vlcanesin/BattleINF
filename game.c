@@ -18,15 +18,17 @@ void Game_screen(void)
 {
     // Initialization
     //--------------------------------------------------------------------------------------
-    const int screenWidth = 1800;
-    const int screenHeight = 900;
+    const int screenWidth = GetScreenWidth();
+    const int screenHeight = GetScreenHeight();
 
     InitWindow(screenWidth, screenHeight, "raylib [texture] example - texture rectangle");
 
     // NOTE: Textures MUST be loaded after Window initialization (OpenGL context is required)
-    Texture2D scarfy = LoadTexture("resources/oi.png");
-    float x = 0;
+    Texture2D tank = LoadTexture("resources/oi.png");
+    float x = 0, r =0;
     float y = 0;
+    int tamanho_t = 40;
+    int largura_t = 40;
     float limitey = 0, limitex = 0;      // Texture loading
 
      // Number of spritesheet frames shown by second
@@ -47,22 +49,31 @@ void Game_screen(void)
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
         // Update
+        Vector2 origin = {tamanho_t/2,largura_t/2};
         Rectangle tela = {0,0,screenWidth,screenHeight,GREEN};
-        Rectangle pers = {x,y,70,70,GREEN};
-        limitey = screenHeight - 90;
-        limitex = screenWidth - 80;
+        Rectangle pers = {x+20,y+20,tamanho_t,largura_t,GREEN};
+        Rectangle tanque = {80,90,80,90};
+        limitey = screenHeight - tamanho_t;
+        limitex = screenWidth - largura_t;
+
         //----------------------------------------------------------------------------------
         if(IsKeyDown(KEY_UP)){
             y-= 10;
+            r = 0;
+
         }
         if(IsKeyDown(KEY_DOWN)){
             y+= 10;
+            r = 180;
+
         }
         if(IsKeyDown(KEY_RIGHT)){
             x+= 10;
+            r = 90;
         }
         if(IsKeyDown(KEY_LEFT)){
             x-= 10;
+            r = 270;
         }
         if(x > limitex){
             x = limitex;
@@ -88,8 +99,9 @@ void Game_screen(void)
 
             ClearBackground(BLACK);
             DrawRectangle(0,0,screenWidth,screenHeight,BLACK);
-            DrawRectangle(x,y,80,90,GREEN);
-            DrawTexture(scarfy,x,y,WHITE);
+            //DrawRectangle(x,y,40,40,GREEN);
+            //DrawTexture(tank,x,y,WHITE);
+            DrawTexturePro(tank,tanque,pers,origin,r,RAYWHITE);
 
 
 
@@ -99,7 +111,7 @@ void Game_screen(void)
 
     // De-Initialization
     //--------------------------------------------------------------------------------------
-    UnloadTexture(scarfy);       // Texture unloading
+    UnloadTexture(tank);       // Texture unloading
 
     CloseWindow();                // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
