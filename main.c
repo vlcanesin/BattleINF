@@ -9,7 +9,8 @@
 #define QUIT 6
 #define ASK_NAME 7
 
-void MenuScreen();
+void MenuScreen(int *screen, int *menuOption);
+void GameScreen(int *quit);
 
 int main(void) {
 
@@ -33,7 +34,7 @@ int main(void) {
 
         case MENU: MenuScreen(&screen, &menuOption);
         break;
-        case GAME: Game_screen();
+        case GAME: GameScreen(&quit);
         break;
         default: quit = 1; // MenuScreen() returned QuitScreen, so program should quit
         break;
@@ -50,3 +51,4 @@ int main(void) {
     CloseWindow();
     return 0;
 }
+
