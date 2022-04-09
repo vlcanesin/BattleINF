@@ -1,29 +1,30 @@
 #include "raylib.h"
 
+#define N_LINHAS 15
 #define N_COLUNAS 40
 
 void AvoidColision(
-    float *xTank, float *yTank, Rectangle wallRecs[][N_COLUNAS],
-    float limitex, float limitey, int quadSize[]) {
-
-    int x = *xTank;
-    int y = *yTank;
+    float *xTankAnt, float *yTankAnt, float *xTank, float *yTank, int tamanho_t, int largura_t,
+    Rectangle wallRecs[][N_COLUNAS], float limitex, float limitey, int quadSize[]) {
 
     // COLISION WITH THE BOUNDARY
-    if(x > limitex){
-        *xTank = limitex;
+    if(*xTank > limitex || *xTank < 0){
+        *xTank = *xTankAnt;
     }
-    if(x < 0){
-        *xTank = 0;
-    }
-    if(y > limitey){
-        *yTank = limitey;
-    }
-    if(y < 0){
-        *yTank = 0;
+    if(*yTank > limitey || *yTank < 0){
+        *yTank = *yTankAnt;
     }
 
     // COLISION WITH THE WALLS
-
+    Rectangle tank = {*xTank, *yTank, tamanho_t, largura_t};
+    int lin, col;
+    for(lin = 0; lin < N_LINHAS; lin++) {
+        for(col = 0; col < N_COLUNAS; col++) {
+            if(CheckCollisionRecs(tank, wallRecs[lin][col])) {
+                *xTank = *xTankAnt;
+                *yTank = *yTankAnt;
+            }
+        }
+    }
 
 }

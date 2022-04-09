@@ -1,9 +1,10 @@
 #include "raylib.h"
 #include <stdio.h>
 
+#define N_LINHAS 15
 #define N_COLUNAS 40
 
-void initField(int wall[][N_COLUNAS], float *x, float *y, float inix, float iniy) {
+void initField(int wall[][N_COLUNAS], Rectangle wallRecs[][N_COLUNAS], float *x, float *y, float inix, float iniy) {
 
     *x = inix;
     *y = iniy;
@@ -27,21 +28,23 @@ void initField(int wall[][N_COLUNAS], float *x, float *y, float inix, float iniy
     };
 
     int i, j;
-    for(i = 0; i < 15; i++) {
-        for(j = 0; j < 40; j++) {
+    for(i = 0; i < N_LINHAS; i++) {
+        for(j = 0; j < N_COLUNAS; j++) {
             wall[i][j] = wallArray[i][j];
+            wallRecs[i][j] = (Rectangle){0, 0, 0, 0};
             //printf("%2d", wall[i][j]);
         }
         //printf("\n");
     }
+
 }
 
 void UpdateWalls(int wall[][N_COLUNAS], Rectangle wallRecs[][N_COLUNAS], int quadSize[]) {
 
     //BeginDrawing();
     int lin, col;
-    for(lin = 0; lin < 15; lin++) {
-        for(col = 0; col < 40; col++) {
+    for(lin = 0; lin < N_LINHAS; lin++) {
+        for(col = 0; col < N_COLUNAS; col++) {
             if(wall[lin][col] == 1) {
                 wallRecs[lin][col] = (Rectangle){
                     col*quadSize[1], lin*quadSize[0],

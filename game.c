@@ -9,17 +9,18 @@
 #define N_COLUNAS 40
 
 void initField(
-    int wall[][N_COLUNAS],
+    int wall[][N_COLUNAS], Rectangle wallRecs[][N_COLUNAS],
     float *x, float *y, float inix, float iniy
 );
+
 void UpdateWalls(
     int wall[][N_COLUNAS], Rectangle wallRecs[][N_COLUNAS],
     int quadSize[]
 );
 
 void AvoidColision(
-    float *xTank, float *yTank, Rectangle wallRecs[][N_COLUNAS],
-    float limitex, float limitey, int quadSize[]
+    float *xTankAnt, float *yTankAnt, float *xTank, float *yTank, int tamanho_t, int largura_t,
+    Rectangle wallRecs[][N_COLUNAS], float limitex, float limitey, int quadSize[]
 );
 
 void GameScreen(int *quit) {
@@ -29,8 +30,8 @@ void GameScreen(int *quit) {
     const int screenHeight = GetScreenHeight();
 
     int i, j;
-    float x = 0, r = 0;
-    float y = 0;
+    float x = 0, xAnt, y = 0, yAnt;
+    float r = 0;
     int tamanho_t = 40;
     int largura_t = 40;
     float limitey = 0, limitex = 0;      // Texture loading
@@ -40,7 +41,7 @@ void GameScreen(int *quit) {
     int wall[N_LINHAS][N_COLUNAS], quadSize[2] = {40, 25};
     Rectangle wallRecs[N_LINHAS][N_COLUNAS];
 
-    initField(wall, &x, &y, 500, 500);
+    initField(wall, wallRecs, &x, &y, 500, 500);
 
     // Main game loop
     while (!WindowShouldClose()) {
@@ -52,6 +53,9 @@ void GameScreen(int *quit) {
         limitex = screenWidth - largura_t;
 
         //----------------------------------------------------------------------------------
+        xAnt = x;
+        yAnt = y;
+
         if(IsKeyDown(KEY_UP)){
             y-= 10;
             r = 0;
@@ -70,7 +74,8 @@ void GameScreen(int *quit) {
         }
 
         UpdateWalls(wall, wallRecs, quadSize);
-        AvoidColision(&x, &y, wallRecs, limitex, limitey, quadSize);
+        AvoidColision(&xAnt, &yAnt, &x, &y, tamanho_t, largura_t,
+                      wallRecs, limitex, limitey, quadSize);
 
         //---------------------------------------------------------------------------------
 
@@ -90,9 +95,6 @@ void GameScreen(int *quit) {
             }
         }
         DrawTexturePro(tank,tanque,pers,origin,r,RAYWHITE);
-
-        Rectangle teste = (Rectangle){500, 500, 20, 20};
-        DrawRectangle(teste.x, teste.y, teste.width, teste.height, WHITE);
 
         EndDrawing();
         //----------------------------------------------------------------------------------
