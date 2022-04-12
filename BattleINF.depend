@@ -14,21 +14,22 @@
 
 1648671086 d:\햞ea de trabalho\battleinf\defines.h
 
-1648672810 source:c:\users\user\battleinf\ler_usuario.c
+1649471102 source:c:\users\user\battleinf\ler_usuario.c
 
-1648673075 source:c:\users\user\battleinf\main.c
+1649471102 source:c:\users\user\battleinf\main.c
 	"raylib.h"
 	<stdio.h>
 
-1648672810 source:c:\users\user\battleinf\menu.c
+1649471102 source:c:\users\user\battleinf\menu.c
 	"raylib.h"
 	<stdio.h>
 
-1648672810 source:c:\users\user\battleinf\movimentacao.c
+1649471102 source:c:\users\user\battleinf\movimentacao.c
 	<stdio.h>
 
-1649101581 source:c:\users\user\battleinf\game.c
+1649786635 source:c:\users\user\battleinf\game.c
 	"raylib.h"
+	<stdio.h>
 
 1649470773 source:d:\햞ea de trabalho\battleinf\game.c
 	"raylib.h"
@@ -40,6 +41,67 @@
 1649372050 source:d:\햞ea de trabalho\battleinf\textures_test.c
 
 1649469572 source:d:\햞ea de trabalho\battleinf\walls.c
+	"raylib.h"
+	<stdio.h>
+
+1649471102 source:c:\users\user\desktop\battleinf-main\avoidcolision.c
+	"raylib.h"
+
+1649786114 source:c:\users\user\desktop\battleinf-main\game.c
+	"raylib.h"
+	<stdio.h>
+
+1649471102 source:c:\users\user\desktop\battleinf-main\ler_usuario.c
+
+1649471102 source:c:\users\user\desktop\battleinf-main\main.c
+	"raylib.h"
+	<stdio.h>
+
+1649471102 source:c:\users\user\desktop\battleinf-main\menu.c
+	"raylib.h"
+	<stdio.h>
+
+1649471102 source:c:\users\user\desktop\battleinf-main\movimentacao.c
+	<stdio.h>
+
+1649471102 source:c:\users\user\desktop\battleinf-main\textures_test.c
+
+1649471102 source:c:\users\user\desktop\battleinf-main\walls.c
+	"raylib.h"
+	<stdio.h>
+
+1649471102 source:c:\users\user\battleinf-main\avoidcolision.c
+	"raylib.h"
+
+1649786635 source:c:\users\user\battleinf-main\game.c
+	"raylib.h"
+	<stdio.h>
+
+1649471102 source:c:\users\user\battleinf-main\ler_usuario.c
+
+1649471102 source:c:\users\user\battleinf-main\main.c
+	"raylib.h"
+	<stdio.h>
+
+1649471102 source:c:\users\user\battleinf-main\menu.c
+	"raylib.h"
+	<stdio.h>
+
+1649471102 source:c:\users\user\battleinf-main\movimentacao.c
+	<stdio.h>
+
+1649471102 source:c:\users\user\battleinf-main\textures_test.c
+
+1649471102 source:c:\users\user\battleinf-main\walls.c
+	"raylib.h"
+	<stdio.h>
+
+1649471102 source:c:\users\user\battleinf\avoidcolision.c
+	"raylib.h"
+
+1649471102 source:c:\users\user\battleinf\textures_test.c
+
+1649471102 source:c:\users\user\battleinf\walls.c
 	"raylib.h"
 	<stdio.h>
 
