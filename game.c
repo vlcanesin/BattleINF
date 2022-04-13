@@ -7,11 +7,24 @@
 
 #define N_LINHAS 15
 #define N_COLUNAS 40
-struct Tiro {
+
+typedef struct Tiro {
     int Px;
     int Py;
     int Pr;
-};
+    int naTela;
+}Tiro;
+
+void UpdateShots(
+    Tiro tiros[], float x, float y, float r, int quantTiros,
+    int offset_x, int offset_y
+);
+
+void BreakWalls(
+    int wall[][N_COLUNAS], Tiro tiros[],
+    int quantTiros, int quadSize[]
+);
+
 void initField(
     int wall[][N_COLUNAS], Rectangle wallRecs[][N_COLUNAS],
     float *x, float *y, float inix, float iniy
@@ -33,16 +46,20 @@ void GameScreen(int *quit) {
     const int screenWidth = GetScreenWidth();
     const int screenHeight = GetScreenHeight();
 
-    int i, j,tiroTrig = 0;
+    int i, j;
     float x = 0, xAnt, y = 0, yAnt;
     float r = 0;
-    int tamanho_t = 40;
-    int largura_t = 40;
+    int tamanho_t = 60;
+    int largura_t = 60;
+    int offset_x = 30, offset_y = 30;
     float limitey = 0, limitex = 0;      // Texture loading
 
-     struct Tiro tiroP;
+    const int quantTiros = 1000;
+    Tiro tiros[quantTiros];
+    for(i = 0; i < quantTiros; i++) tiros[i].naTela = 0;
 
-    Texture2D tank = LoadTexture("resources/tanque_player.png");
+    Texture2D tankTexture = LoadTexture("resources/tanque_player.png");
+    Texture2D wallTexture = LoadTexture("resources/brick_texture2.png");
 
     int wall[N_LINHAS][N_COLUNAS], quadSize[2] = {40, 25};
     Rectangle wallRecs[N_LINHAS][N_COLUNAS];
@@ -53,8 +70,8 @@ void GameScreen(int *quit) {
     while (!WindowShouldClose()) {
         // Update
         Vector2 origin = {tamanho_t/2,largura_t/2};
-        Rectangle pers = {x+20,y+20,tamanho_t,largura_t};
-        Rectangle tanque = {85,90,100,90};
+        Rectangle pers = {x+offset_x,y+offset_y,tamanho_t,largura_t};
+        Rectangle tanque = {0,0,70,90};
         limitey = screenHeight - tamanho_t;
         limitex = screenWidth - largura_t;
 
@@ -63,62 +80,27 @@ void GameScreen(int *quit) {
         yAnt = y;
 
         if(IsKeyDown(KEY_UP)){
-            y-= 10;
+            y-= 5;
             r = 0;
         }
         if(IsKeyDown(KEY_DOWN)){
-            y+= 10;
+            y+= 5;
             r = 180;
         }
         if(IsKeyDown(KEY_RIGHT)){
-            x+= 10;
+            x+= 5;
             r = 90;
         }
         if(IsKeyDown(KEY_LEFT)){
-            x-= 10;
+            x-= 5;
             r = 270;
         }
-        if(IsKeyDown(KEY_SPACE)){
-            tiroTrig = 1;
-        }
-        if(IsKeyDown(KEY_G)){
-            tiroTrig = 0;
-        }
-        if(tiroTrig == 0 && r == 0){
-        tiroP.Px = x + 20;
-        tiroP.Py = y;
-        tiroP.Pr = r;
-        };
-        if(tiroTrig == 0 && r == 180){
-        tiroP.Px = x + 20;
-        tiroP.Py = y + 40;
-        tiroP.Pr = r;
-        };
-    if(tiroTrig == 0 && r == 90){
-        tiroP.Px = x + 40;
-        tiroP.Py = y + 20;
-        tiroP.Pr = r;
-        };
-    if(tiroTrig == 0 && r == 270){
-        tiroP.Px = x;
-        tiroP.Py = y + 20;
-        tiroP.Pr = r;
-        };
-        if(tiroTrig == 1){
-            switch(tiroP.Pr){
-            case 0: tiroP.Py -= 10;
-                    break;
-            case 180: tiroP.Py += 10;
-                      break;
-            case 90: tiroP.Px +=  10;
-                     break;
-            case 270: tiroP.Px -= 10;
-                      break;
 
-        }
-    }
+        UpdateShots(tiros, x, y, r, quantTiros, offset_x, offset_y);
+        BreakWalls(wall, tiros, quantTiros, quadSize);
 
         UpdateWalls(wall, wallRecs, quadSize);
+
         AvoidColision(&xAnt, &yAnt, &x, &y, tamanho_t, largura_t,
                       wallRecs, limitex, limitey, quadSize);
 
@@ -129,20 +111,31 @@ void GameScreen(int *quit) {
         BeginDrawing();
 
         ClearBackground(BLACK);
-        //DrawRectangle(0,0,screenWidth,screenHeight,BLACK);
-        //DrawRectangle(x,y,40,40,GREEN);
-        //DrawTexture(tank,x,y,WHITE);
-        if (tiroTrig ==1){
-            DrawCircle(tiroP.Px,tiroP.Py,5,RAYWHITE);
-        }
+
+        DrawTexturePro(wallTexture,tanque,pers,origin,r,RAYWHITE);
+        DrawTextureTiled(
+            wallTexture,
+            (Rectangle){0, 0, 120, 120}, (Rectangle){0, 0, screenWidth, screenHeight},
+            (Vector2){0, 0},
+            0, 1, RAYWHITE
+        );
+
         for(i = 0; i < N_LINHAS; i++) {
             for(j = 0; j < N_COLUNAS; j++) {
-                DrawRectangle(wallRecs[i][j].x, wallRecs[i][j].y,
-                              wallRecs[i][j].width, wallRecs[i][j].height,
-                              GREEN);
+                if(wall[i][j] == 0) {
+                    DrawRectangle(j*quadSize[1], i*quadSize[0], quadSize[1], quadSize[0], BLACK);
+                }
             }
         }
-        DrawTexturePro(tank,tanque,pers,origin,r,RAYWHITE);
+
+        for(i = 0; i < quantTiros; i++) {
+            if(tiros[i].naTela == 1) {
+                DrawCircle(tiros[i].Px,tiros[i].Py,5,RAYWHITE);
+            }
+        }
+
+        DrawTexturePro(tankTexture,tanque,pers,origin,r,RAYWHITE);
+        //DrawRectangle(pers.x-largura_t/2, pers.y-tamanho_t/2, pers.height, pers.width, GREEN);
 
         EndDrawing();
         //----------------------------------------------------------------------------------
@@ -150,7 +143,8 @@ void GameScreen(int *quit) {
 
     // De-Initialization
     //--------------------------------------------------------------------------------------
-    UnloadTexture(tank);       // Texture unloading
+    UnloadTexture(tankTexture);       // Texture unloading
+    UnloadTexture(wallTexture);
     *quit = 1;
 
 }
