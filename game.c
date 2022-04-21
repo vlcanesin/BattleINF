@@ -1,5 +1,8 @@
 #include "raylib.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+#include <time.h>
 
 #define GAME 2
 #define PAUSE_GAME 8
@@ -13,7 +16,25 @@ typedef struct Tiro {
     int Py;
     int Pr;
     int naTela;
+    char origem;
+    float vel;
 }Tiro;
+
+typedef struct Energia {
+    int Px;
+    int Py;
+    int naTela;
+} Energia;
+
+typedef struct Jogador {
+    float x;
+    float y;
+    float r;
+    int sizeX;
+    int sizeY;
+    float vel;
+    int vidas;
+} Jogador;
 
 void UpdateShots(
     Tiro tiros[], float x, float y, float r, int quantTiros,
@@ -46,17 +67,41 @@ void GameScreen(int *quit) {
     const int screenWidth = GetScreenWidth();
     const int screenHeight = GetScreenHeight();
 
+    int contFrames = 0;
+    int timer = 0;
+
     int i, j;
-    float x = 0, xAnt, y = 0, yAnt;
-    float r = 0;
+
+    float velIniP = 5;
+    float velIniT = 10;
+
+    Jogador player;
+    player.x = 0;
+    player.y = 0;
+    player.r = 0;
+    player.vel = velIniP;
+    float xAnt, yAnt;
+
     int tamanho_t = 60;
     int largura_t = 60;
+    player.sizeX = largura_t;
+    player.sizeY = tamanho_t;
+
     int offset_x = 30, offset_y = 30;
-    float limitey = 0, limitex = 0;      // Texture loading
+    float limitey = 0, limitex = 0;
 
     const int quantTiros = 1000;
     Tiro tiros[quantTiros];
-    for(i = 0; i < quantTiros; i++) tiros[i].naTela = 0;
+    for(i = 0; i < quantTiros; i++) {
+        tiros[i].naTela = 0;
+        tiros[i].vel = velIniT;
+    }
+
+    const int quantEnerg = 100;
+    Energia energCel[quantEnerg];
+    for(i = 0; i < quantEnerg; i++) energCel[i].naTela = 0;
+
+    srand(time(NULL));
 
     Texture2D tankTexture = LoadTexture("resources/tanque_player.png");
     Texture2D wallTexture = LoadTexture("resources/brick_texture2.png");
@@ -64,44 +109,46 @@ void GameScreen(int *quit) {
     int wall[N_LINHAS][N_COLUNAS], quadSize[2] = {40, 25};
     Rectangle wallRecs[N_LINHAS][N_COLUNAS];
 
-    initField(wall, wallRecs, &x, &y, 500, 500);
+    initField(wall, wallRecs, &player.x, &player.y, 500, 500);
 
     // Main game loop
     while (!WindowShouldClose()) {
         // Update
         Vector2 origin = {tamanho_t/2,largura_t/2};
-        Rectangle pers = {x+offset_x,y+offset_y,tamanho_t,largura_t};
+        Rectangle pers = {player.x+offset_x, player.y+offset_y, largura_t, tamanho_t};
         Rectangle tanque = {0,0,70,90};
-        limitey = screenHeight - tamanho_t;
+        limitey = screenHeight - tamanho_t - 100; // 100px para menu
         limitex = screenWidth - largura_t;
 
+        printf("%f %f\n", player.x, player.y);
+
         //----------------------------------------------------------------------------------
-        xAnt = x;
-        yAnt = y;
+        xAnt = player.x;
+        yAnt = player.y;
 
         if(IsKeyDown(KEY_UP)){
-            y-= 5;
-            r = 0;
+            player.y -= player.vel;
+            player.r = 0;
         }
         if(IsKeyDown(KEY_DOWN)){
-            y+= 5;
-            r = 180;
+            player.y += player.vel;
+            player.r = 180;
         }
         if(IsKeyDown(KEY_RIGHT)){
-            x+= 5;
-            r = 90;
+            player.x += player.vel;
+            player.r = 90;
         }
         if(IsKeyDown(KEY_LEFT)){
-            x-= 5;
-            r = 270;
+            player.x -= player.vel;
+            player.r = 270;
         }
 
-        UpdateShots(tiros, x, y, r, quantTiros, offset_x, offset_y);
+        UpdateShots(tiros, player.x, player.y, player.r, quantTiros, offset_x, offset_y);
         BreakWalls(wall, tiros, quantTiros, quadSize);
 
         UpdateWalls(wall, wallRecs, quadSize);
 
-        AvoidColision(&xAnt, &yAnt, &x, &y, tamanho_t, largura_t,
+        AvoidColision(&xAnt, &yAnt, &player.x, &player.y, tamanho_t, largura_t,
                       wallRecs, limitex, limitey, quadSize);
 
         //---------------------------------------------------------------------------------
@@ -112,10 +159,10 @@ void GameScreen(int *quit) {
 
         ClearBackground(BLACK);
 
-        DrawTexturePro(wallTexture,tanque,pers,origin,r,RAYWHITE);
+        DrawTexturePro(wallTexture,tanque,pers,origin,player.r,RAYWHITE);
         DrawTextureTiled(
             wallTexture,
-            (Rectangle){0, 0, 120, 120}, (Rectangle){0, 0, screenWidth, screenHeight},
+            (Rectangle){3, 3, 120, 120}, (Rectangle){0, 0, screenWidth, screenHeight},
             (Vector2){0, 0},
             0, 1, RAYWHITE
         );
@@ -134,8 +181,11 @@ void GameScreen(int *quit) {
             }
         }
 
-        DrawTexturePro(tankTexture,tanque,pers,origin,r,RAYWHITE);
+        DrawTexturePro(tankTexture,tanque,pers,origin,player.r,RAYWHITE);
         //DrawRectangle(pers.x-largura_t/2, pers.y-tamanho_t/2, pers.height, pers.width, GREEN);
+
+        contFrames = (contFrames + 1) % 60;
+        if(timer > 0) timer--;
 
         EndDrawing();
         //----------------------------------------------------------------------------------

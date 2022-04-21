@@ -50,6 +50,9 @@
 		<Unit filename="movimentacao.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="objetos.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="textures_test.c">
 			<Option compilerVar="CC" />
 		</Unit>

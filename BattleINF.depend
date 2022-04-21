@@ -31,11 +31,14 @@
 	"raylib.h"
 	<stdio.h>
 
-1649809401 source:d:\햞ea de trabalho\battleinf\game.c
+1650397504 source:d:\햞ea de trabalho\battleinf\game.c
 	"raylib.h"
 	<stdio.h>
+	<stdlib.h>
+	<limits.h>
+	<time.h>
 
-1649809096 source:d:\햞ea de trabalho\battleinf\avoidcolision.c
+1650391885 source:d:\햞ea de trabalho\battleinf\avoidcolision.c
 	"raylib.h"
 
 1649805948 source:d:\햞ea de trabalho\battleinf\textures_test.c
@@ -104,4 +107,10 @@
 1649471102 source:c:\users\user\battleinf\walls.c
 	"raylib.h"
 	<stdio.h>
+
+1650422084 source:d:\햞ea de trabalho\battleinf\objetos.c
+	"raylib.h"
+	<stdlib.h>
+	<limits.h>
+	<time.h>
 
