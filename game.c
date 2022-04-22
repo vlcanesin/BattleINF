@@ -11,6 +11,9 @@
 #define N_LINHAS 15
 #define N_COLUNAS 40
 
+#define QUANT_TIROS 100
+#define QUANT_ENERG 100
+
 typedef struct Tiro {
     int Px;
     int Py;
@@ -18,12 +21,14 @@ typedef struct Tiro {
     int naTela;
     char origem;
     float vel;
-}Tiro;
+} Tiro;
 
 typedef struct Energia {
     int Px;
     int Py;
     int naTela;
+    int sizeX;
+    int sizeY;
 } Energia;
 
 typedef struct Jogador {
@@ -34,16 +39,15 @@ typedef struct Jogador {
     int sizeY;
     float vel;
     int vidas;
+    Tiro tiros[QUANT_TIROS];
 } Jogador;
 
 void UpdateShots(
-    Tiro tiros[], float x, float y, float r, int quantTiros,
-    int offset_x, int offset_y
+    Jogador *player, int offset_x, int offset_y
 );
 
 void BreakWalls(
-    int wall[][N_COLUNAS], Tiro tiros[],
-    int quantTiros, int quadSize[]
+    int wall[][N_COLUNAS], Jogador *player, int quadSize[]
 );
 
 void initField(
@@ -61,13 +65,23 @@ void AvoidColision(
     Rectangle wallRecs[][N_COLUNAS], float limitex, float limitey, int quadSize[]
 );
 
+void UpdateEnergCels(
+    Energia energCel[], int contFrames,
+    Jogador player, Rectangle wallRecs[][N_COLUNAS]
+);
+
+void UseEnergCels(
+    Energia energCel[], Jogador *player, int *timer,
+    float velIniP, float velIniT
+);
+
 void GameScreen(int *quit) {
     // Initialization
     //--------------------------------------------------------------------------------------
     const int screenWidth = GetScreenWidth();
     const int screenHeight = GetScreenHeight();
 
-    int contFrames = 0;
+    int contFrames = 0;  // Usado para contar os segundos
     int timer = 0;
 
     int i, j;
@@ -90,21 +104,22 @@ void GameScreen(int *quit) {
     int offset_x = 30, offset_y = 30;
     float limitey = 0, limitex = 0;
 
-    const int quantTiros = 1000;
-    Tiro tiros[quantTiros];
-    for(i = 0; i < quantTiros; i++) {
-        tiros[i].naTela = 0;
-        tiros[i].vel = velIniT;
+    //Tiro tiros[quantTiros]; // FAZER PARA INIMIGOS TAMBÉM
+    for(i = 0; i < QUANT_TIROS; i++) {
+        player.tiros[i].naTela = 0;
+        player.tiros[i].vel = velIniT;
     }
 
-    const int quantEnerg = 100;
-    Energia energCel[quantEnerg];
-    for(i = 0; i < quantEnerg; i++) energCel[i].naTela = 0;
-
-    srand(time(NULL));
+    Energia energCel[QUANT_ENERG];
+    for(i = 0; i < QUANT_ENERG; i++) {
+        energCel[i].naTela = 0;
+        energCel[i].sizeX = 30;
+        energCel[i].sizeY = 44;
+    }
 
     Texture2D tankTexture = LoadTexture("resources/tanque_player.png");
     Texture2D wallTexture = LoadTexture("resources/brick_texture2.png");
+    Texture2D enerTexture = LoadTexture("resources/energy_drop_cortado.png");
 
     int wall[N_LINHAS][N_COLUNAS], quadSize[2] = {40, 25};
     Rectangle wallRecs[N_LINHAS][N_COLUNAS];
@@ -120,7 +135,7 @@ void GameScreen(int *quit) {
         limitey = screenHeight - tamanho_t - 100; // 100px para menu
         limitex = screenWidth - largura_t;
 
-        printf("%f %f\n", player.x, player.y);
+        //printf("%f %f %f %f\n", wallRecs[0][0].x, wallRecs[0][0].y, wallRecs[0][0].width, wallRecs[0][0].height);
 
         //----------------------------------------------------------------------------------
         xAnt = player.x;
@@ -143,10 +158,14 @@ void GameScreen(int *quit) {
             player.r = 270;
         }
 
-        UpdateShots(tiros, player.x, player.y, player.r, quantTiros, offset_x, offset_y);
-        BreakWalls(wall, tiros, quantTiros, quadSize);
-
+        UpdateShots(&player, offset_x, offset_y);
+        BreakWalls(wall, &player, quadSize);
         UpdateWalls(wall, wallRecs, quadSize);
+
+
+        //Energia energCel[], int contFrames,
+        //Jogador player, Rectangle wallRecs[][N_COLUNAS]
+        UpdateEnergCels(energCel, contFrames, player, wallRecs);
 
         AvoidColision(&xAnt, &yAnt, &player.x, &player.y, tamanho_t, largura_t,
                       wallRecs, limitex, limitey, quadSize);
@@ -159,7 +178,7 @@ void GameScreen(int *quit) {
 
         ClearBackground(BLACK);
 
-        DrawTexturePro(wallTexture,tanque,pers,origin,player.r,RAYWHITE);
+        // DESENHA TEXTURA NA TELA INTEIRA
         DrawTextureTiled(
             wallTexture,
             (Rectangle){3, 3, 120, 120}, (Rectangle){0, 0, screenWidth, screenHeight},
@@ -167,23 +186,35 @@ void GameScreen(int *quit) {
             0, 1, RAYWHITE
         );
 
+        // COBRE TEXTURA PARA DELINEAR PAREDES
         for(i = 0; i < N_LINHAS; i++) {
             for(j = 0; j < N_COLUNAS; j++) {
-                if(wall[i][j] == 0) {
+                if(wall[i][j] == 0) {  // se não tiver parede...
                     DrawRectangle(j*quadSize[1], i*quadSize[0], quadSize[1], quadSize[0], BLACK);
                 }
             }
         }
 
-        for(i = 0; i < quantTiros; i++) {
-            if(tiros[i].naTela == 1) {
-                DrawCircle(tiros[i].Px,tiros[i].Py,5,RAYWHITE);
+        // DESENHA CÉLULAS DE ENERGIA
+        UseEnergCels(energCel, &player, &timer, velIniP, velIniT);
+        for(i = 0; i < QUANT_ENERG; i++) {
+            if(energCel[i].naTela == 1) {
+                DrawTexture(enerTexture, energCel[i].Px, energCel[i].Py, RAYWHITE);
             }
         }
 
+        // DESENHA TIROS
+        for(i = 0; i < QUANT_TIROS; i++) {
+            if(player.tiros[i].naTela == 1) {
+                DrawCircle(player.tiros[i].Px,player.tiros[i].Py,5,RAYWHITE);
+            }
+        }
+
+        // DESENHA TANQUE
         DrawTexturePro(tankTexture,tanque,pers,origin,player.r,RAYWHITE);
         //DrawRectangle(pers.x-largura_t/2, pers.y-tamanho_t/2, pers.height, pers.width, GREEN);
 
+        // ATUALIZA VARIÁVEIS DE TEMPO
         contFrames = (contFrames + 1) % 60;
         if(timer > 0) timer--;
 
@@ -195,6 +226,7 @@ void GameScreen(int *quit) {
     //--------------------------------------------------------------------------------------
     UnloadTexture(tankTexture);       // Texture unloading
     UnloadTexture(wallTexture);
+    UnloadTexture(enerTexture);
     *quit = 1;
 
 }

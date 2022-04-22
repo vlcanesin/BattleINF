@@ -38,9 +38,6 @@
 		<Unit filename="game.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="ler_usuario.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -51,9 +48,6 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="objetos.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="textures_test.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="walls.c">

@@ -1,7 +1,9 @@
 # depslib dependency file v1.0
-1649805952 source:d:\햞ea de trabalho\battleinf\main.c
+1650574286 source:d:\햞ea de trabalho\battleinf\main.c
 	"raylib.h"
 	<stdio.h>
+	<stdlib.h>
+	<time.h>
 
 1649801045 source:d:\햞ea de trabalho\battleinf\ler_usuario.c
 
@@ -31,19 +33,19 @@
 	"raylib.h"
 	<stdio.h>
 
-1650397504 source:d:\햞ea de trabalho\battleinf\game.c
+1650585810 source:d:\햞ea de trabalho\battleinf\game.c
 	"raylib.h"
 	<stdio.h>
 	<stdlib.h>
 	<limits.h>
 	<time.h>
 
-1650391885 source:d:\햞ea de trabalho\battleinf\avoidcolision.c
+1650565009 source:d:\햞ea de trabalho\battleinf\avoidcolision.c
 	"raylib.h"
 
 1649805948 source:d:\햞ea de trabalho\battleinf\textures_test.c
 
-1649809222 source:d:\햞ea de trabalho\battleinf\walls.c
+1650584233 source:d:\햞ea de trabalho\battleinf\walls.c
 	"raylib.h"
 	<stdio.h>
 
@@ -108,9 +110,22 @@
 	"raylib.h"
 	<stdio.h>
 
-1650422084 source:d:\햞ea de trabalho\battleinf\objetos.c
+1650585014 source:d:\햞ea de trabalho\battleinf\objetos.c
 	"raylib.h"
+	<stdio.h>
 	<stdlib.h>
 	<limits.h>
 	<time.h>
+
+1650585653 source:d:\햞ea de trabalho\battleinf\energia.c
+	<raylib.h>
+	<stdio.h>
+	<stdlib.h>
+	<limits.h>
+
+1650585678 source:d:\햞ea de trabalho\battleinf\tiro.c
+	"raylib.h"
+	<stdio.h>
+	<stdlib.h>
+	<limits.h>
 

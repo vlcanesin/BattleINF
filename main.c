@@ -1,5 +1,7 @@
 #include "raylib.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 #define MENU 1
 #define GAME 2
@@ -13,6 +15,8 @@ void MenuScreen(int *screen, int *menuOption);
 void GameScreen(int *quit);
 
 int main(void) {
+
+    srand(time(NULL));
 
     const int screenWidth = 1000;
     const int screenHeight = 700;
