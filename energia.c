@@ -2,40 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
-
-#define N_LINHAS 15
-#define N_COLUNAS 40
-
-#define QUANT_TIROS 100
-#define QUANT_ENERG 100
-
-typedef struct Energia {
-    int Px;
-    int Py;
-    int naTela;
-    int sizeX;
-    int sizeY;
-} Energia;
-
-typedef struct Tiro {
-    int Px;
-    int Py;
-    int Pr;
-    int naTela;
-    char origem;
-    float vel;
-} Tiro;
-
-typedef struct Jogador {
-    float x;
-    float y;
-    float r;
-    int sizeX;
-    int sizeY;
-    float vel;
-    int vidas;
-    Tiro tiros[QUANT_TIROS];
-} Jogador;
+#include "deflib.h"
 
 int sorteiaZero(int contFrames) {
 

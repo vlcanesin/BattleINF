@@ -1,8 +1,6 @@
 #include "raylib.h"
 #include <stdio.h>
-
-#define N_LINHAS 15
-#define N_COLUNAS 40
+#include "deflib.h"
 
 void initField(int wall[][N_COLUNAS], Rectangle wallRecs[][N_COLUNAS], float *x, float *y, float inix, float iniy) {
 

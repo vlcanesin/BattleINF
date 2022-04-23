@@ -34,7 +34,11 @@
 		<Unit filename="avoidColision.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="defbib.h" />
 		<Unit filename="defines.h" />
+		<Unit filename="energia.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="game.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -44,10 +48,7 @@
 		<Unit filename="menu.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="movimentacao.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="objetos.c">
+		<Unit filename="tiro.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="walls.c">

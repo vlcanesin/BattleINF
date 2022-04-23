@@ -1,7 +1,5 @@
 #include "raylib.h"
-
-#define N_LINHAS 15
-#define N_COLUNAS 40
+#include "deflib.h"
 
 void AvoidColision(
     float *xTankAnt, float *yTankAnt, float *xTank, float *yTank, int tamanho_t, int largura_t,

@@ -2,17 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
-#define MENU 1
-#define GAME 2
-#define LOADED_GAME 3
-#define LOAD_MAP 4
-#define RANKING 5
-#define QUIT 6
-#define ASK_NAME 7
-
-void MenuScreen(int *screen, int *menuOption);
-void GameScreen(int *quit);
+#include "deflib.h"
 
 int main(void) {
 
