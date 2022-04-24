@@ -26,10 +26,11 @@ void GameScreen(int *quit) {
     player.vel = velIniP;
     float xAnt, yAnt;
 
-    int tamanho_t = 60;
-    int largura_t = 60;
-    player.sizeX = largura_t;
-    player.sizeY = tamanho_t;
+
+    //int tamanho_t = 60;
+    //int largura_t = 60;
+    player.sizeX = LARGURA_TANQUE;
+    player.sizeY = TAMANHO_TANQUE;
 
     int offset_x = 30, offset_y = 30;
     float limitey = 0, limitex = 0;
@@ -46,10 +47,19 @@ void GameScreen(int *quit) {
         energCel[i].sizeX = 30;
         energCel[i].sizeY = 44;
     }
+    Jogador inimigo[QUANT_INIMIGOS];
+    for(i = 0; i < QUANT_INIMIGOS; i++) {
+        inimigo[i].naTela = 0;
+        inimigo[i].sizeX = LARGURA_TANQUE;
+        inimigo[i].sizeY = TAMANHO_TANQUE;
+        inimigo[i].r = 0;
+        inimigo[i].pers = (Rectangle){0,0,0,0};
+    }
 
     Texture2D tankTexture = LoadTexture("resources/tanque_player.png");
     Texture2D wallTexture = LoadTexture("resources/brick_texture2.png");
     Texture2D enerTexture = LoadTexture("resources/energy_drop_cortado.png");
+    Texture2D inimigoTexture = LoadTexture("resources/tanque_inimigo.png");
 
     int wall[N_LINHAS][N_COLUNAS], quadSize[2] = {40, 25};
     Rectangle wallRecs[N_LINHAS][N_COLUNAS];
@@ -59,11 +69,12 @@ void GameScreen(int *quit) {
     // Main game loop
     while (!WindowShouldClose()) {
         // Update
-        Vector2 origin = {tamanho_t/2,largura_t/2};
-        Rectangle pers = {player.x+offset_x, player.y+offset_y, largura_t, tamanho_t};
+        Vector2 origin = {TAMANHO_TANQUE/2,LARGURA_TANQUE/2};
+        player.pers = (Rectangle){player.x+offset_x, player.y+offset_y, LARGURA_TANQUE, TAMANHO_TANQUE};
+       // Rectangle inimigopers[] = {inimigo->x+offset_x, inimigo->y+offset_y, largura_t, tamanho_t};
         Rectangle tanque = {0,0,70,90};
-        limitey = screenHeight - tamanho_t - 100; // 100px para menu
-        limitex = screenWidth - largura_t;
+        limitey = screenHeight - TAMANHO_TANQUE - 100; // 100px para menu
+        limitex = screenWidth - LARGURA_TANQUE;
 
         //printf("%f %f %f %f\n", wallRecs[0][0].x, wallRecs[0][0].y, wallRecs[0][0].width, wallRecs[0][0].height);
 
@@ -95,9 +106,9 @@ void GameScreen(int *quit) {
 
         //Energia energCel[], int contFrames,
         //Jogador player, Rectangle wallRecs[][N_COLUNAS]
+        UpdateINIMIGO(inimigo,contFrames,player,wallRecs);
         UpdateEnergCels(energCel, contFrames, player, wallRecs);
-
-        AvoidColision(&xAnt, &yAnt, &player.x, &player.y, tamanho_t, largura_t,
+        AvoidColision(&xAnt, &yAnt, &player.x, &player.y,
                       wallRecs, limitex, limitey, quadSize);
 
         //---------------------------------------------------------------------------------
@@ -133,19 +144,30 @@ void GameScreen(int *quit) {
             }
         }
 
+
         // DESENHA TIROS
         for(i = 0; i < QUANT_TIROS; i++) {
             if(player.tiros[i].naTela == 1) {
                 DrawCircle(player.tiros[i].Px,player.tiros[i].Py,5,RAYWHITE);
             }
         }
+        // DESENHA INIMIGOS
+         for(i = 0; i < QUANT_INIMIGOS; i++) {
+            if(inimigo[i].naTela == 1) {
+                //DrawTexture(inimigoTexture, inimigo[i].pers.x,inimigo[i].pers.y, RAYWHITE);
+                DrawTexturePro(inimigoTexture,tanque,inimigo[i].pers,origin,inimigo[i].r,RAYWHITE);
+                DrawRectangle(inimigo[i].pers.x,inimigo[i].pers.y,inimigo[i].pers.width,inimigo[i].pers.height, GREEN);
+            }
+        }
 
         // DESENHA TANQUE
-        DrawTexturePro(tankTexture,tanque,pers,origin,player.r,RAYWHITE);
+        DrawTexturePro(tankTexture,tanque,player.pers,origin,player.r,RAYWHITE);
+
+        //DrawTexturePro(inimigoTexture,tanque,pers,origin,player.r,RAYWHITE);
         //DrawRectangle(pers.x-largura_t/2, pers.y-tamanho_t/2, pers.height, pers.width, GREEN);
 
         // ATUALIZA VARIÁVEIS DE TEMPO
-        contFrames = (contFrames + 1) % 60;
+        contFrames = (contFrames + 1) % 1;
         if(timer > 0) timer--;
 
         EndDrawing();
@@ -157,6 +179,7 @@ void GameScreen(int *quit) {
     UnloadTexture(tankTexture);       // Texture unloading
     UnloadTexture(wallTexture);
     UnloadTexture(enerTexture);
+    UnloadTexture(inimigoTexture);
     *quit = 1;
 
 }

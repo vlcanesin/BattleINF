@@ -14,6 +14,10 @@
 
 #define QUANT_TIROS 100
 #define QUANT_ENERG 100
+#define QUANT_INIMIGOS 50
+
+#define  TAMANHO_TANQUE 60
+#define  LARGURA_TANQUE 60
 
 typedef struct Tiro {
     int Px;
@@ -36,10 +40,12 @@ typedef struct Jogador {
     float x;
     float y;
     float r;
+    Rectangle pers;
     int sizeX;
     int sizeY;
     float vel;
     int vidas;
+    int naTela;
     Tiro tiros[QUANT_TIROS];
 } Jogador;
 
@@ -65,7 +71,7 @@ void UpdateWalls(
 );
 
 void AvoidColision(
-    float *xTankAnt, float *yTankAnt, float *xTank, float *yTank, int tamanho_t, int largura_t,
+    float *xTankAnt, float *yTankAnt, float *xTank, float *yTank,
     Rectangle wallRecs[][N_COLUNAS], float limitex, float limitey, int quadSize[]
 );
 

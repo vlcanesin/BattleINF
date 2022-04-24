@@ -20,20 +20,28 @@
 
 1649471102 source:c:\users\user\battleinf\ler_usuario.c
 
-1649471102 source:c:\users\user\battleinf\main.c
+1650820583 source:c:\users\user\battleinf\main.c
 	"raylib.h"
 	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	"deflib.h"
 
-1649471102 source:c:\users\user\battleinf\menu.c
+1650820583 source:c:\users\user\battleinf\menu.c
 	"raylib.h"
 	<stdio.h>
+	"deflib.h"
 
 1649471102 source:c:\users\user\battleinf\movimentacao.c
 	<stdio.h>
 
-1649786635 source:c:\users\user\battleinf\game.c
+1650827716 source:c:\users\user\battleinf\game.c
 	"raylib.h"
 	<stdio.h>
+	<stdlib.h>
+	<limits.h>
+	<time.h>
+	"deflib.h"
 
 1650746302 source:d:\햞ea de trabalho\battleinf\game.c
 	"raylib.h"
@@ -106,14 +114,16 @@
 	"raylib.h"
 	<stdio.h>
 
-1649471102 source:c:\users\user\battleinf\avoidcolision.c
+1650829527 source:c:\users\user\battleinf\avoidcolision.c
 	"raylib.h"
+	"deflib.h"
 
 1649471102 source:c:\users\user\battleinf\textures_test.c
 
-1649471102 source:c:\users\user\battleinf\walls.c
+1650820584 source:c:\users\user\battleinf\walls.c
 	"raylib.h"
 	<stdio.h>
+	"deflib.h"
 
 1650585014 source:d:\햞ea de trabalho\battleinf\objetos.c
 	"raylib.h"
@@ -139,4 +149,27 @@
 1650745230 d:\햞ea de trabalho\battleinf\defbib.h
 
 1650745230 d:\햞ea de trabalho\battleinf\deflib.h
+
+1650829904 c:\users\user\battleinf\deflib.h
+
+1650820583 source:c:\users\user\battleinf\energia.c
+	<raylib.h>
+	<stdio.h>
+	<stdlib.h>
+	<limits.h>
+	"deflib.h"
+
+1650820584 source:c:\users\user\battleinf\tiro.c
+	"raylib.h"
+	<stdio.h>
+	<stdlib.h>
+	<limits.h>
+	"deflib.h"
+
+1650828521 source:c:\users\user\battleinf\inimigo.c
+	<raylib.h>
+	<stdio.h>
+	<stdlib.h>
+	<limits.h>
+	"deflib.h"
 

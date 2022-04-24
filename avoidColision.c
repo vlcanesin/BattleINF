@@ -2,7 +2,7 @@
 #include "deflib.h"
 
 void AvoidColision(
-    float *xTankAnt, float *yTankAnt, float *xTank, float *yTank, int tamanho_t, int largura_t,
+    float *xTankAnt, float *yTankAnt, float *xTank, float *yTank,
     Rectangle wallRecs[][N_COLUNAS], float limitex, float limitey, int quadSize[]) {
 
     // COLISION WITH THE BOUNDARY
@@ -14,7 +14,7 @@ void AvoidColision(
     }
 
     // COLISION WITH THE WALLS
-    Rectangle tank = {*xTank, *yTank, tamanho_t, largura_t};
+    Rectangle tank = {*xTank, *yTank, TAMANHO_TANQUE, LARGURA_TANQUE};
     int lin, col;
     for(lin = 0; lin < N_LINHAS; lin++) {
         for(col = 0; col < N_COLUNAS; col++) {
