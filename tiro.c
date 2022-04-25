@@ -4,7 +4,7 @@
 #include <limits.h>
 #include "deflib.h"
 
-void UpdateShots(Jogador *player, int offset_x, int offset_y) {
+void UpdateShots(Jogador *player) {
 
     int end, i;
     const int screenWidth = GetScreenWidth();
@@ -23,20 +23,20 @@ void UpdateShots(Jogador *player, int offset_x, int offset_y) {
         if(end < QUANT_TIROS) {  // se foi possível colocar mais um tiro na tela...
 
             if(player->r == 0){
-                player->tiros[end].Px = player->x + offset_x;
+                player->tiros[end].Px = player->x + OFFSET_X;
                 player->tiros[end].Py = player->y;
                 player->tiros[end].Pr = player->r;
             } else if(player->r == 180){
-                player->tiros[end].Px = player->x + offset_x;
-                player->tiros[end].Py = player->y + 2*offset_y;
+                player->tiros[end].Px = player->x + OFFSET_X;
+                player->tiros[end].Py = player->y + 2*OFFSET_Y;
                 player->tiros[end].Pr = player->r;
             } else if(player->r == 90){
-                player->tiros[end].Px = player->x + 2*offset_x;
-                player->tiros[end].Py = player->y + offset_y;
+                player->tiros[end].Px = player->x + 2*OFFSET_X;
+                player->tiros[end].Py = player->y + OFFSET_Y;
                 player->tiros[end].Pr = player->r;
             } else if(player->r == 270){
                 player->tiros[end].Px = player->x;
-                player->tiros[end].Py = player->y + offset_y;
+                player->tiros[end].Py = player->y + OFFSET_Y;
                 player->tiros[end].Pr = player->r;
             }
 
@@ -82,3 +82,28 @@ void BreakWalls(int wall[][N_COLUNAS], Jogador *player, int quadSize[]) {
 
 }
 
+void PlayerShot(Jogador *player, Jogador inimigo[]) {
+
+    int i, j;
+    for(i = 0; i < QUANT_TIROS; i++) {
+        for(j = 0; j < QUANT_INIMIGOS; j++) {
+            if(inimigo[j].naTela == 1) {
+                if(inimigo[j].tiros[i].naTela == 1 &&
+                   CheckCollisionCircleRec(
+                        (Vector2){inimigo[j].tiros[i].Px,inimigo[j].tiros[i].Py}, 5,
+                        (Rectangle){player->x, player->y, LARGURA_TANQUE, TAMANHO_TANQUE})) {
+                    player->vidas--;
+                    inimigo[j].tiros[i].naTela = 0;
+                }
+                if(player->tiros[i].naTela == 1 &&
+                   CheckCollisionCircleRec(
+                        (Vector2){player->tiros[i].Px,player->tiros[i].Py}, 5,
+                        (Rectangle){inimigo[j].x, inimigo[j].y, LARGURA_TANQUE, TAMANHO_TANQUE})) {
+                    inimigo[j].vidas--;
+                    player->tiros[i].naTela = 0;
+                }
+            }
+        }
+    }
+
+}

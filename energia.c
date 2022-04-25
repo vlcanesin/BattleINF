@@ -25,9 +25,11 @@ void sorteiaPos(Energia energCel[], int end, Jogador player, Rectangle wallRecs[
     int screenHeight = GetScreenHeight();
     int randX, randY;
     int lin, col, ok, i;
+    int cont = 0;
 
     do {
 
+        cont++;
         ok = 1;
         int shouldBreak = 0;
 
@@ -36,40 +38,46 @@ void sorteiaPos(Energia energCel[], int end, Jogador player, Rectangle wallRecs[
 
         Rectangle randPos = {randX, randY, energCel[end].sizeX, energCel[end].sizeY};
 
-        if(CheckCollisionRecs(
-           randPos, (Rectangle){player.x, player.y, player.sizeX, player.sizeY}) == 0) {
+        // COLISÃO COM O PLAYER
+        if(CheckCollisionRecs(randPos, (Rectangle){player.x, player.y, player.sizeX, player.sizeY})) {
+            ok = 0;
+        }
 
-            // COLISÃO COM PAREDES
-            for(lin = 0; lin < N_LINHAS; lin++) {
-                for(col = 0; col < N_COLUNAS; col++) {
-                    if(CheckCollisionRecs(randPos, wallRecs[lin][col])) {
-                        ok = 0;
-                        shouldBreak = 1;
-                        break;
-                    }
-                }
-                if(shouldBreak)
-                    break;
-            }
-
-            // COLISÃO COM CÉLULAS JÁ EXISTENTES
-            for(i = 0; i <  QUANT_ENERG; i++) {
-                if(energCel[i].naTela == 0)
-                    continue;
-                Rectangle celNaTela = {energCel[i].Px, energCel[i].Py,
-                                       energCel[i].sizeX, energCel[i].sizeY};
-                if(CheckCollisionRecs(randPos, celNaTela)) {
+        // COLISÃO COM PAREDES
+        for(lin = 0; lin < N_LINHAS; lin++) {
+            for(col = 0; col < N_COLUNAS; col++) {
+                if(CheckCollisionRecs(randPos, wallRecs[lin][col])) {
                     ok = 0;
+                    shouldBreak = 1;
                     break;
                 }
+            }
+            if(shouldBreak)
+                break;
+        }
+
+        // COLISÃO COM CÉLULAS JÁ EXISTENTES
+        for(i = 0; i <  QUANT_ENERG; i++) {
+            if(energCel[i].naTela == 0)
+                continue;
+            Rectangle celNaTela = {energCel[i].Px, energCel[i].Py,
+                                   energCel[i].sizeX, energCel[i].sizeY};
+            if(CheckCollisionRecs(randPos, celNaTela)) {
+                ok = 0;
+                break;
             }
 
         }
 
-    } while(ok == 0);
+    } while(ok == 0 && cont < 20);
 
-    energCel[end].Px = randX;
-    energCel[end].Py = randY;
+    if(cont < 20) {
+        energCel[end].Px = randX;
+        energCel[end].Py = randY;
+    } else {
+        //printf("Nao coloquei a celula!\n");
+        energCel[end].naTela = 0;
+    }
 
 }
 

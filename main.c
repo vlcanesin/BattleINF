@@ -19,7 +19,7 @@ int main(void) {
     int screen = MENU;
     // Determines what screen should be displayed
 
-    int quit = 0;
+    int quit = 0, i;
 
     while (!WindowShouldClose() && !quit) {
 
@@ -28,7 +28,12 @@ int main(void) {
 
         case MENU: MenuScreen(&screen, &menuOption);
         break;
-        case GAME: GameScreen(&quit);
+        case GAME:
+            for(i = 1; i <= N_FASES; i++) {
+                if(quit) break;
+                ShowLevel(i);
+                GameScreen(&quit);
+            }
         break;
         default: quit = 1; // MenuScreen() returned QuitScreen, so program should quit
         break;

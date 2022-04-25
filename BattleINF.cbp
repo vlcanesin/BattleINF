@@ -34,8 +34,7 @@
 		<Unit filename="avoidColision.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="defbib.h" />
-		<Unit filename="defines.h" />
+		<Unit filename="deflib.h" />
 		<Unit filename="energia.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -54,9 +53,16 @@
 		<Unit filename="tiro.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="transitions.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="walls.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Extensions />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

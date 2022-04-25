@@ -11,13 +11,17 @@
 
 #define N_LINHAS 15
 #define N_COLUNAS 40
+#define N_FASES 2
 
 #define QUANT_TIROS 100
 #define QUANT_ENERG 100
-#define QUANT_INIMIGOS 50
+#define QUANT_INIMIGOS  5
 
-#define  TAMANHO_TANQUE 60
-#define  LARGURA_TANQUE 60
+#define TAMANHO_TANQUE 60
+#define LARGURA_TANQUE 60
+
+#define OFFSET_X 30
+#define OFFSET_Y 30
 
 typedef struct Tiro {
     int Px;
@@ -40,24 +44,29 @@ typedef struct Jogador {
     float x;
     float y;
     float r;
-    Rectangle pers;
     int sizeX;
     int sizeY;
     float vel;
     int vidas;
     int naTela;
+    Rectangle pers;
     Tiro tiros[QUANT_TIROS];
 } Jogador;
 
 void MenuScreen(int *screen, int *menuOption);
 void GameScreen(int *quit);
+void ShowLevel(int level);
 
 void UpdateShots(
-    Jogador *player, int offset_x, int offset_y
+    Jogador *player
 );
 
 void BreakWalls(
     int wall[][N_COLUNAS], Jogador *player, int quadSize[]
+);
+
+void PlayerShot(
+    Jogador *player, Jogador inimigo[]
 );
 
 void initField(
@@ -75,6 +84,8 @@ void AvoidColision(
     Rectangle wallRecs[][N_COLUNAS], float limitex, float limitey, int quadSize[]
 );
 
+int sorteiaZero(int contFrames);
+
 void UpdateEnergCels(
     Energia energCel[], int contFrames,
     Jogador player, Rectangle wallRecs[][N_COLUNAS]
@@ -83,6 +94,11 @@ void UpdateEnergCels(
 void UseEnergCels(
     Energia energCel[], Jogador *player, int *timer,
     float velIniP, float velIniT
+);
+
+void UpdateINIMIGO(
+    Jogador inimigo[], int contFrames,
+    Jogador player, Rectangle wallRecs[][N_COLUNAS]
 );
 
 #endif

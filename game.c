@@ -11,7 +11,7 @@ void GameScreen(int *quit) {
     const int screenWidth = GetScreenWidth();
     const int screenHeight = GetScreenHeight();
 
-    int contFrames = 0;  // Usado para contar os segundos
+    int contFramesEnerg = 0, contFramesInimigo = 0;  // Usado para temporizar nascimentos aleatórios
     int timer = 0;
 
     int i, j;
@@ -24,15 +24,14 @@ void GameScreen(int *quit) {
     player.y = 0;
     player.r = 0;
     player.vel = velIniP;
+    player.vidas = 3;
     float xAnt, yAnt;
-
 
     //int tamanho_t = 60;
     //int largura_t = 60;
     player.sizeX = LARGURA_TANQUE;
     player.sizeY = TAMANHO_TANQUE;
 
-    int offset_x = 30, offset_y = 30;
     float limitey = 0, limitex = 0;
 
     //Tiro tiros[quantTiros]; // FAZER PARA INIMIGOS TAMBÉM
@@ -54,6 +53,7 @@ void GameScreen(int *quit) {
         inimigo[i].sizeY = TAMANHO_TANQUE;
         inimigo[i].r = 0;
         inimigo[i].pers = (Rectangle){0,0,0,0};
+        inimigo[i].vidas = 1;
     }
 
     Texture2D tankTexture = LoadTexture("resources/tanque_player.png");
@@ -70,7 +70,7 @@ void GameScreen(int *quit) {
     while (!WindowShouldClose()) {
         // Update
         Vector2 origin = {TAMANHO_TANQUE/2,LARGURA_TANQUE/2};
-        player.pers = (Rectangle){player.x+offset_x, player.y+offset_y, LARGURA_TANQUE, TAMANHO_TANQUE};
+        player.pers = (Rectangle){player.x+OFFSET_X, player.y+OFFSET_Y, LARGURA_TANQUE, TAMANHO_TANQUE};
        // Rectangle inimigopers[] = {inimigo->x+offset_x, inimigo->y+offset_y, largura_t, tamanho_t};
         Rectangle tanque = {0,0,70,90};
         limitey = screenHeight - TAMANHO_TANQUE - 100; // 100px para menu
@@ -99,15 +99,17 @@ void GameScreen(int *quit) {
             player.r = 270;
         }
 
-        UpdateShots(&player, offset_x, offset_y);
+        UpdateShots(&player);
         BreakWalls(wall, &player, quadSize);
         UpdateWalls(wall, wallRecs, quadSize);
 
+        PlayerShot(&player, inimigo);
+        printf("%d\n", inimigo[0].vidas);
 
         //Energia energCel[], int contFrames,
         //Jogador player, Rectangle wallRecs[][N_COLUNAS]
-        UpdateINIMIGO(inimigo,contFrames,player,wallRecs);
-        UpdateEnergCels(energCel, contFrames, player, wallRecs);
+        UpdateINIMIGO(inimigo,contFramesInimigo,player,wallRecs);
+        UpdateEnergCels(energCel, contFramesEnerg, player, wallRecs);
         AvoidColision(&xAnt, &yAnt, &player.x, &player.y,
                       wallRecs, limitex, limitey, quadSize);
 
@@ -156,7 +158,7 @@ void GameScreen(int *quit) {
             if(inimigo[i].naTela == 1) {
                 //DrawTexture(inimigoTexture, inimigo[i].pers.x,inimigo[i].pers.y, RAYWHITE);
                 DrawTexturePro(inimigoTexture,tanque,inimigo[i].pers,origin,inimigo[i].r,RAYWHITE);
-                DrawRectangle(inimigo[i].pers.x,inimigo[i].pers.y,inimigo[i].pers.width,inimigo[i].pers.height, GREEN);
+                //DrawRectangle(inimigo[i].x,inimigo[i].y,inimigo[i].pers.width,inimigo[i].pers.height, GREEN);
             }
         }
 
@@ -167,7 +169,8 @@ void GameScreen(int *quit) {
         //DrawRectangle(pers.x-largura_t/2, pers.y-tamanho_t/2, pers.height, pers.width, GREEN);
 
         // ATUALIZA VARIÁVEIS DE TEMPO
-        contFrames = (contFrames + 1) % 1;
+        contFramesEnerg = (contFramesEnerg + 1) % 60;
+        contFramesInimigo = (contFramesInimigo + 1) % 1;
         if(timer > 0) timer--;
 
         EndDrawing();
