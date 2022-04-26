@@ -63,7 +63,7 @@ void UpdateShots(Jogador *player) {
 
 }
 
-void BreakWalls(int wall[][N_COLUNAS], Jogador *player, int quadSize[]) {
+void BreakWalls(int wall[][N_COLUNAS], Jogador *player) {
 
     int i, lin, col;
     for(i = 0; i < QUANT_TIROS; i++) {
@@ -72,7 +72,7 @@ void BreakWalls(int wall[][N_COLUNAS], Jogador *player, int quadSize[]) {
                 if(player->tiros[i].naTela == 1 && wall[lin][col] == 1 &&
                    CheckCollisionCircleRec(
                         (Vector2){player->tiros[i].Px,player->tiros[i].Py}, 5,
-                        (Rectangle){col*quadSize[1], lin*quadSize[0], quadSize[1], quadSize[0]})) {
+                        (Rectangle){col*COL_SIZE, lin*LIN_SIZE, COL_SIZE, LIN_SIZE})) {
                     wall[lin][col] = 0;
                     player->tiros[i].naTela = 0;
                 }
