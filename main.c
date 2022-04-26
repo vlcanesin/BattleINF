@@ -29,11 +29,20 @@ int main(void) {
         case MENU: MenuScreen(&screen, &menuOption);
         break;
         case GAME:
+
             for(i = 1; i <= N_FASES; i++) {
                 if(quit) break;
-                ShowLevel(i);
-                GameScreen(&quit);
+
+                char path[16];
+                snprintf(path, sizeof(path), "fases/fase%c.txt", i+'0');
+
+                ShowLevel(i, path);
+                GameScreen(&quit, path);
+
             }
+
+            quit = 1;
+
         break;
         default: quit = 1; // MenuScreen() returned QuitScreen, so program should quit
         break;

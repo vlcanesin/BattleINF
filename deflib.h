@@ -23,6 +23,10 @@
 #define OFFSET_X 30
 #define OFFSET_Y 30
 
+//const int quadSize[2] = {40, 25};
+#define LIN_SIZE 40
+#define COL_SIZE 25
+
 typedef struct Tiro {
     int Px;
     int Py;
@@ -46,10 +50,7 @@ typedef struct Jogador {
     float r;
     int sizeX;
     int sizeY;
-    float xAnt;
-    float yAnt;
     float vel;
-    int dogtag;
     int vidas;
     int naTela;
     Rectangle pers;
@@ -57,15 +58,15 @@ typedef struct Jogador {
 } Jogador;
 
 void MenuScreen(int *screen, int *menuOption);
-void GameScreen(int *quit);
-void ShowLevel(int level);
+void GameScreen(int *quit, char path[16]);
+void ShowLevel(int level, char path[16]);
 
 void UpdateShots(
     Jogador *player
 );
 
 void BreakWalls(
-    int wall[][N_COLUNAS], Jogador *player, int quadSize[]
+    int wall[][N_COLUNAS], Jogador *player
 );
 
 void PlayerShot(
@@ -74,17 +75,16 @@ void PlayerShot(
 
 void initField(
     int wall[][N_COLUNAS], Rectangle wallRecs[][N_COLUNAS],
-    float *x, float *y, float inix, float iniy
+    Jogador *player, char path[16]
 );
 
 void UpdateWalls(
-    int wall[][N_COLUNAS], Rectangle wallRecs[][N_COLUNAS],
-    int quadSize[]
+    int wall[][N_COLUNAS], Rectangle wallRecs[][N_COLUNAS]
 );
 
 void AvoidColision(
-    Jogador *player, Jogador *inimigo,
-    Rectangle wallRecs[][N_COLUNAS], float limitex, float limitey, int quadSize[]
+    float *xTankAnt, float *yTankAnt, float *xTank, float *yTank,
+    Rectangle wallRecs[][N_COLUNAS], float limitex, float limitey
 );
 
 int sorteiaZero(int contFrames);
@@ -97,6 +97,11 @@ void UpdateEnergCels(
 void UseEnergCels(
     Energia energCel[], Jogador *player, int *timer,
     float velIniP, float velIniT
+);
+
+void sorteiaPosInimigo(
+    Jogador inimigo[], int end,
+    Jogador player, Rectangle wallRecs[][N_COLUNAS]
 );
 
 void UpdateINIMIGO(
