@@ -23,9 +23,8 @@ void sorteiaPosInimigo(Jogador inimigo [], int end, Jogador player, Rectangle wa
 
         randPos = (Rectangle){randX, randY, inimigo[end].sizeX, inimigo[end].sizeY};
 
-        int m = 20;  // margem de distância até o player
         if(CheckCollisionRecs(
-           randPos, (Rectangle){player.x-m, player.y-m, player.sizeX+2*m, player.sizeY+2*m})){
+           randPos, (Rectangle){player.x, player.y, player.sizeX, player.sizeY})){
            ok = 0;
         }
 
@@ -62,7 +61,7 @@ void sorteiaPosInimigo(Jogador inimigo [], int end, Jogador player, Rectangle wa
         inimigo[end].y = randY;
         inimigo[end].pers = (Rectangle){randX+OFFSET_X, randY+OFFSET_Y, LARGURA_TANQUE, TAMANHO_TANQUE};
     } else {
-        printf("Nao foi incluido");
+        //printf("Nao foi incluido");
         inimigo[end].naTela = 0;
     }
 
@@ -100,5 +99,11 @@ void UpdateINIMIGO(Jogador inimigo[], int contFrames,
 
 }
 
-void Movimenta_Random (Jogador inimigo[], int end){
-}
+/*void Movimenta_Random (Jogador *inimigo){
+    int x,y,r;
+    r = inimigo->r
+        switch(){
+        case 0
+        }
+
+}*/
