@@ -5,7 +5,7 @@
 #include <time.h>
 #include "deflib.h"
 
-void GameScreen(int *quit) {
+void GameScreen(int *quit, char path[16]) {
     // Initialization
     //--------------------------------------------------------------------------------------
     const int screenWidth = GetScreenWidth();
@@ -61,10 +61,28 @@ void GameScreen(int *quit) {
     Texture2D enerTexture = LoadTexture("resources/energy_drop_cortado.png");
     Texture2D inimigoTexture = LoadTexture("resources/tanque_inimigo.png");
 
-    int wall[N_LINHAS][N_COLUNAS], quadSize[2] = {40, 25};
+    int wall[N_LINHAS][N_COLUNAS];
     Rectangle wallRecs[N_LINHAS][N_COLUNAS];
 
-    initField(wall, wallRecs, &player.x, &player.y, 500, 500);
+    initField(wall, wallRecs, &player, path);
+
+    int end;
+
+    // SPAWNA 3 TANQUES INICIAIS
+    UpdateWalls(wall, wallRecs);
+    for(i = 0; i < 3; i++) {
+        for(end = 0; end < QUANT_INIMIGOS; end++) {
+            if(inimigo[end].naTela == 0) {
+                inimigo[end].naTela = 1;
+                inimigo[end].vidas = 1;
+                break;
+            }
+        }
+
+        if(end < QUANT_INIMIGOS) {
+            sorteiaPosInimigo(inimigo, end, player, wallRecs);
+        }
+    }
 
     // Main game loop
     while (!WindowShouldClose()) {
@@ -100,18 +118,17 @@ void GameScreen(int *quit) {
         }
 
         UpdateShots(&player);
-        BreakWalls(wall, &player, quadSize);
-        UpdateWalls(wall, wallRecs, quadSize);
+        BreakWalls(wall, &player);
+        UpdateWalls(wall, wallRecs);
 
         PlayerShot(&player, inimigo);
-        printf("%d\n", inimigo[0].vidas);
 
         //Energia energCel[], int contFrames,
         //Jogador player, Rectangle wallRecs[][N_COLUNAS]
         UpdateINIMIGO(inimigo,contFramesInimigo,player,wallRecs);
         UpdateEnergCels(energCel, contFramesEnerg, player, wallRecs);
         AvoidColision(&xAnt, &yAnt, &player.x, &player.y,
-                      wallRecs, limitex, limitey, quadSize);
+                      wallRecs, limitex, limitey);
 
         //---------------------------------------------------------------------------------
 
@@ -133,7 +150,7 @@ void GameScreen(int *quit) {
         for(i = 0; i < N_LINHAS; i++) {
             for(j = 0; j < N_COLUNAS; j++) {
                 if(wall[i][j] == 0) {  // se não tiver parede...
-                    DrawRectangle(j*quadSize[1], i*quadSize[0], quadSize[1], quadSize[0], BLACK);
+                    DrawRectangle(j*COL_SIZE, i*LIN_SIZE, COL_SIZE, LIN_SIZE, BLACK);
                 }
             }
         }
@@ -183,6 +200,6 @@ void GameScreen(int *quit) {
     UnloadTexture(wallTexture);
     UnloadTexture(enerTexture);
     UnloadTexture(inimigoTexture);
-    *quit = 1;
+    //*quit = 1;
 
 }
