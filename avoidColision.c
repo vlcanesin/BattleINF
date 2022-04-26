@@ -3,7 +3,7 @@
 
 void AvoidColision(
     float *xTankAnt, float *yTankAnt, float *xTank, float *yTank,
-    Rectangle wallRecs[][N_COLUNAS], float limitex, float limitey) {
+    Rectangle wallRecs[][N_COLUNAS], float limitex, float limitey, int quadSize[]) {
 
     // COLISION WITH THE BOUNDARY
     if(*xTank > limitex || *xTank < 0){

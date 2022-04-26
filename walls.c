@@ -2,9 +2,12 @@
 #include <stdio.h>
 #include "deflib.h"
 
-void initField(int wall[][N_COLUNAS], Rectangle wallRecs[][N_COLUNAS], Jogador *player, char path[16]) {
+void initField(int wall[][N_COLUNAS], Rectangle wallRecs[][N_COLUNAS], float *x, float *y, float inix, float iniy) {
 
-    /*int wallArray[15][40] = {
+    *x = inix;
+    *y = iniy;
+
+    int wallArray[15][40] = {
         {1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -20,33 +23,21 @@ void initField(int wall[][N_COLUNAS], Rectangle wallRecs[][N_COLUNAS], Jogador *
         {0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-    };*/
+    };
 
     int i, j;
-    char quad;
-    FILE *fp = fopen(path, "r");
-    char nomeFase[64];
-    fscanf(fp, "Nome: %s\n", nomeFase); // pula o nome da fase
-
     for(i = 0; i < N_LINHAS; i++) {
         for(j = 0; j < N_COLUNAS; j++) {
-            wall[i][j] = 0;
+            wall[i][j] = wallArray[i][j];
             wallRecs[i][j] = (Rectangle){0, 0, 0, 0};
-            if(fscanf(fp, "%c", &quad) >= 0) {
-                if(quad == '#') {
-                    wall[i][j] = 1;
-                } else if(quad == 'T') {
-                    player->x = j*COL_SIZE;
-                    player->y = i*LIN_SIZE;
-                }
-            }
+            //printf("%2d", wall[i][j]);
         }
-        fscanf(fp, "\n");
+        //printf("\n");
     }
 
 }
 
-void UpdateWalls(int wall[][N_COLUNAS], Rectangle wallRecs[][N_COLUNAS]) {
+void UpdateWalls(int wall[][N_COLUNAS], Rectangle wallRecs[][N_COLUNAS], int quadSize[]) {
 
     //BeginDrawing();
     int lin, col;
@@ -54,8 +45,8 @@ void UpdateWalls(int wall[][N_COLUNAS], Rectangle wallRecs[][N_COLUNAS]) {
         for(col = 0; col < N_COLUNAS; col++) {
             if(wall[lin][col] == 1) {
                 wallRecs[lin][col] = (Rectangle){
-                    col*COL_SIZE, lin*LIN_SIZE,
-                    COL_SIZE, LIN_SIZE
+                    col*quadSize[1], lin*quadSize[0],
+                    quadSize[1], quadSize[0]
                 };
                 //DrawRectangle(wallRecs[i][j].x, wallRecs[i][j].y,
                 //              wallRecs[i][j].width, wallRecs[i][j].height,
