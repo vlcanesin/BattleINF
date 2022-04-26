@@ -46,7 +46,10 @@ typedef struct Jogador {
     float r;
     int sizeX;
     int sizeY;
+    float xAnt;
+    float yAnt;
     float vel;
+    int dogtag;
     int vidas;
     int naTela;
     Rectangle pers;
@@ -80,7 +83,7 @@ void UpdateWalls(
 );
 
 void AvoidColision(
-    float *xTankAnt, float *yTankAnt, float *xTank, float *yTank,
+    Jogador *player, Jogador *inimigo,
     Rectangle wallRecs[][N_COLUNAS], float limitex, float limitey, int quadSize[]
 );
 

@@ -99,5 +99,11 @@ void UpdateINIMIGO(Jogador inimigo[], int contFrames,
 
 }
 
-void Movimenta_Random (Jogador inimigo[], int end){
-}
+/*void Movimenta_Random (Jogador *inimigo){
+    int x,y,r;
+    r = inimigo->r
+        switch(){
+        case 0
+        }
+
+}*/

@@ -23,6 +23,7 @@ void GameScreen(int *quit) {
     player.x = 0;
     player.y = 0;
     player.r = 0;
+    player.dogtag = 100;
     player.vel = velIniP;
     player.vidas = 3;
     float xAnt, yAnt;
@@ -52,8 +53,10 @@ void GameScreen(int *quit) {
         inimigo[i].sizeX = LARGURA_TANQUE;
         inimigo[i].sizeY = TAMANHO_TANQUE;
         inimigo[i].r = 0;
+        inimigo[i].vel = player.vel;
         inimigo[i].pers = (Rectangle){0,0,0,0};
         inimigo[i].vidas = 1;
+        inimigo[i].dogtag ++;
     }
 
     Texture2D tankTexture = LoadTexture("resources/tanque_player.png");
@@ -79,8 +82,14 @@ void GameScreen(int *quit) {
         //printf("%f %f %f %f\n", wallRecs[0][0].x, wallRecs[0][0].y, wallRecs[0][0].width, wallRecs[0][0].height);
 
         //----------------------------------------------------------------------------------
-        xAnt = player.x;
-        yAnt = player.y;
+        player.xAnt = player.x;
+        player.yAnt = player.y;
+
+
+        for (i = 0; i < QUANT_INIMIGOS; i++){
+            inimigo[i].xAnt = inimigo[i].x;
+            inimigo[i].yAnt = inimigo[i].y;
+        }
 
         if(IsKeyDown(KEY_UP)){
             player.y -= player.vel;
@@ -98,6 +107,30 @@ void GameScreen(int *quit) {
             player.x -= player.vel;
             player.r = 270;
         }
+        ////////////////////////////////////
+         if(IsKeyDown(KEY_UP)){
+            for(i = 0; i < QUANT_INIMIGOS; i++){
+            inimigo[i].y -= inimigo[i].vel;
+            inimigo[i].pers.y = inimigo[i].y;
+            inimigo[i].r = 0;
+            }
+        }
+        if(IsKeyDown(KEY_DOWN)){
+            for(i = 0; i < QUANT_INIMIGOS; i++){
+            inimigo[i].pers.y += inimigo[i].vel;
+           // inimigo[i].pers.y = inimigo[i].y;
+            inimigo[i].r = 180;
+            }
+        }/*
+        if(IsKeyDown(KEY_RIGHT)){
+            player.x += player.vel;
+            player.r = 90;
+        }
+        if(IsKeyDown(KEY_LEFT)){
+            player.x -= player.vel;
+            player.r = 270;
+        }*/
+        ////////////////////////////////////
 
         UpdateShots(&player);
         BreakWalls(wall, &player, quadSize);
@@ -110,8 +143,22 @@ void GameScreen(int *quit) {
         //Jogador player, Rectangle wallRecs[][N_COLUNAS]
         UpdateINIMIGO(inimigo,contFramesInimigo,player,wallRecs);
         UpdateEnergCels(energCel, contFramesEnerg, player, wallRecs);
-        AvoidColision(&xAnt, &yAnt, &player.x, &player.y,
+        AvoidColision(&player, inimigo,
                       wallRecs, limitex, limitey, quadSize);
+        for(i = 0; i<QUANT_INIMIGOS; i++){
+            AvoidColision(&inimigo[i], inimigo,
+                          wallRecs, limitex, limitey, quadSize);
+        }
+
+        for(i = 0; i<QUANT_INIMIGOS; i++){
+            if(inimigo[i].naTela == 1){
+                //Movimenta_Random(inimigo[i]);
+            }
+        }
+
+        //for (i = 0; i <= QUANT_INIMIGOS; i++){
+          //  AvoidColision(&inimigo[i],wallRecs, limitex, limitey, quadSize);
+        //}
 
         //---------------------------------------------------------------------------------
 
@@ -156,9 +203,10 @@ void GameScreen(int *quit) {
         // DESENHA INIMIGOS
          for(i = 0; i < QUANT_INIMIGOS; i++) {
             if(inimigo[i].naTela == 1) {
+                Rectangle inimigo_tanque = {inimigo[i].x + OFFSET_X, inimigo[i].y + OFFSET_Y,TAMANHO_TANQUE,LARGURA_TANQUE};
                 //DrawTexture(inimigoTexture, inimigo[i].pers.x,inimigo[i].pers.y, RAYWHITE);
-                DrawTexturePro(inimigoTexture,tanque,inimigo[i].pers,origin,inimigo[i].r,RAYWHITE);
-                //DrawRectangle(inimigo[i].x,inimigo[i].y,inimigo[i].pers.width,inimigo[i].pers.height, GREEN);
+                DrawRectangle(inimigo[i].x, inimigo[i].y,TAMANHO_TANQUE,LARGURA_TANQUE, GREEN);
+                DrawTexturePro(inimigoTexture,tanque,inimigo_tanque,origin,inimigo[i].r,RAYWHITE);
             }
         }
 
@@ -170,7 +218,7 @@ void GameScreen(int *quit) {
 
         // ATUALIZA VARIÁVEIS DE TEMPO
         contFramesEnerg = (contFramesEnerg + 1) % 60;
-        contFramesInimigo = (contFramesInimigo + 1) % 1;
+        contFramesInimigo = (contFramesInimigo + 1) % 10;
         if(timer > 0) timer--;
 
         EndDrawing();
