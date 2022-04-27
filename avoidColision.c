@@ -1,11 +1,11 @@
 #include "raylib.h"
 #include "deflib.h"
+#include <stdio.h>
 
 void AvoidColision(
     Jogador *player, Jogador inimigo[],
     Rectangle wallRecs[][N_COLUNAS], float limitex, float limitey) {
     int i = 0;
-    float x, y;
 
     // COLISION WITH THE BOUNDARY
     //if(player->dogtag == 100){
@@ -24,40 +24,40 @@ void AvoidColision(
             if(CheckCollisionRecs(tank, wallRecs[lin][col])) {
                 player->x = player->xAnt;
                 player->y = player->yAnt;
-                }
             }
         }
-
-//}
+    }
 
     //COLISION PLAYER WITH ENEMY TANKS
-        if(player->dogtag == 100){
-        Rectangle tank30 = {player->x, player->y, TAMANHO_TANQUE, LARGURA_TANQUE};
+    if(player->dogtag == 100) {  // "player" é o jogador
+        //Rectangle tank30 = {player->x, player->y, TAMANHO_TANQUE, LARGURA_TANQUE};
         for (i = 0; i < QUANT_INIMIGOS; i ++){
-        Rectangle inimigo_tanque = {inimigo[i].x , inimigo[i].y, TAMANHO_TANQUE,LARGURA_TANQUE};
-        if(CheckCollisionRecs(tank,inimigo_tanque) && inimigo[i].naTela == 1){
+            Rectangle inimigo_tanque = {inimigo[i].x , inimigo[i].y, TAMANHO_TANQUE,LARGURA_TANQUE};
+            if(CheckCollisionRecs(tank,inimigo_tanque) && inimigo[i].naTela == 1){
                 player->x = player->xAnt;
                 player->y = player->yAnt;
                 inimigo[i].x = inimigo[i].xAnt;
                 inimigo[i].y = inimigo[i].yAnt;
-                }
+                //printf("Bati\n");
             }
         }
-        //COLISION BETWEEN ENEMY TANKS
-        if(player->dogtag != 100){
-        Rectangle tank30 = {player->x, player->y, TAMANHO_TANQUE, LARGURA_TANQUE};
-        for (i = 0; i < QUANT_INIMIGOS; i ++){
-        Rectangle inimigo_tanque = {inimigo[i].x , inimigo[i].y, TAMANHO_TANQUE,LARGURA_TANQUE};
-        if(CheckCollisionRecs(tank,inimigo_tanque) && inimigo[i].naTela == 1 && player->dogtag != inimigo[i].dogtag){
-                player->x = player->xAnt;
-                player->y = player->yAnt;
-                inimigo[i].x = inimigo[i].xAnt;
-                inimigo[i].y = inimigo[i].yAnt;
-                }
-            }
-        }
-
     }
+
+    //COLISION BETWEEN ENEMY TANKS
+    else {   // "player" é o inimigo
+        //Rectangle tank30 = {player->x, player->y, TAMANHO_TANQUE, LARGURA_TANQUE};
+        for (i = 0; i < QUANT_INIMIGOS; i ++){
+            Rectangle inimigo_tanque = {inimigo[i].x , inimigo[i].y, TAMANHO_TANQUE,LARGURA_TANQUE};
+            if(CheckCollisionRecs(tank,inimigo_tanque) && inimigo[i].naTela == 1 && player->dogtag != inimigo[i].dogtag){
+                player->x = player->xAnt;
+                player->y = player->yAnt;
+                inimigo[i].x = inimigo[i].xAnt;
+                inimigo[i].y = inimigo[i].yAnt;
+            }
+        }
+    }
+
+}
     /*else{
         if(&inimigo->pers->x > limitex || player.pers->x < 0){
         player->pers->x = player->pers->xAnt;

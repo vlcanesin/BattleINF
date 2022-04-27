@@ -5,16 +5,17 @@
 #include <time.h>
 #include "deflib.h"
 
-void GameScreen(int *quit, char path[16]) {
+void GameScreen(int *quit, char path[16], int idNivel) {
     // Initialization
     //--------------------------------------------------------------------------------------
     const int screenWidth = GetScreenWidth();
     const int screenHeight = GetScreenHeight();
 
     int contFramesEnerg = 0, contFramesInimigo = 0;  // Usado para temporizar nascimentos aleatórios
-    int timer = 0;
 
     int i, j;
+
+    int screen_game = GAME;
 
     float velIniP = 5;
     float velIniT = 10;
@@ -26,7 +27,7 @@ void GameScreen(int *quit, char path[16]) {
     player.dogtag = 100;
     player.vel = velIniP;
     player.vidas = 3;
-    float xAnt, yAnt;
+    player.timer = 0;
 
     //int tamanho_t = 60;
     //int largura_t = 60;
@@ -56,13 +57,16 @@ void GameScreen(int *quit, char path[16]) {
         inimigo[i].vel = player.vel;
         inimigo[i].pers = (Rectangle){0,0,0,0};
         inimigo[i].vidas = 1;
-        inimigo[i].dogtag ++;
+        inimigo[i].dogtag = i;
+        inimigo[i].timer = 0;
+        printf("%d\n", inimigo[i].dogtag);
     }
 
     Texture2D tankTexture = LoadTexture("resources/tanque_player.png");
     Texture2D wallTexture = LoadTexture("resources/brick_texture2.png");
     Texture2D enerTexture = LoadTexture("resources/energy_drop_cortado.png");
     Texture2D inimigoTexture = LoadTexture("resources/tanque_inimigo.png");
+    Texture2D vida = LoadTexture("resources/vida.png");
 
     int wall[N_LINHAS][N_COLUNAS];
     Rectangle wallRecs[N_LINHAS][N_COLUNAS];
@@ -88,148 +92,186 @@ void GameScreen(int *quit, char path[16]) {
     }
 
     // Main game loop
-    while (!WindowShouldClose()) {
-        // Update
-        Vector2 origin = {TAMANHO_TANQUE/2,LARGURA_TANQUE/2};
-        player.pers = (Rectangle){player.x+OFFSET_X, player.y+OFFSET_Y, LARGURA_TANQUE, TAMANHO_TANQUE};
-       // Rectangle inimigopers[] = {inimigo->x+offset_x, inimigo->y+offset_y, largura_t, tamanho_t};
-        Rectangle tanque = {0,0,70,90};
-        limitey = screenHeight - TAMANHO_TANQUE - 100; // 100px para menu
-        limitex = screenWidth - LARGURA_TANQUE;
+    while (!WindowShouldClose() && player.vidas > 0) {
 
-        //printf("%f %f %f %f\n", wallRecs[0][0].x, wallRecs[0][0].y, wallRecs[0][0].width, wallRecs[0][0].height);
+        CheckPause(&screen_game);
 
-        //----------------------------------------------------------------------------------
-        player.xAnt = player.x;
-        player.yAnt = player.y;
+        switch(screen_game) {
 
-        for (i = 0; i < QUANT_INIMIGOS; i++){
-            inimigo[i].xAnt = inimigo[i].x;
-            inimigo[i].yAnt = inimigo[i].y;
-        }
+        case GAME:
+            // Update
+            Vector2 origin = {TAMANHO_TANQUE/2,LARGURA_TANQUE/2};
+            player.pers = (Rectangle){player.x+OFFSET_X, player.y+OFFSET_Y, LARGURA_TANQUE, TAMANHO_TANQUE};
+           // Rectangle inimigopers[] = {inimigo->x+offset_x, inimigo->y+offset_y, largura_t, tamanho_t};
+            Rectangle tanque = {0,0,70,90};
+            limitey = screenHeight - TAMANHO_TANQUE - 100; // 100px para menu
+            limitex = screenWidth - LARGURA_TANQUE;
 
-        if(IsKeyDown(KEY_UP)){
-            player.y -= player.vel;
-            player.r = 0;
-        }
+            //printf("%f %f %f %f\n", wallRecs[0][0].x, wallRecs[0][0].y, wallRecs[0][0].width, wallRecs[0][0].height);
 
-        if(IsKeyDown(KEY_DOWN)){
-            player.y += player.vel;
-            player.r = 180;
-        }
-        if(IsKeyDown(KEY_RIGHT)){
-            player.x += player.vel;
-            player.r = 90;
-        }
-        if(IsKeyDown(KEY_LEFT)){
-            player.x -= player.vel;
-            player.r = 270;
-        }
-        ////////////////////////////////////
-         if(IsKeyDown(KEY_UP)){
-            for(i = 0; i < QUANT_INIMIGOS; i++){
-            inimigo[i].y -= inimigo[i].vel;
-            inimigo[i].pers.y = inimigo[i].y;
-            inimigo[i].r = 0;
+            //----------------------------------------------------------------------------------
+            player.xAnt = player.x;
+            player.yAnt = player.y;
+
+            for (i = 0; i < QUANT_INIMIGOS; i++){
+                inimigo[i].xAnt = inimigo[i].x;
+                inimigo[i].yAnt = inimigo[i].y;
             }
-        }
-        if(IsKeyDown(KEY_DOWN)){
-            for(i = 0; i < QUANT_INIMIGOS; i++){
-            inimigo[i].pers.y += inimigo[i].vel;
-           // inimigo[i].pers.y = inimigo[i].y;
-            inimigo[i].r = 180;
+
+            if(IsKeyDown(KEY_UP)){
+                player.y -= player.vel;
+                player.r = 0;
             }
-        }/*
-        if(IsKeyDown(KEY_RIGHT)){
-            player.x += player.vel;
-            player.r = 90;
-        }
-        if(IsKeyDown(KEY_LEFT)){
-            player.x -= player.vel;
-            player.r = 270;
-        }*/
-        ////////////////////////////////////
 
-        UpdateShots(&player);
-        BreakWalls(wall, &player);
-        UpdateWalls(wall, wallRecs);
-
-        PlayerShot(&player, inimigo);
-
-        //Energia energCel[], int contFrames,
-        //Jogador player, Rectangle wallRecs[][N_COLUNAS]
-        UpdateINIMIGO(inimigo,contFramesInimigo,player,wallRecs);
-        UpdateEnergCels(energCel, contFramesEnerg, player, wallRecs);
-        AvoidColision(&player, inimigo,
-                      wallRecs, limitex, limitey);
-        for(i = 0; i<QUANT_INIMIGOS; i++){
-            AvoidColision(&inimigo[i], inimigo,
-                          wallRecs, limitex, limitey);
-        }
-
-        //---------------------------------------------------------------------------------
-
-
-        //----------------------------------------------------------------------------------
-        BeginDrawing();
-
-        ClearBackground(BLACK);
-
-        // DESENHA TEXTURA NA TELA INTEIRA
-        DrawTextureTiled(
-            wallTexture,
-            (Rectangle){3, 3, 120, 120}, (Rectangle){0, 0, screenWidth, screenHeight},
-            (Vector2){0, 0},
-            0, 1, RAYWHITE
-        );
-
-        // COBRE TEXTURA PARA DELINEAR PAREDES
-        for(i = 0; i < N_LINHAS; i++) {
-            for(j = 0; j < N_COLUNAS; j++) {
-                if(wall[i][j] == 0) {  // se não tiver parede...
-                    DrawRectangle(j*COL_SIZE, i*LIN_SIZE, COL_SIZE, LIN_SIZE, BLACK);
+            if(IsKeyDown(KEY_DOWN)){
+                player.y += player.vel;
+                player.r = 180;
+            }
+            if(IsKeyDown(KEY_RIGHT)){
+                player.x += player.vel;
+                player.r = 90;
+            }
+            if(IsKeyDown(KEY_LEFT)){
+                player.x -= player.vel;
+                player.r = 270;
+            }
+            ////////////////////////////////////
+             /*if(IsKeyDown(KEY_UP)){
+                for(i = 0; i < QUANT_INIMIGOS; i++){
+                    inimigo[i].y -= inimigo[i].vel;
+                    inimigo[i].pers.y = inimigo[i].y;
+                    inimigo[i].r = 0;
                 }
             }
-        }
-
-        // DESENHA CÉLULAS DE ENERGIA
-        UseEnergCels(energCel, &player, &timer, velIniP, velIniT);
-        for(i = 0; i < QUANT_ENERG; i++) {
-            if(energCel[i].naTela == 1) {
-                DrawTexture(enerTexture, energCel[i].Px, energCel[i].Py, RAYWHITE);
+            if(IsKeyDown(KEY_DOWN)){
+                for(i = 0; i < QUANT_INIMIGOS; i++){
+                    inimigo[i].y += inimigo[i].vel;
+                    inimigo[i].pers.y = inimigo[i].y;
+                    inimigo[i].r = 180;
+                }
             }
-        }
-
-
-        // DESENHA TIROS
-        for(i = 0; i < QUANT_TIROS; i++) {
-            if(player.tiros[i].naTela == 1) {
-                DrawCircle(player.tiros[i].Px,player.tiros[i].Py,5,RAYWHITE);
+            if(IsKeyDown(KEY_RIGHT)){
+                for(i = 0; i < QUANT_INIMIGOS; i++){
+                    inimigo[i].x += inimigo[i].vel;
+                    inimigo[i].pers.x = inimigo[i].x;
+                    inimigo[i].r = 90;
+                }
             }
-        }
-        // DESENHA INIMIGOS
-         for(i = 0; i < QUANT_INIMIGOS; i++) {
-            if(inimigo[i].naTela == 1) {
-                Rectangle inimigo_tanque = {inimigo[i].x + OFFSET_X, inimigo[i].y + OFFSET_Y,TAMANHO_TANQUE,LARGURA_TANQUE};
-                //DrawTexture(inimigoTexture, inimigo[i].pers.x,inimigo[i].pers.y, RAYWHITE);
-                DrawRectangle(inimigo[i].x, inimigo[i].y,TAMANHO_TANQUE,LARGURA_TANQUE, GREEN);
-                DrawTexturePro(inimigoTexture,tanque,inimigo_tanque,origin,inimigo[i].r,RAYWHITE);
+            if(IsKeyDown(KEY_LEFT)){
+                for(i = 0; i < QUANT_INIMIGOS; i++){
+                    inimigo[i].x -= inimigo[i].vel;
+                    inimigo[i].pers.x = inimigo[i].x;
+                    inimigo[i].r = 270;
+                }
+            }*/
+            ////////////////////////////////////
+
+            UpdateShots(&player);
+            BreakWalls(wall, &player);
+            UpdateWalls(wall, wallRecs);
+
+            PlayerShot(&player, inimigo);
+
+            //Energia energCel[], int contFrames,
+            //Jogador player, Rectangle wallRecs[][N_COLUNAS]
+            UpdateINIMIGO(inimigo,contFramesInimigo,player,wallRecs);
+            UpdateEnergCels(energCel, contFramesEnerg, player, wallRecs);
+
+            AvoidColision(&player, inimigo,
+                          wallRecs, limitex, limitey);
+            for(i = 0; i<QUANT_INIMIGOS; i++){
+                AvoidColision(&inimigo[i], inimigo,
+                              wallRecs, limitex, limitey);
             }
+            //---------------------------------------------------------------------------------
+
+
+            //----------------------------------------------------------------------------------
+            BeginDrawing();
+
+            ClearBackground(BLACK);
+
+            // DESENHA TEXTURA NA TELA INTEIRA
+            DrawTextureTiled(
+                wallTexture,
+                (Rectangle){3, 3, 120, 120}, (Rectangle){0, 0, screenWidth, screenHeight},
+                (Vector2){0, 0},
+                0, 1, RAYWHITE
+            );
+
+            // COBRE TEXTURA PARA DELINEAR PAREDES
+            for(i = 0; i < N_LINHAS; i++) {
+                for(j = 0; j < N_COLUNAS; j++) {
+                    if(wall[i][j] == 0) {  // se não tiver parede...
+                        DrawRectangle(j*COL_SIZE, i*LIN_SIZE, COL_SIZE, LIN_SIZE, BLACK);
+                    }
+                }
+            }
+
+            // PRINTA ABA DE INFORMAÇÕES
+            PrintTab(idNivel, player, vida, enerTexture);
+
+            // DESENHA CÉLULAS DE ENERGIA
+            UseEnergCels(energCel, &player, velIniP, velIniT);
+            for(i = 0; i < QUANT_INIMIGOS; i++) {
+                UseEnergCels(energCel, &inimigo[i], velIniP, velIniT);
+            }
+            for(i = 0; i < QUANT_ENERG; i++) {
+                if(energCel[i].naTela == 1) {
+                    DrawTexture(enerTexture, energCel[i].Px, energCel[i].Py, RAYWHITE);
+                }
+            }
+
+
+            // DESENHA TIROS
+            for(i = 0; i < QUANT_TIROS; i++) {
+                if(player.tiros[i].naTela == 1) {
+                    DrawCircle(player.tiros[i].Px,player.tiros[i].Py,5,RAYWHITE);
+                }
+            }
+            // DESENHA INIMIGOS
+             for(i = 0; i < QUANT_INIMIGOS; i++) {
+                if(inimigo[i].naTela == 1) {
+                    Rectangle inimigo_tanque = {inimigo[i].x + OFFSET_X, inimigo[i].y + OFFSET_Y,TAMANHO_TANQUE,LARGURA_TANQUE};
+                    //DrawTexture(inimigoTexture, inimigo[i].pers.x,inimigo[i].pers.y, RAYWHITE);
+                    //DrawRectangle(inimigo[i].x, inimigo[i].y,TAMANHO_TANQUE,LARGURA_TANQUE, GREEN);
+                    DrawTexturePro(inimigoTexture,tanque,inimigo_tanque,origin,inimigo[i].r,RAYWHITE);
+                }
+            }
+
+            // DESENHA TANQUE
+            DrawTexturePro(tankTexture,tanque,player.pers,origin,player.r,RAYWHITE);
+
+            //DrawTexturePro(inimigoTexture,tanque,pers,origin,player.r,RAYWHITE);
+            //DrawRectangle(pers.x-largura_t/2, pers.y-tamanho_t/2, pers.height, pers.width, GREEN);
+
+            // ATUALIZA VARIÁVEIS DE TEMPO
+            contFramesEnerg = (contFramesEnerg + 1) % 60;
+            contFramesInimigo = (contFramesInimigo + 1) % 1;
+            if(player.timer > 0) {
+                player.timer--;
+            }
+            for(i = 0; i < QUANT_INIMIGOS; i++) {
+                if(inimigo[i].naTela == 1) {
+                    inimigo[i].timer--;
+                } else {
+                    inimigo[i].timer = 0;
+                }
+            }
+
+            EndDrawing();
+            //----------------------------------------------------------------------------------
+        break;
+
+        case PAUSE:
+            BeginDrawing();
+            DrawText("PAUSED",
+                    screenWidth-MeasureText("PAUSED", 20) - 25, N_LINHAS*LIN_SIZE + 25, 20, RAYWHITE);
+            EndDrawing();
+        break;
+
         }
 
-        // DESENHA TANQUE
-        DrawTexturePro(tankTexture,tanque,player.pers,origin,player.r,RAYWHITE);
-
-        //DrawTexturePro(inimigoTexture,tanque,pers,origin,player.r,RAYWHITE);
-        //DrawRectangle(pers.x-largura_t/2, pers.y-tamanho_t/2, pers.height, pers.width, GREEN);
-
-        // ATUALIZA VARIÁVEIS DE TEMPO
-        contFramesEnerg = (contFramesEnerg + 1) % 60;
-        contFramesInimigo = (contFramesInimigo + 1) % 1;
-        if(timer > 0) timer--;
-
-        EndDrawing();
-        //----------------------------------------------------------------------------------
     }
 
     // De-Initialization
@@ -238,6 +280,7 @@ void GameScreen(int *quit, char path[16]) {
     UnloadTexture(wallTexture);
     UnloadTexture(enerTexture);
     UnloadTexture(inimigoTexture);
+    UnloadTexture(vida);
     //*quit = 1;
 
 }

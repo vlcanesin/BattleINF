@@ -8,6 +8,7 @@
 #define RANKING 5
 #define QUIT 6
 #define ASK_NAME 7
+#define PAUSE 8
 
 #define N_LINHAS 15
 #define N_COLUNAS 40
@@ -56,13 +57,22 @@ typedef struct Jogador {
     int dogtag;
     int vidas;
     int naTela;
+    int timer;
     Rectangle pers;
     Tiro tiros[QUANT_TIROS];
 } Jogador;
 
 void MenuScreen(int *screen, int *menuOption);
-void GameScreen(int *quit, char path[16]);
+void GameScreen(int *quit, char path[16], int idNivel);
 void ShowLevel(int level, char path[16]);
+
+void PrintTab(
+    int idNivel, Jogador player, Texture2D vida, Texture2D enerTexture
+);
+
+void CheckPause(
+    int *screen_game;
+);
 
 void UpdateShots(
     Jogador *player
@@ -98,7 +108,7 @@ void UpdateEnergCels(
 );
 
 void UseEnergCels(
-    Energia energCel[], Jogador *player, int *timer,
+    Energia energCel[], Jogador *player,
     float velIniP, float velIniT
 );
 

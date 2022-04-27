@@ -173,20 +173,21 @@
 	<limits.h>
 	"deflib.h"
 
-1650977425 source:d:\햞ea de trabalho\clones\battleinf\avoidcolision.c
+1651090021 source:d:\햞ea de trabalho\clones\battleinf\avoidcolision.c
 	"raylib.h"
 	"deflib.h"
+	<stdio.h>
 
-1650982559 d:\햞ea de trabalho\clones\battleinf\deflib.h
+1651093511 d:\햞ea de trabalho\clones\battleinf\deflib.h
 
-1650843513 source:d:\햞ea de trabalho\clones\battleinf\energia.c
+1651086548 source:d:\햞ea de trabalho\clones\battleinf\energia.c
 	<raylib.h>
 	<stdio.h>
 	<stdlib.h>
 	<limits.h>
 	"deflib.h"
 
-1650985403 source:d:\햞ea de trabalho\clones\battleinf\game.c
+1651097070 source:d:\햞ea de trabalho\clones\battleinf\game.c
 	"raylib.h"
 	<stdio.h>
 	<stdlib.h>
@@ -194,38 +195,38 @@
 	<time.h>
 	"deflib.h"
 
-1650985278 source:d:\햞ea de trabalho\clones\battleinf\inimigo.c
+1651084030 source:d:\햞ea de trabalho\clones\battleinf\inimigo.c
 	<raylib.h>
 	<stdio.h>
 	<stdlib.h>
 	<limits.h>
 	"deflib.h"
 
-1650984773 source:d:\햞ea de trabalho\clones\battleinf\main.c
+1651090619 source:d:\햞ea de trabalho\clones\battleinf\main.c
 	"raylib.h"
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
 	"deflib.h"
 
-1650841802 source:d:\햞ea de trabalho\clones\battleinf\menu.c
+1651084030 source:d:\햞ea de trabalho\clones\battleinf\menu.c
 	"raylib.h"
 	<stdio.h>
 	"deflib.h"
 
-1650978198 source:d:\햞ea de trabalho\clones\battleinf\tiro.c
+1651084030 source:d:\햞ea de trabalho\clones\battleinf\tiro.c
 	"raylib.h"
 	<stdio.h>
 	<stdlib.h>
 	<limits.h>
 	"deflib.h"
 
-1650982946 source:d:\햞ea de trabalho\clones\battleinf\walls.c
+1651084030 source:d:\햞ea de trabalho\clones\battleinf\walls.c
 	"raylib.h"
 	<stdio.h>
 	"deflib.h"
 
-1650982847 source:d:\햞ea de trabalho\clones\battleinf\transitions.c
+1651084030 source:d:\햞ea de trabalho\clones\battleinf\transitions.c
 	"raylib.h"
 	<stdio.h>
 	"deflib.h"
@@ -234,4 +235,12 @@
 	"raylib.h"
 	<stdio.h>
 	"deflib.h"
+
+1651096288 source:d:\햞ea de trabalho\clones\battleinf\tab.c
+	<stdio.h>
+	"raylib.h"
+	"deflib.h"
+
+1651090035 source:d:\햞ea de trabalho\clones\battleinf\asd.c
+	"raylib.h"
 

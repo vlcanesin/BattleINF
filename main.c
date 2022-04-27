@@ -37,7 +37,7 @@ int main(void) {
                 snprintf(path, sizeof(path), "fases/fase%c.txt", i+'0');
 
                 ShowLevel(i, path);
-                GameScreen(&quit, path);
+                GameScreen(&quit, path, i);
 
             }
 
@@ -59,5 +59,3 @@ int main(void) {
     CloseWindow();
     return 0;
 }
-
-

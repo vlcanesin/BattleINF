@@ -105,7 +105,7 @@ void UpdateEnergCels(Energia energCel[], int contFrames,
 
 // OBS: ESTÁ PROGRAMADA PARA FUNCIONAR APENAS PARA O JOGADOR
 // OBS2: NÃO MAIS!!!
-void UseEnergCels(Energia energCel[], Jogador *player, int *timer,
+void UseEnergCels(Energia energCel[], Jogador *player,
                   float velIniP, float velIniT) {
 
     int i;
@@ -114,13 +114,13 @@ void UseEnergCels(Energia energCel[], Jogador *player, int *timer,
             if (CheckCollisionRecs(
                 (Rectangle){energCel[i].Px, energCel[i].Py, energCel[i].sizeX, energCel[i].sizeY},
                 (Rectangle){player->x, player->y, player->sizeX, player->sizeY})) {
-                *timer = 5*60; // 5 segundos
+                player->timer = 5*60; // 5 segundos
                 energCel[i].naTela = 0;
             }
         }
     }
 
-    if(*timer > 0) {
+    if(player->timer > 0) {
         player->vel = 1.5*velIniP;
         for(i = 0; i < QUANT_TIROS; i++) {
             player->tiros[i].vel = 1.5*velIniT;
