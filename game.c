@@ -28,6 +28,7 @@ void GameScreen(int *quit, char path[16], int idNivel) {
     player.vel = velIniP;
     player.vidas = 3;
     player.timer = 0;
+    player.score = 0;
 
     //int tamanho_t = 60;
     //int largura_t = 60;
@@ -50,6 +51,7 @@ void GameScreen(int *quit, char path[16], int idNivel) {
     }
     Jogador inimigo[QUANT_INIMIGOS];
     for(i = 0; i < QUANT_INIMIGOS; i++) {
+        //printf("x e y de '%c': %.2f %.2f\n", i+'0',inimigo[i].x, inimigo[i].y);
         inimigo[i].naTela = 0;
         inimigo[i].sizeX = LARGURA_TANQUE;
         inimigo[i].sizeY = TAMANHO_TANQUE;
@@ -59,7 +61,11 @@ void GameScreen(int *quit, char path[16], int idNivel) {
         inimigo[i].vidas = 1;
         inimigo[i].dogtag = i;
         inimigo[i].timer = 0;
-        printf("%d\n", inimigo[i].dogtag);
+        inimigo[i].xAnt = 0;
+        inimigo[i].yAnt = 0;
+        inimigo[i].x = 0;
+        inimigo[i].y = 0;
+        //printf("%d\n", inimigo[i].dogtag);
     }
 
     Texture2D tankTexture = LoadTexture("resources/tanque_player.png");
@@ -236,6 +242,10 @@ void GameScreen(int *quit, char path[16], int idNivel) {
                     //DrawTexture(inimigoTexture, inimigo[i].pers.x,inimigo[i].pers.y, RAYWHITE);
                     //DrawRectangle(inimigo[i].x, inimigo[i].y,TAMANHO_TANQUE,LARGURA_TANQUE, GREEN);
                     DrawTexturePro(inimigoTexture,tanque,inimigo_tanque,origin,inimigo[i].r,RAYWHITE);
+                    /*char id[2];
+                    id[0] = i+'0';
+                    id[1] = '\0';
+                    DrawText(id, inimigo[i].x, inimigo[i].y, 20, RAYWHITE);*/
                 }
             }
 
@@ -247,7 +257,7 @@ void GameScreen(int *quit, char path[16], int idNivel) {
 
             // ATUALIZA VARIÁVEIS DE TEMPO
             contFramesEnerg = (contFramesEnerg + 1) % 60;
-            contFramesInimigo = (contFramesInimigo + 1) % 1;
+            contFramesInimigo = (contFramesInimigo + 1) % 5;
             if(player.timer > 0) {
                 player.timer--;
             }

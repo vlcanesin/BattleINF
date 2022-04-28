@@ -58,17 +58,17 @@ void sorteiaPos(Energia energCel[], int end, Jogador player, Rectangle wallRecs[
 
         // COLISÃO COM CÉLULAS JÁ EXISTENTES
         for(i = 0; i <  QUANT_ENERG; i++) {
-            if(energCel[i].naTela == 0)
-                continue;
-            Rectangle celNaTela = {energCel[i].Px, energCel[i].Py,
-                                   energCel[i].sizeX, energCel[i].sizeY};
-            if(CheckCollisionRecs(randPos, celNaTela)) {
-                ok = 0;
-                break;
+            if(energCel[i].naTela == 1) {
+                Rectangle celNaTela = {energCel[i].Px, energCel[i].Py,
+                                       energCel[i].sizeX, energCel[i].sizeY};
+                if(CheckCollisionRecs(randPos, celNaTela)) {
+                    ok = 0;
+                    break;
+                }
             }
-
         }
 
+        //printf("%d\n", ok);
     } while(ok == 0 && cont < 20);
 
     if(cont < 20) {

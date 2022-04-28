@@ -100,6 +100,9 @@ void PlayerShot(Jogador *player, Jogador inimigo[]) {
                         (Vector2){player->tiros[i].Px,player->tiros[i].Py}, 5,
                         (Rectangle){inimigo[j].x, inimigo[j].y, LARGURA_TANQUE, TAMANHO_TANQUE})) {
                     inimigo[j].vidas--;
+                    if(inimigo[j].vidas == 0) {
+                        player->score += 800;
+                    }
                     player->tiros[i].naTela = 0;
                 }
             }

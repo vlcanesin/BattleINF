@@ -4,11 +4,11 @@
 #include <limits.h>
 #include "deflib.h"
 
-void sorteiaPosInimigo(Jogador inimigo [], int end, Jogador player, Rectangle wallRecs[][N_COLUNAS]) {
+void sorteiaPosInimigo(Jogador inimigo[], int end, Jogador player, Rectangle wallRecs[][N_COLUNAS]) {
 
     int screenWidth = GetScreenWidth();
     int screenHeight = GetScreenHeight();
-    int randX, randY;
+    float randX, randY;
     int lin, col, ok, i, contador = 0;
 
     Rectangle randPos;
@@ -18,8 +18,8 @@ void sorteiaPosInimigo(Jogador inimigo [], int end, Jogador player, Rectangle wa
         ok = 1;
         int shouldBreak = 0;
 
-        randX = (int)rand()%(screenWidth - inimigo[end].sizeX);
-        randY = (int)rand()%(screenHeight - inimigo[end].sizeY - 100);
+        randX = (float)((int)rand()%(screenWidth - inimigo[end].sizeX));
+        randY = (float)((int)rand()%(screenHeight - inimigo[end].sizeY - 100));
 
         randPos = (Rectangle){randX, randY, inimigo[end].sizeX, inimigo[end].sizeY};
 
@@ -33,6 +33,7 @@ void sorteiaPosInimigo(Jogador inimigo [], int end, Jogador player, Rectangle wa
         for(lin = 0; lin < N_LINHAS; lin++) {
             for(col = 0; col < N_COLUNAS; col++) {
                 if(CheckCollisionRecs(randPos, wallRecs[lin][col])) {
+                    //printf("Entrei\n");
                     ok = 0;
                     shouldBreak = 1;
                     break;
@@ -44,16 +45,17 @@ void sorteiaPosInimigo(Jogador inimigo [], int end, Jogador player, Rectangle wa
 
         // COLISÃO COM CÉLULAS JÁ EXISTENTES
         for(i = 0; i <  QUANT_INIMIGOS; i++) {
-            if(inimigo[i].naTela == 0)
-            continue;
-            Rectangle inimigNaTela = {inimigo[i].x, inimigo[i].y,
-                               inimigo[i].sizeX, inimigo[i].sizeY};
-            if(CheckCollisionRecs(randPos, inimigNaTela)) {
-                ok = 0;
-                break;
+            if(inimigo[i].naTela == 1) {
+                Rectangle inimigNaTela = {inimigo[i].x, inimigo[i].y,
+                                   inimigo[i].sizeX, inimigo[i].sizeY};
+                if(CheckCollisionRecs(randPos, inimigNaTela)) {
+                    ok = 0;
+                    break;
+                }
             }
         }
 
+        //printf("%d\n", ok);
     } while(ok == 0 && contador < 20);
 
 
@@ -61,8 +63,9 @@ void sorteiaPosInimigo(Jogador inimigo [], int end, Jogador player, Rectangle wa
         inimigo[end].x = randX;
         inimigo[end].y = randY;
         inimigo[end].pers = (Rectangle){randX+OFFSET_X, randY+OFFSET_Y, LARGURA_TANQUE, TAMANHO_TANQUE};
+        //printf("'%c' RandX: %.2f RandY: %.2f\n", end+'0', randX, randY);
     } else {
-        printf("Nao foi incluido");
+        //printf("End '%c' nao foi incluido\n", end+'0');
         inimigo[end].naTela = 0;
     }
 
@@ -87,11 +90,12 @@ void UpdateINIMIGO(Jogador inimigo[], int contFrames,
 
         if(end < QUANT_INIMIGOS) {
             sorteiaPosInimigo(inimigo, end, player, wallRecs);
+            //printf("End '%c': %.2f %.2f\n", end+'0', inimigo[end].x, inimigo[end].y);
         }
 
     }
 
-    // VERIFICA QUAIS AINDA ESTÃO VIVOS
+    // DEIXA APENAS OS QUE ESTÃO VIVOS
     for(end = 0; end < QUANT_INIMIGOS; end++) {
         if(inimigo[end].naTela == 1 && inimigo[end].vidas <= 0) {
             inimigo[end].naTela = 0;

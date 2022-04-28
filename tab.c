@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 #include "raylib.h"
 #include "deflib.h"
 
@@ -8,9 +9,27 @@ void PrintTab(int idNivel, Jogador player, Texture2D vida, Texture2D enerTexture
     const int screenWidth = GetScreenWidth();
     int i;
 
-    char text[7] = "Fase  ";
+    char text[7] = "Fase _ ";
     text[5] = idNivel + '0';
     text[6] = '\0';
+
+    char score[14] = "Score: ______ ";
+    int numDig = 1;
+    float scoreTemp = (float)player.score;
+
+    while(scoreTemp >= 10) {
+        scoreTemp /= 10;
+        numDig++;
+    }
+
+    scoreTemp = (float)player.score;
+    for(i = numDig-1; i >= 0; i--) {
+        int dig = (int)(scoreTemp / pow(10, i));
+        score[6+numDig-i] = dig + '0';
+        scoreTemp -= dig*pow(10, i);
+    }
+
+    score[6+numDig+1] = '\0';
 
     DrawRectangle(0, N_LINHAS*LIN_SIZE,
                   screenWidth, screenHeight - N_LINHAS*LIN_SIZE,
@@ -28,7 +47,10 @@ void PrintTab(int idNivel, Jogador player, Texture2D vida, Texture2D enerTexture
     }
 
     DrawText(text,
-    (screenWidth-MeasureText(text, 40))/2, 630, 40, RAYWHITE);
+    (screenWidth-MeasureText(text, 35))/2, 620, 35, RAYWHITE);
+
+    DrawText(score,
+    (screenWidth-MeasureText(score, 20))/2, 660, 20, RAYWHITE);
 
 }
 

@@ -58,6 +58,7 @@ typedef struct Jogador {
     int vidas;
     int naTela;
     int timer;
+    int score;
     Rectangle pers;
     Tiro tiros[QUANT_TIROS];
 } Jogador;
