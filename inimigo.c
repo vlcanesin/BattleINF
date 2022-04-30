@@ -104,5 +104,32 @@ void UpdateINIMIGO(Jogador inimigo[], int contFrames,
 
 }
 
-void Movimenta_Random (Jogador inimigo[], int end){
+void Movimenta_Random (Jogador *inimigo){
+    switch((int)inimigo->r){
+    case 0: inimigo->y --;
+            break;
+    case 180: inimigo-> y++;
+              break;
+    case 90: inimigo->x ++;
+             break;
+    case 270: inimigo->x --;
+              break;
+    }
+}
+int sorteiaR(Jogador *inimigo){
+    int vetorPosicao[4] = {0,90,180,270} , i = 0, pos = 0;
+    int escolha = rand() %4;
+
+    return ((int)inimigo->r+vetorPosicao[escolha])%360;
+}
+
+
+int EnemyShots(Jogador *inimigo){
+    int info = 0;
+    if (inimigo->dogtag != 100 && inimigo->alinhado == 1){
+        info = rand()%80;
+    }else
+        info = 0;
+
+    return info;
 }

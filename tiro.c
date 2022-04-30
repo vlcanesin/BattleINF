@@ -6,38 +6,81 @@
 
 void UpdateShots(Jogador *player) {
 
-    int end, i;
+    int end, i, num;
     const int screenWidth = GetScreenWidth();
     const int screenHeight = GetScreenHeight();
 
-    if(IsKeyPressed(KEY_SPACE)){
+    if (player->dogtag != 100){
+         num = EnemyShots(&player);
+     }
+    else
+        num = 0;
+    if (player->dogtag != 100){
+        if(num == 1 && player->alinhado == 1){
 
-        for(end = 0; end < QUANT_TIROS; end++) {
-            if(player->tiros[end].naTela == 0) {
-                player->tiros[end].naTela = 1;
-                //player->tiros[end].origem = 'p';
-                break;
+            for(end = 0; end < QUANT_TIROS; end++) {
+                if(player->tiros[end].naTela == 0) {
+                    player->tiros[end].naTela = 1;
+                    //player->tiros[end].origem = 'p';
+                    break;
+                }
             }
+
+            if(end < QUANT_TIROS) {  // se foi possivel colocar mais um tiro na tela...
+
+                if(player->r == 0){
+                    player->tiros[end].Px = player->x + OFFSET_X;
+                    player->tiros[end].Py = player->y;
+                    player->tiros[end].Pr = player->r;
+                } else if(player->r == 180){
+                    player->tiros[end].Px = player->x + OFFSET_X;
+                    player->tiros[end].Py = player->y + 2*OFFSET_Y;
+                    player->tiros[end].Pr = player->r;
+                } else if(player->r == 90){
+                    player->tiros[end].Px = player->x + 2*OFFSET_X;
+                    player->tiros[end].Py = player->y + OFFSET_Y;
+                    player->tiros[end].Pr = player->r;
+                } else if(player->r == 270){
+                    player->tiros[end].Px = player->x;
+                    player->tiros[end].Py = player->y + OFFSET_Y;
+                    player->tiros[end].Pr = player->r;
+                }
+
+            }
+
         }
+    }
+    else{
+            if(IsKeyPressed(KEY_SPACE)){
 
-        if(end < QUANT_TIROS) {  // se foi possível colocar mais um tiro na tela...
+            for(end = 0; end < QUANT_TIROS; end++) {
+                if(player->tiros[end].naTela == 0) {
+                    player->tiros[end].naTela = 1;
+                    //player->tiros[end].origem = 'p';
+                    break;
+                }
+            }
 
-            if(player->r == 0){
-                player->tiros[end].Px = player->x + OFFSET_X;
-                player->tiros[end].Py = player->y;
-                player->tiros[end].Pr = player->r;
-            } else if(player->r == 180){
-                player->tiros[end].Px = player->x + OFFSET_X;
-                player->tiros[end].Py = player->y + 2*OFFSET_Y;
-                player->tiros[end].Pr = player->r;
-            } else if(player->r == 90){
-                player->tiros[end].Px = player->x + 2*OFFSET_X;
-                player->tiros[end].Py = player->y + OFFSET_Y;
-                player->tiros[end].Pr = player->r;
-            } else if(player->r == 270){
-                player->tiros[end].Px = player->x;
-                player->tiros[end].Py = player->y + OFFSET_Y;
-                player->tiros[end].Pr = player->r;
+            if(end < QUANT_TIROS) {  // se foi possivel colocar mais um tiro na tela...
+
+                if(player->r == 0){
+                    player->tiros[end].Px = player->x + OFFSET_X;
+                    player->tiros[end].Py = player->y;
+                    player->tiros[end].Pr = player->r;
+                } else if(player->r == 180){
+                    player->tiros[end].Px = player->x + OFFSET_X;
+                    player->tiros[end].Py = player->y + 2*OFFSET_Y;
+                    player->tiros[end].Pr = player->r;
+                } else if(player->r == 90){
+                    player->tiros[end].Px = player->x + 2*OFFSET_X;
+                    player->tiros[end].Py = player->y + OFFSET_Y;
+                    player->tiros[end].Pr = player->r;
+                } else if(player->r == 270){
+                    player->tiros[end].Px = player->x;
+                    player->tiros[end].Py = player->y + OFFSET_Y;
+                    player->tiros[end].Pr = player->r;
+                }
+
             }
 
         }

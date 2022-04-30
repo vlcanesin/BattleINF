@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "deflib.h"
 
-void initField(int wall[][N_COLUNAS], Rectangle wallRecs[][N_COLUNAS], Jogador *player, char path[16]) {
+void initField(int wall[][N_COLUNAS], Rectangle wallRecs[][N_COLUNAS], Jogador *player, char path[16], int LOADED_OR_NOT) {
 
     /*int wallArray[15][40] = {
         {1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -28,22 +28,25 @@ void initField(int wall[][N_COLUNAS], Rectangle wallRecs[][N_COLUNAS], Jogador *
     char nomeFase[64];
     fscanf(fp, "Nome: %s\n", nomeFase); // pula o nome da fase
 
-    for(i = 0; i < N_LINHAS; i++) {
-        for(j = 0; j < N_COLUNAS; j++) {
-            wall[i][j] = 0;
-            wallRecs[i][j] = (Rectangle){0, 0, 0, 0};
-            if(fscanf(fp, "%c", &quad) >= 0) {
-                if(quad == '#') {
-                    wall[i][j] = 1;
-                } else if(quad == 'T') {
-                    player->x = j*COL_SIZE;
-                    player->y = i*LIN_SIZE;
+     if(LOADED_OR_NOT != 1){
+
+        for(i = 0; i < N_LINHAS; i++) {
+            for(j = 0; j < N_COLUNAS; j++) {
+                wall[i][j] = 0;
+                wallRecs[i][j] = (Rectangle){0, 0, 0, 0};
+                if(fscanf(fp, "%c", &quad) >= 0) {
+                    if(quad == '#') {
+                        wall[i][j] = 1;
+                    } else if(quad == 'T') {
+                        player->x = j*COL_SIZE;
+                        player->y = i*LIN_SIZE;
+                    }
                 }
             }
+            fscanf(fp, "\n");
         }
-        fscanf(fp, "\n");
-    }
 
+    }
 }
 
 void UpdateWalls(int wall[][N_COLUNAS], Rectangle wallRecs[][N_COLUNAS]) {

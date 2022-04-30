@@ -9,12 +9,18 @@ void AvoidColision(
 
     // COLISION WITH THE BOUNDARY
     //if(player->dogtag == 100){
-    if(player->x > limitex || player->x < 0){
+     if(player->x > limitex || player->x < 0){
         player->x = player->xAnt;
+        if(player->dogtag !=100)
+        player->r = sorteiaR(&player);
     }
     if(player->y > limitey || player->y < 0){
         player->y = player->yAnt;
+        if(player->dogtag !=100)
+        player->r = sorteiaR(&player);
     }
+
+
 
     // COLISION WITH THE WALLS
     Rectangle tank = {player->x, player->y, TAMANHO_TANQUE, LARGURA_TANQUE};
@@ -24,12 +30,15 @@ void AvoidColision(
             if(CheckCollisionRecs(tank, wallRecs[lin][col])) {
                 player->x = player->xAnt;
                 player->y = player->yAnt;
+                if(player->dogtag != 100 && player->alinhado == 0)
+                player->r = sorteiaR(&player);
+
             }
         }
     }
 
     //COLISION PLAYER WITH ENEMY TANKS
-    if(player->dogtag == 100) {  // "player" é o jogador
+    if(player->dogtag == 100) {  // "player" jogador
         //Rectangle tank30 = {player->x, player->y, TAMANHO_TANQUE, LARGURA_TANQUE};
         for (i = 0; i < QUANT_INIMIGOS; i ++){
             Rectangle inimigo_tanque = {inimigo[i].x , inimigo[i].y, TAMANHO_TANQUE,LARGURA_TANQUE};
@@ -38,13 +47,15 @@ void AvoidColision(
                 player->y = player->yAnt;
                 inimigo[i].x = inimigo[i].xAnt;
                 inimigo[i].y = inimigo[i].yAnt;
+                //if(inimigo[i].alinhado == 0)
+                //inimigo[i].r = sorteiaR(&inimigo[i]);
                 //printf("Bati\n");
             }
         }
     }
 
     //COLISION BETWEEN ENEMY TANKS
-    else {   // "player" é o inimigo
+    else {   // "player" inimigo
         //Rectangle tank30 = {player->x, player->y, TAMANHO_TANQUE, LARGURA_TANQUE};
         for (i = 0; i < QUANT_INIMIGOS; i ++){
             Rectangle inimigo_tanque = {inimigo[i].x , inimigo[i].y, TAMANHO_TANQUE,LARGURA_TANQUE};
@@ -53,32 +64,14 @@ void AvoidColision(
                 player->y = player->yAnt;
                 inimigo[i].x = inimigo[i].xAnt;
                 inimigo[i].y = inimigo[i].yAnt;
+                if(player->alinhado == 0)
+                player->r = sorteiaR(&player);
+                if(inimigo[i].alinhado == 0)
+                inimigo[i].r = sorteiaR(&inimigo[i]);
             }
         }
     }
 
 }
-    /*else{
-        if(&inimigo->pers->x > limitex || player.pers->x < 0){
-        player->pers->x = player->pers->xAnt;
-    }
-    if(player->pers->y > limitey || player->y < 0){
-        player->y = player->yAnt;
-    }
-
-    // COLISION WITH THE WALLS
-    Rectangle tank = inimigo.pers;
-    int lin, col;
-    for(lin = 0; lin < N_LINHAS; lin++) {
-        for(col = 0; col < N_COLUNAS; col++) {
-            if(CheckCollisionRecs(tank, wallRecs[lin][col])) {
-                player->x = player->xAnt;
-                player->y = player->yAnt;
-            }
-        }
-    }
-    }
-
-}*/
 
 

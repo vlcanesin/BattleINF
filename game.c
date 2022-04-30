@@ -5,7 +5,7 @@
 #include <time.h>
 #include "deflib.h"
 
-void GameScreen(int *quit, char path[16], int idNivel) {
+int GameScreen(int *quit, char path[16], int idNivel, int LOADED_OR_NOT, int Player_placar) {
     // Initialization
     //--------------------------------------------------------------------------------------
     const int screenWidth = GetScreenWidth();
@@ -20,7 +20,61 @@ void GameScreen(int *quit, char path[16], int idNivel) {
     float velIniP = 5;
     float velIniT = 10;
 
+    Jogador inimigo[QUANT_INIMIGOS];
+
     Jogador player;
+    if (LOADED_OR_NOT == 1){
+        /*FILE *fdogtag,*fpers_x,*fpers_y,*fr,*fvel,*fvidas;
+        fdogtag = fopen("savedfiles/SaveDOGTAG.bin", "r");
+        fpers_x = fopen("savedfiles/SavePERSx.bin", "r");
+        fpers_y = fopen("savedfiles/SavePERSy.bin", "r");
+        fr = fopen("savedfiles/SaveORIENTA.bin", "r");
+        fvel = fopen("savedfiles/SaveVEL.bin", "r");
+        fvidas = fopen("savedfiles/SaveVIDAS.bin", "r");
+        int dogtag = 0, hp = 0;
+        float x = 0, y = 0;
+        float raio = 0, velocidade = 0;
+        if(fread(&dogtag, sizeof(int), 1, fdogtag) != 1)
+            printf("DEU MERDA COM O PLAYER\n");
+         if(fread(&x, sizeof(float), 1, fpers_x) != 1)
+            printf("DEU MERDA COM O PLAYER\n");
+        if(fread(&y, sizeof(float), 1, fpers_y) != 1)
+            printf("DEU MERDA COM O PLAYER\n");
+            printf("DEU MERDA COM O PLAYER\n");
+         if(fread(&raio, sizeof(float), 1, fr) != 1)
+            printf("DEU MERDA COM O PLAYER\n");
+         if(fread(&velocidade, sizeof(float), 1, fvel) != 1)
+            printf("DEU MERDA COM O PLAYER\n");
+         if(fread(&hp, sizeof(int), 1, fvidas) != 1)
+            printf("DEU MERDA COM O PLAYER\n");
+
+        player.sizeX = LARGURA_TANQUE;
+        player.sizeY = TAMANHO_TANQUE;
+
+        player.dogtag = dogtag;
+        player.x = x;
+        player.y = y;
+        player.r = raio;
+        player.vel = velocidade;
+        player.vidas = hp;
+        printf(" esse eh do player %d \n", player.x);
+        printf(" do player %d \n", player.y);
+        printf(" x eh: %f", x);
+        printf(" y eh: %f", y);
+        printf(" dogtag eh: %d", dogtag);
+        printf(" raio eh: %f", raio);
+        printf(" hp eh: %d", hp);
+
+        fclose(fdogtag);
+        fclose(fpers_x);
+        fclose(fpers_y);
+        fclose(fr);
+        fclose(fvel);
+        fclose(fvidas);
+        */
+        BackTOSavePlayer(&player);
+    }
+    else if(LOADED_OR_NOT != 1){
     player.x = 0;
     player.y = 0;
     player.r = 0;
@@ -28,13 +82,8 @@ void GameScreen(int *quit, char path[16], int idNivel) {
     player.vel = velIniP;
     player.vidas = 3;
     player.timer = 0;
-    player.score = 0;
-
-    //int tamanho_t = 60;
-    //int largura_t = 60;
-    player.sizeX = LARGURA_TANQUE;
-    player.sizeY = TAMANHO_TANQUE;
-
+    player.score = Player_placar;
+    }
     float limitey = 0, limitex = 0;
 
     //Tiro tiros[quantTiros]; // FAZER PARA INIMIGOS TAMBÉM
@@ -49,7 +98,6 @@ void GameScreen(int *quit, char path[16], int idNivel) {
         energCel[i].sizeX = 30;
         energCel[i].sizeY = 44;
     }
-    Jogador inimigo[QUANT_INIMIGOS];
     for(i = 0; i < QUANT_INIMIGOS; i++) {
         //printf("x e y de '%c': %.2f %.2f\n", i+'0',inimigo[i].x, inimigo[i].y);
         inimigo[i].naTela = 0;
@@ -75,9 +123,12 @@ void GameScreen(int *quit, char path[16], int idNivel) {
     Texture2D vida = LoadTexture("resources/vida.png");
 
     int wall[N_LINHAS][N_COLUNAS];
+    if(LOADED_OR_NOT == 1){
+        BackTOSaveParedinha (wall);
+    }
     Rectangle wallRecs[N_LINHAS][N_COLUNAS];
 
-    initField(wall, wallRecs, &player, path);
+    initField(wall, wallRecs, &player, path, LOADED_OR_NOT);
 
     int end;
 
@@ -142,6 +193,35 @@ void GameScreen(int *quit, char path[16], int idNivel) {
                 player.r = 270;
             }
             ////////////////////////////////////
+             for(i = 0; i < QUANT_INIMIGOS; i++) {
+                if(inimigo[i].naTela == 1) {
+                    if(inimigo[i].x == player.x){
+                        inimigo[i].alinhado = 1;
+                        if (inimigo[i].y > player.y)
+                            inimigo[i].r = 0;
+                        else
+                            inimigo[i].r = 180;
+                    }
+                    if(inimigo[i].y == player.y){
+                        inimigo[i].alinhado = 1;
+                        if (inimigo[i].x > player.x)
+                            inimigo[i].r = 270;
+                        else
+                            inimigo[i].r = 90;
+                    }
+                    if(inimigo[i].x == player.x || inimigo[i].y == player.y){
+                        inimigo[i].alinhado = 1;
+                    }
+                    else
+                        inimigo[i].alinhado = 0;
+
+
+                    UpdateShots(&inimigo[i]);
+                    BreakWalls(wall, &inimigo[i]);
+                    Movimenta_Random(&inimigo[i]);
+
+                }
+              }
              /*if(IsKeyDown(KEY_UP)){
                 for(i = 0; i < QUANT_INIMIGOS; i++){
                     inimigo[i].y -= inimigo[i].vel;
@@ -235,6 +315,13 @@ void GameScreen(int *quit, char path[16], int idNivel) {
                     DrawCircle(player.tiros[i].Px,player.tiros[i].Py,5,RAYWHITE);
                 }
             }
+            for(i = 0; i < QUANT_INIMIGOS; i++) {
+                for (j = 0; j < QUANT_TIROS; j++){
+                if(inimigo[i].tiros[j].naTela == 1) {
+                    DrawCircle(inimigo[i].tiros[j].Px,inimigo[i].tiros[j].Py,5,RAYWHITE);
+                    }
+                }
+            }
             // DESENHA INIMIGOS
              for(i = 0; i < QUANT_INIMIGOS; i++) {
                 if(inimigo[i].naTela == 1) {
@@ -277,7 +364,26 @@ void GameScreen(int *quit, char path[16], int idNivel) {
             BeginDrawing();
             DrawText("PAUSED",
                     screenWidth-MeasureText("PAUSED", 20) - 25, N_LINHAS*LIN_SIZE + 25, 20, RAYWHITE);
+            DrawText("DO YOU WISH TO SAVE? S/N",
+                    screenWidth-MeasureText("DO YOU WISH TO SAVE? S/N", 20) - 25, N_LINHAS*LIN_SIZE + 40, 20, RED);
+            if(IsKeyPressed(KEY_S))
+                Save(&player, inimigo, wall, idNivel);
             EndDrawing();
+        break;
+        case DEATH:
+            char DEATHNAME[8] = "YOU DIED";
+            //printf("EU MORRI");
+            BeginDrawing();
+            ClearBackground(BLACK);
+            for(i = 0; i < 1000; i++){
+            DrawText(DEATHNAME,(screenWidth-MeasureText(DEATHNAME, 50))/2, 300, 50, RED);
+            }
+            EndDrawing();
+            if(IsKeyPressed(KEY_ENTER)){
+                printf("\nEU FIZ ISSO\n");
+                //MenuScreen(&screen_game, 4);
+                //return;
+            }
         break;
 
         }
@@ -292,5 +398,5 @@ void GameScreen(int *quit, char path[16], int idNivel) {
     UnloadTexture(inimigoTexture);
     UnloadTexture(vida);
     //*quit = 1;
-
+    return player.score;
 }

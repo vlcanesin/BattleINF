@@ -9,6 +9,7 @@
 #define QUIT 6
 #define ASK_NAME 7
 #define PAUSE 8
+#define DEATH 9
 
 #define N_LINHAS 15
 #define N_COLUNAS 40
@@ -49,6 +50,7 @@ typedef struct Jogador {
     float x;
     float y;
     float r;
+    int alinhado;
     int sizeX;
     int sizeY;
     float xAnt;
@@ -64,7 +66,7 @@ typedef struct Jogador {
 } Jogador;
 
 void MenuScreen(int *screen, int *menuOption);
-void GameScreen(int *quit, char path[16], int idNivel);
+int GameScreen(int *quit, char path[16], int idNivel, int LOADED_OR_NOT, int Player_placar);
 void ShowLevel(int level, char path[16]);
 
 void PrintTab(
@@ -89,7 +91,7 @@ void PlayerShot(
 
 void initField(
     int wall[][N_COLUNAS], Rectangle wallRecs[][N_COLUNAS],
-    Jogador *player, char path[16]
+    Jogador *player, char path[16], int LOADED_OR_NOT
 );
 
 void UpdateWalls(
@@ -123,4 +125,15 @@ void UpdateINIMIGO(
     Jogador player, Rectangle wallRecs[][N_COLUNAS]
 );
 
+void Movimenta_Random (Jogador *inimigo);
+
+int sorteiaR(Jogador *inimigo);
+
+void CheckDEATH (int *screen_game, Jogador *player);
+
+void Save (Jogador *player, Jogador inimigo[],int wall[][N_COLUNAS], int IdNivel);
+
+void BackTOSavePlayer (Jogador *player);
+
+void BackTOSaveParedinha (int wall[][N_COLUNAS]);
 #endif
