@@ -40,8 +40,7 @@ int main(void) {
                 snprintf(path, sizeof(path), "fases/fase%c.txt", i+'0');
 
                 ShowLevel(i, path);
-                GameScreen(&quit, path, i, 0, player_placar);
-                player_placar+= GameScreen(&quit, path, i, 0, player_placar);
+                GameScreen(&quit, path, i, 0, &player_placar);
 
             }
 
@@ -50,30 +49,25 @@ int main(void) {
         break;
         case LOADED_GAME:
 
-
-
-
-                if(LOADED_OR_NOT == 1){
-                    FILE *ff;
-                    ff = fopen("savedfiles/SaveF.bin", "r");
-                    if(ff == NULL){
-                        printf("Nao Carregou FASE.\n");
-                    }
-                    fread(&i, sizeof(int), 1 , ff);
-                    fclose(ff);
+            if(LOADED_OR_NOT == 1){
+                FILE *ff;
+                ff = fopen("savedfiles/SaveF.bin", "r");
+                if(ff == NULL){
+                    printf("Nao Carregou FASE.\n");
                 }
-                printf("%d", i);
-                for(i ; i <= N_FASES; i++) {
+                fread(&i, sizeof(int), 1 , ff);
+                fclose(ff);
+            }
+            printf("%d", i);
+            for(; i <= N_FASES; i++) {
                 if(quit) break;
 
                 char path[16];
                 snprintf(path, sizeof(path), "fases/fase%c.txt", i+'0');
 
                 ShowLevel(i, path);
-                player_placar = GameScreen(&quit, path, i, LOADED_OR_NOT, player_placar);
+                GameScreen(&quit, path, i, LOADED_OR_NOT, &player_placar);
                 LOADED_OR_NOT++;
-
-
             }
 
             quit = 1;

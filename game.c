@@ -5,7 +5,7 @@
 #include <time.h>
 #include "deflib.h"
 
-int GameScreen(int *quit, char path[16], int idNivel, int LOADED_OR_NOT, int Player_placar) {
+void GameScreen(int *quit, char path[16], int idNivel, int LOADED_OR_NOT, int *player_placar) {
     // Initialization
     //--------------------------------------------------------------------------------------
     const int screenWidth = GetScreenWidth();
@@ -19,6 +19,8 @@ int GameScreen(int *quit, char path[16], int idNivel, int LOADED_OR_NOT, int Pla
 
     float velIniP = 5;
     float velIniT = 10;
+    float velIniP_inim = 2;
+    float velIniT_inim = velIniP+1;
 
     Jogador inimigo[QUANT_INIMIGOS];
 
@@ -75,14 +77,16 @@ int GameScreen(int *quit, char path[16], int idNivel, int LOADED_OR_NOT, int Pla
         BackTOSavePlayer(&player);
     }
     else if(LOADED_OR_NOT != 1){
-    player.x = 0;
-    player.y = 0;
-    player.r = 0;
-    player.dogtag = 100;
-    player.vel = velIniP;
-    player.vidas = 3;
-    player.timer = 0;
-    player.score = Player_placar;
+        player.x = 0;
+        player.y = 0;
+        player.r = 0;
+        player.sizeX = LARGURA_TANQUE;
+        player.sizeY = TAMANHO_TANQUE;
+        player.dogtag = 100;
+        player.vel = velIniP;
+        player.vidas = 3;
+        player.timer = 0;
+        player.score = *player_placar;
     }
     float limitey = 0, limitex = 0;
 
@@ -104,7 +108,7 @@ int GameScreen(int *quit, char path[16], int idNivel, int LOADED_OR_NOT, int Pla
         inimigo[i].sizeX = LARGURA_TANQUE;
         inimigo[i].sizeY = TAMANHO_TANQUE;
         inimigo[i].r = 0;
-        inimigo[i].vel = player.vel;
+        inimigo[i].vel = velIniP_inim;
         inimigo[i].pers = (Rectangle){0,0,0,0};
         inimigo[i].vidas = 1;
         inimigo[i].dogtag = i;
@@ -209,18 +213,25 @@ int GameScreen(int *quit, char path[16], int idNivel, int LOADED_OR_NOT, int Pla
                         else
                             inimigo[i].r = 90;
                     }
-                    if(inimigo[i].x == player.x || inimigo[i].y == player.y){
+                    /*int m = 30;
+                    if((player.x-m < inimigo[i].x && inimigo[i].x < player.x+m) ||
+                       (player.y-m < inimigo[i].y && inimigo[i].y < player.y+m)){
+                        inimigo[i].alinhado = 1;
+                    }*/
+                    if(player.x == inimigo[i].x || player.y == inimigo[i].y){
                         inimigo[i].alinhado = 1;
                     }
-                    else
+                    else {
                         inimigo[i].alinhado = 0;
+                    }
 
-
-                    UpdateShots(&inimigo[i]);
-                    BreakWalls(wall, &inimigo[i]);
                     Movimenta_Random(&inimigo[i]);
 
                 }
+                // NOTA: Quando o inimigo sai da tela, pode ser que ainda existam tiros dele
+                // na tela. Optei por continuar simulando-os
+                UpdateShots(&inimigo[i]);
+                BreakWalls(wall, &inimigo[i]);
               }
              /*if(IsKeyDown(KEY_UP)){
                 for(i = 0; i < QUANT_INIMIGOS; i++){
@@ -300,7 +311,7 @@ int GameScreen(int *quit, char path[16], int idNivel, int LOADED_OR_NOT, int Pla
             // DESENHA CÉLULAS DE ENERGIA
             UseEnergCels(energCel, &player, velIniP, velIniT);
             for(i = 0; i < QUANT_INIMIGOS; i++) {
-                UseEnergCels(energCel, &inimigo[i], velIniP, velIniT);
+                UseEnergCels(energCel, &inimigo[i], velIniP_inim, velIniT_inim);
             }
             for(i = 0; i < QUANT_ENERG; i++) {
                 if(energCel[i].naTela == 1) {
@@ -324,6 +335,10 @@ int GameScreen(int *quit, char path[16], int idNivel, int LOADED_OR_NOT, int Pla
             }
             // DESENHA INIMIGOS
              for(i = 0; i < QUANT_INIMIGOS; i++) {
+                if(CheckCollisionRecs((Rectangle){inimigo[i].x, inimigo[i].y, inimigo[i].sizeX, inimigo[i].sizeY},
+                                      (Rectangle){player.x, player.y, player.sizeX, player.sizeY})) {
+                    inimigo[i].naTela = 0;
+                }
                 if(inimigo[i].naTela == 1) {
                     Rectangle inimigo_tanque = {inimigo[i].x + OFFSET_X, inimigo[i].y + OFFSET_Y,TAMANHO_TANQUE,LARGURA_TANQUE};
                     //DrawTexture(inimigoTexture, inimigo[i].pers.x,inimigo[i].pers.y, RAYWHITE);
@@ -365,7 +380,7 @@ int GameScreen(int *quit, char path[16], int idNivel, int LOADED_OR_NOT, int Pla
             DrawText("PAUSED",
                     screenWidth-MeasureText("PAUSED", 20) - 25, N_LINHAS*LIN_SIZE + 25, 20, RAYWHITE);
             DrawText("DO YOU WISH TO SAVE? S/N",
-                    screenWidth-MeasureText("DO YOU WISH TO SAVE? S/N", 20) - 25, N_LINHAS*LIN_SIZE + 40, 20, RED);
+                    screenWidth-MeasureText("DO YOU WISH TO SAVE? S/N", 20) - 25, N_LINHAS*LIN_SIZE + 50, 20, YELLOW);
             if(IsKeyPressed(KEY_S))
                 Save(&player, inimigo, wall, idNivel);
             EndDrawing();
@@ -373,12 +388,15 @@ int GameScreen(int *quit, char path[16], int idNivel, int LOADED_OR_NOT, int Pla
         case DEATH:
             char DEATHNAME[8] = "YOU DIED";
             //printf("EU MORRI");
-            BeginDrawing();
+
             ClearBackground(BLACK);
             for(i = 0; i < 1000; i++){
-            DrawText(DEATHNAME,(screenWidth-MeasureText(DEATHNAME, 50))/2, 300, 50, RED);
+                printf("Entrei\n");
+                BeginDrawing();
+                DrawText(DEATHNAME,(screenWidth-MeasureText(DEATHNAME, 50))/2, 300, 50, RED);
+                EndDrawing();
             }
-            EndDrawing();
+
             if(IsKeyPressed(KEY_ENTER)){
                 printf("\nEU FIZ ISSO\n");
                 //MenuScreen(&screen_game, 4);
@@ -397,6 +415,12 @@ int GameScreen(int *quit, char path[16], int idNivel, int LOADED_OR_NOT, int Pla
     UnloadTexture(enerTexture);
     UnloadTexture(inimigoTexture);
     UnloadTexture(vida);
-    //*quit = 1;
-    return player.score;
+
+    // NOTA: mudar caso a condição do while mude
+    if(player.vidas > 0) {
+        *quit = 1;
+        //printf("Entrei\n");
+    }
+
+    *player_placar += player.score;
 }

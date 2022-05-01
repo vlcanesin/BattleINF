@@ -17,7 +17,7 @@
 
 #define QUANT_TIROS 100
 #define QUANT_ENERG 100
-#define QUANT_INIMIGOS  5
+#define QUANT_INIMIGOS  20
 
 #define TAMANHO_TANQUE 60
 #define LARGURA_TANQUE 60
@@ -66,7 +66,9 @@ typedef struct Jogador {
 } Jogador;
 
 void MenuScreen(int *screen, int *menuOption);
-int GameScreen(int *quit, char path[16], int idNivel, int LOADED_OR_NOT, int Player_placar);
+void GameScreen(
+    int *quit, char path[16], int idNivel, int LOADED_OR_NOT, int *player_placar
+);
 void ShowLevel(int level, char path[16]);
 
 void PrintTab(
@@ -124,6 +126,8 @@ void UpdateINIMIGO(
     Jogador inimigo[], int contFrames,
     Jogador player, Rectangle wallRecs[][N_COLUNAS]
 );
+
+int EnemyShots(Jogador *inimigo);
 
 void Movimenta_Random (Jogador *inimigo);
 

@@ -76,15 +76,27 @@ void sorteiaPosInimigo(Jogador inimigo[], int end, Jogador player, Rectangle wal
 void UpdateINIMIGO(Jogador inimigo[], int contFrames,
                    Jogador player, Rectangle wallRecs[][N_COLUNAS]) {
 
-    int end;
+    int end, i, passou;
 
     if(sorteiaZero(contFrames) == 1){
 
         for(end = 0; end < QUANT_INIMIGOS; end++) {
             if(inimigo[end].naTela == 0) {
-                inimigo[end].naTela = 1;
-                inimigo[end].vidas = 1;
-                break;
+                for(i = 0; i < QUANT_TIROS; i++) {
+                    passou = 1;
+                    if(inimigo[end].tiros[i].naTela == 1) {
+                        // NÃO COLOCA INIMIGO NA POSIÇÃO EM QUE AINDA POSSUI TIROS A SEREM RENDERIZADOS
+                        passou = 0;
+                        break;
+                    }
+                }
+                if(passou) {
+                    inimigo[end].naTela = 1;
+                    inimigo[end].vidas = 1;
+                    inimigo[end].sizeX = LARGURA_TANQUE;
+                    inimigo[end].sizeY = TAMANHO_TANQUE;
+                    break;
+                }
             }
         }
 
@@ -99,6 +111,12 @@ void UpdateINIMIGO(Jogador inimigo[], int contFrames,
     for(end = 0; end < QUANT_INIMIGOS; end++) {
         if(inimigo[end].naTela == 1 && inimigo[end].vidas <= 0) {
             inimigo[end].naTela = 0;
+            inimigo[end].timer = 0;
+            inimigo[end].sizeX = 0; // OBS: tamanho é zerado para não haver colisão com os tiros, já que naTela não é considerado nesse caso
+            inimigo[end].sizeY = 0;
+            //for(i = 0; i < QUANT_TIROS; i++) {
+            //    inimigo[end].tiros[i].naTela = 0;
+            //}
         }
     }
 
@@ -106,18 +124,18 @@ void UpdateINIMIGO(Jogador inimigo[], int contFrames,
 
 void Movimenta_Random (Jogador *inimigo){
     switch((int)inimigo->r){
-    case 0: inimigo->y --;
+    case 0: inimigo->y -= inimigo->vel;
             break;
-    case 180: inimigo-> y++;
+    case 180: inimigo->y += inimigo->vel;
               break;
-    case 90: inimigo->x ++;
+    case 90: inimigo->x += inimigo->vel;
              break;
-    case 270: inimigo->x --;
+    case 270: inimigo->x -= inimigo->vel;
               break;
     }
 }
 int sorteiaR(Jogador *inimigo){
-    int vetorPosicao[4] = {0,90,180,270} , i = 0, pos = 0;
+    int vetorPosicao[4] = {0,90,180,270};
     int escolha = rand() %4;
 
     return ((int)inimigo->r+vetorPosicao[escolha])%360;

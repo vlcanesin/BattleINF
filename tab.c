@@ -170,7 +170,6 @@ void BackTOSavePlayer (Jogador *player){ //só da read
             printf("DEU MERDA COM O PLAYER\n");
         if(fread(&y, sizeof(float), 1, fpers_y) != 1)
             printf("DEU MERDA COM O PLAYER\n");
-            printf("DEU MERDA COM O PLAYER\n");
          if(fread(&raio, sizeof(float), 1, fr) != 1)
             printf("DEU MERDA COM O PLAYER\n");
          if(fread(&velocidade, sizeof(float), 1, fvel) != 1)
@@ -190,8 +189,8 @@ void BackTOSavePlayer (Jogador *player){ //só da read
         player->vel = velocidade;
         player->vidas = hp;
         player->score = score;
-        printf(" esse eh do player %d \n", player->x);
-        printf(" do player %d \n", player->y);
+        printf(" esse eh do player %.2f \n", player->x);
+        printf(" do player %.2f \n", player->y);
         printf(" x eh: %f", x);
         printf(" y eh: %f", y);
         printf(" dogtag eh: %d", dogtag);

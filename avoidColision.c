@@ -12,12 +12,12 @@ void AvoidColision(
      if(player->x > limitex || player->x < 0){
         player->x = player->xAnt;
         if(player->dogtag !=100)
-        player->r = sorteiaR(&player);
+        player->r = sorteiaR(player);
     }
     if(player->y > limitey || player->y < 0){
         player->y = player->yAnt;
         if(player->dogtag !=100)
-        player->r = sorteiaR(&player);
+        player->r = sorteiaR(player);
     }
 
 
@@ -31,7 +31,7 @@ void AvoidColision(
                 player->x = player->xAnt;
                 player->y = player->yAnt;
                 if(player->dogtag != 100 && player->alinhado == 0)
-                player->r = sorteiaR(&player);
+                player->r = sorteiaR(player);
 
             }
         }
@@ -65,7 +65,7 @@ void AvoidColision(
                 inimigo[i].x = inimigo[i].xAnt;
                 inimigo[i].y = inimigo[i].yAnt;
                 if(player->alinhado == 0)
-                player->r = sorteiaR(&player);
+                player->r = sorteiaR(player);
                 if(inimigo[i].alinhado == 0)
                 inimigo[i].r = sorteiaR(&inimigo[i]);
             }

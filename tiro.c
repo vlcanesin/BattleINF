@@ -11,11 +11,14 @@ void UpdateShots(Jogador *player) {
     const int screenHeight = GetScreenHeight();
 
     if (player->dogtag != 100){
-         num = EnemyShots(&player);
+         num = EnemyShots(player);
      }
     else
         num = 0;
-    if (player->dogtag != 100){
+
+    // OBS: é verificado se player está na tela pois os inimigos precisam de
+    // UpdateShots mesmo se eles não estão na tela
+    if (player->dogtag != 100 && player->naTela == 1){
         if(num == 1 && player->alinhado == 1){
 
             for(end = 0; end < QUANT_TIROS; end++) {
@@ -50,7 +53,7 @@ void UpdateShots(Jogador *player) {
 
         }
     }
-    else{
+    else if(player->dogtag == 100){
             if(IsKeyPressed(KEY_SPACE)){
 
             for(end = 0; end < QUANT_TIROS; end++) {
@@ -130,24 +133,23 @@ void PlayerShot(Jogador *player, Jogador inimigo[]) {
     int i, j;
     for(i = 0; i < QUANT_TIROS; i++) {
         for(j = 0; j < QUANT_INIMIGOS; j++) {
-            if(inimigo[j].naTela == 1) {
-                if(inimigo[j].tiros[i].naTela == 1 &&
-                   CheckCollisionCircleRec(
-                        (Vector2){inimigo[j].tiros[i].Px,inimigo[j].tiros[i].Py}, 5,
-                        (Rectangle){player->x, player->y, LARGURA_TANQUE, TAMANHO_TANQUE})) {
-                    player->vidas--;
-                    inimigo[j].tiros[i].naTela = 0;
+            if(inimigo[j].tiros[i].naTela == 1 &&
+               CheckCollisionCircleRec(
+                    (Vector2){inimigo[j].tiros[i].Px,inimigo[j].tiros[i].Py}, 5,
+                    (Rectangle){player->x, player->y, player->sizeX, player->sizeY})) {
+                player->vidas--;
+                inimigo[j].tiros[i].naTela = 0;
+            }
+            if(player->tiros[i].naTela == 1 &&
+               CheckCollisionCircleRec(
+                    (Vector2){player->tiros[i].Px,player->tiros[i].Py}, 5,
+                    (Rectangle){inimigo[j].x, inimigo[j].y, inimigo[j].sizeX, inimigo[j].sizeY}) &&
+               inimigo[j].naTela == 1) {
+                inimigo[j].vidas--;
+                if(inimigo[j].vidas == 0) {
+                    player->score += 800;
                 }
-                if(player->tiros[i].naTela == 1 &&
-                   CheckCollisionCircleRec(
-                        (Vector2){player->tiros[i].Px,player->tiros[i].Py}, 5,
-                        (Rectangle){inimigo[j].x, inimigo[j].y, LARGURA_TANQUE, TAMANHO_TANQUE})) {
-                    inimigo[j].vidas--;
-                    if(inimigo[j].vidas == 0) {
-                        player->score += 800;
-                    }
-                    player->tiros[i].naTela = 0;
-                }
+                player->tiros[i].naTela = 0;
             }
         }
     }
