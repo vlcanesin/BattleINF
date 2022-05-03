@@ -83,58 +83,89 @@ void CheckDEATH (int *screen_game, Jogador *player){
      //}
 }
 
-void Save (Jogador *player, Jogador inimigo[],int wall[][N_COLUNAS], int IdNivel){ //fiz de quase todos os parametros pq tada dando errado só passando a struct
+void Save (Jogador *player, Jogador inimigo[],int wall[][N_COLUNAS], int IdNivel){ //fiz de quase todos os parametros pq tada dando errado sï¿½ passando a struct
     int i = 0, j = 0;
     printf(" O X E O Y DELE AGORA SAO: %.2f, %.2f", player->x, player->y);
-    FILE *fdogtag,*fpers_x,*fpers_y,*fr,*fvel,*fvidas,*fi,*fw,*ff, *fscore;
-    fdogtag = fopen("savedfiles/SaveDOGTAG.bin", "w");
-    if (fdogtag == NULL)
-        printf("Erro ao criar save PLAYER\n");
-    fpers_x = fopen("savedfiles/SavePERSx.bin", "w");
-    if (fpers_x == NULL)
-        printf("Erro ao criar save PLAYER\n");
-    fpers_y = fopen("savedfiles/SavePERSy.bin", "w");
-    if (fpers_y == NULL)
-        printf("Erro ao criar save PLAYER\n");
-    fr = fopen("savedfiles/SaveORIENTA.bin", "w");
-    if (fr == NULL)
-        printf("Erro ao criar save PLAYER\n");
-    fvel = fopen("savedfiles/SaveVEL.bin", "w");
-    if (fvel == NULL)
-        printf("Erro ao criar save PLAYER\n");
-    fvidas = fopen("savedfiles/SaveVIDAS.bin", "w");
-    if (fvidas == NULL)
-        printf("Erro ao criar save PLAYER\n");
-    fi = fopen("savedfiles/SaveI.bin", "w");
-    if (fi == NULL)
-        printf("Erro ao criar save Inimigo\n");
-    fw = fopen("savedfiles/SaveW.bin", "w");
+    FILE *fjogo,*fw,*ff;
+    fjogo = fopen("savedfiles/jogosalvo.bin", "wb");
+    if (fjogo == NULL)
+        printf("Deu algo errado em abrir.");
+
+    if(fwrite(&player->x, sizeof(float), 1, fjogo) != 1)
+        printf("DEU MERDA COM O PLAYER\n");
+    if(fwrite(&player->y, sizeof(float), 1, fjogo) != 1)
+        printf("DEU MERDA COM O PLAYER\n");
+    if(fwrite(&player->r, sizeof(float), 1, fjogo) != 1)
+        printf("DEU MERDA COM O PLAYER\n");
+    if(fwrite(&player->alinhado, sizeof(int), 1, fjogo) != 1)
+        printf("DEU MERDA COM O PLAYER\n");
+    if(fwrite(&player->sizeX, sizeof(int), 1, fjogo) != 1)
+        printf("DEU MERDA COM O PLAYER\n");
+    if(fwrite(&player->sizeY, sizeof(int), 1, fjogo) != 1)
+        printf("DEU MERDA COM O PLAYER\n");
+    if(fwrite(&player->xAnt, sizeof(float), 1, fjogo) != 1)
+        printf("DEU MERDA COM O PLAYER\n");
+    if(fwrite(&player->yAnt, sizeof(float), 1, fjogo) != 1)
+        printf("DEU MERDA COM O PLAYER\n");
+    if(fwrite(&player->vel, sizeof(float), 1, fjogo) != 1)
+        printf("DEU MERDA COM O PLAYER\n");
+    if(fwrite(&player->dogtag, sizeof(int), 1, fjogo) != 1)
+        printf("DEU MERDA COM O PLAYER\n");
+    if(fwrite(&player->vidas, sizeof(int), 1, fjogo) != 1)
+        printf("DEU MERDA COM O PLAYER\n");
+    if(fwrite(&player->naTela, sizeof(int), 1, fjogo) != 1)
+        printf("DEU MERDA COM O PLAYER\n");
+    if(fwrite(&player->timer, sizeof(int), 1, fjogo) != 1)
+        printf("DEU MERDA COM O PLAYER\n");
+    if(fwrite(&player->score, sizeof(int), 1, fjogo) != 1)
+        printf("DEU MERDA COM O PLAYER\n");
+    if(fwrite(&player->pers, sizeof(Rectangle), 1, fjogo) != 1)
+        printf("DEU MERDA COM O PLAYER RECTANGLE\n");
+    for(i = 0; i< QUANT_INIMIGOS; i++){
+        if(fwrite(&inimigo[i].x, sizeof(float), 1, fjogo) != 1)
+            printf("DEU MERDA COM O PLAYER\n");
+        if(fwrite(&inimigo[i].y, sizeof(float), 1, fjogo) != 1)
+            printf("DEU MERDA COM O PLAYER\n");
+        if(fwrite(&inimigo[i].r, sizeof(float), 1, fjogo) != 1)
+            printf("DEU MERDA COM O PLAYER\n");
+        if(fwrite(&inimigo[i].alinhado, sizeof(int), 1, fjogo) != 1)
+            printf("DEU MERDA COM O PLAYER\n");
+        if(fwrite(&inimigo[i].sizeX, sizeof(int), 1, fjogo) != 1)
+            printf("DEU MERDA COM O PLAYER\n");
+        if(fwrite(&inimigo[i].sizeY, sizeof(int), 1, fjogo) != 1)
+            printf("DEU MERDA COM O PLAYER\n");
+        if(fwrite(&inimigo[i].xAnt, sizeof(float), 1, fjogo) != 1)
+            printf("DEU MERDA COM O PLAYER\n");
+        if(fwrite(&inimigo[i].yAnt, sizeof(float), 1, fjogo) != 1)
+            printf("DEU MERDA COM O PLAYER\n");
+        if(fwrite(&inimigo[i].vel, sizeof(float), 1, fjogo) != 1)
+            printf("DEU MERDA COM O PLAYER\n");
+        if(fwrite(&inimigo[i].dogtag, sizeof(int), 1, fjogo) != 1)
+            printf("DEU MERDA COM O PLAYER\n");
+        if(fwrite(&inimigo[i].vidas, sizeof(int), 1, fjogo) != 1)
+            printf("DEU MERDA COM O PLAYER\n");
+        if(fwrite(&inimigo[i].naTela, sizeof(int), 1, fjogo) != 1)
+            printf("DEU MERDA COM O PLAYER\n");
+        if(fwrite(&inimigo[i].timer, sizeof(int), 1, fjogo) != 1)
+            printf("DEU MERDA COM O PLAYER\n");
+        if(fwrite(&inimigo[i].score, sizeof(int), 1, fjogo) != 1)
+            printf("DEU MERDA COM O PLAYER\n");
+        if(fwrite(&inimigo[i].pers, sizeof(Rectangle), 1, fjogo) != 1)
+            printf("DEU MERDA COM O PLAYER RECTANGLE\n");
+    }
+
+       ///////////////////////////////////////
+
+
+    fw = fopen("savedfiles/SaveW.bin", "wb");
     if (fw == NULL)
         printf("Erro ao criar save WALLS\n");
-    ff = fopen("savedfiles/SaveF.bin", "w");
+    ff = fopen("savedfiles/SaveF.bin", "wb");
     if (ff == NULL)
         printf("Erro ao criar save FASE\n");
-    fscore = fopen("savedfiles/SaveSCORE.bin", "w");
-    if (fscore == NULL)
-        printf("Erro ao criar save SCORE\n");
-    if(fwrite(&player->dogtag, sizeof(int), 1, fdogtag) != 1)
-        printf("DEU MERDA COM O PLAYER\n");
-     if(fwrite(&player->x, sizeof(float), 1, fpers_x) != 1)
-        printf("DEU MERDA COM O PLAYER\n");
-    if(fwrite(&player->y, sizeof(float), 1, fpers_y) != 1)
-        printf("DEU MERDA COM O PLAYER\n");
-     if(fwrite(&player->r, sizeof(float), 1, fr) != 1)
-        printf("DEU MERDA COM O PLAYER\n");
-     if(fwrite(&player->vel, sizeof(float), 1, fvel) != 1)
-        printf("DEU MERDA COM O PLAYER\n");
-     if(fwrite(&player->vidas, sizeof(int), 1, fvidas) != 1)
-        printf("DEU MERDA COM O PLAYER\n");
-    if(fwrite(&player->score, sizeof(int), 1, fscore) != 1)
-        printf("DEU MERDA COM O PLAYER\n");
-    for (i = 0; i < QUANT_INIMIGOS; i++){
-    if(fwrite(&inimigo[i], sizeof(Jogador), 1, fi) != 1)
-        printf("DEU MERDA COM O INIMIGO\n");
-    }
+
+
+
     for(i = 0; i < N_LINHAS; i++) {
         for(j = 0; j < N_COLUNAS; j++){
             fwrite(&wall[i][j], sizeof(int), 1, fw);
@@ -144,45 +175,85 @@ void Save (Jogador *player, Jogador inimigo[],int wall[][N_COLUNAS], int IdNivel
         printf("DEU MERDA COM A FASE\n");
 
     printf("Tudo foi salvo no arquivo de save");
-    fclose(fdogtag);
-    fclose(fpers_x);
-    fclose(fpers_y);
-    fclose(fr);
-    fclose(fvel);
-    fclose(fvidas);
-    fclose(fi);
+
     fclose(fw);
     fclose(ff);
-    fclose(fscore);
+    fclose(fjogo);
 }
 
-void BackTOSavePlayer (Jogador *player){ //só da read
-    FILE *fdogtag,*fpers_x,*fpers_y,*fr,*fvel,*fvidas,*fscore;
-        fdogtag = fopen("savedfiles/SaveDOGTAG.bin", "r");
-        fscore = fopen("savedfiles/SaveSCORE.bin", "r");
-        fpers_x = fopen("savedfiles/SavePERSx.bin", "r");
-        fpers_y = fopen("savedfiles/SavePERSy.bin", "r");
-        fr = fopen("savedfiles/SaveORIENTA.bin", "r");
-        fvel = fopen("savedfiles/SaveVEL.bin", "r");
-        fvidas = fopen("savedfiles/SaveVIDAS.bin", "r");
-        int dogtag = 0, hp = 0 ,score = 0;
-        float x = 0, y = 0;
-        float raio = 0, velocidade = 0;
-        if(fread(&dogtag, sizeof(int), 1, fdogtag) != 1)
-            printf("DEU MERDA COM O PLAYER\n");
-         if(fread(&x, sizeof(float), 1, fpers_x) != 1)
-            printf("DEU MERDA COM O PLAYER\n");
-        if(fread(&y, sizeof(float), 1, fpers_y) != 1)
-            printf("DEU MERDA COM O PLAYER\n");
-         if(fread(&raio, sizeof(float), 1, fr) != 1)
-            printf("DEU MERDA COM O PLAYER\n");
-         if(fread(&velocidade, sizeof(float), 1, fvel) != 1)
-            printf("DEU MERDA COM O PLAYER\n");
-         if(fread(&hp, sizeof(int), 1, fvidas) != 1)
-            printf("DEU MERDA COM O PLAYER\n");
-        if(fread(&score, sizeof(int), 1, fscore) != 1)
-            printf("DEU MERDA COM O PLAYER\n");
+void BackTOSave (Jogador *player, Jogador inimigo[]){ //sï¿½ da read
+    //////////////
+    FILE *fjogo;
+    int i = 0, j = 0;
+    fjogo = fopen("savedfiles/jogosalvo.bin", "rb");
+    if (fjogo == NULL)
+        printf("Deu algo errado em abrir.");
 
+    if(fread(&player->x, sizeof(float), 1, fjogo) != 1)
+        printf("DEU MERDA COM O PLAYER\n");
+    if(fread(&player->y, sizeof(float), 1, fjogo) != 1)
+        printf("DEU MERDA COM O PLAYER\n");
+    if(fread(&player->r, sizeof(float), 1, fjogo) != 1)
+        printf("DEU MERDA COM O PLAYER\n");
+    if(fread(&player->alinhado, sizeof(int), 1, fjogo) != 1)
+        printf("DEU MERDA COM O PLAYER\n");
+    if(fread(&player->sizeX, sizeof(int), 1, fjogo) != 1)
+        printf("DEU MERDA COM O PLAYER\n");
+    if(fread(&player->sizeY, sizeof(int), 1, fjogo) != 1)
+        printf("DEU MERDA COM O PLAYER\n");
+    if(fread(&player->xAnt, sizeof(float), 1, fjogo) != 1)
+        printf("DEU MERDA COM O PLAYER\n");
+    if(fread(&player->yAnt, sizeof(float), 1, fjogo) != 1)
+        printf("DEU MERDA COM O PLAYER\n");
+    if(fread(&player->vel, sizeof(float), 1, fjogo) != 1)
+        printf("DEU MERDA COM O PLAYER\n");
+    if(fread(&player->dogtag, sizeof(int), 1, fjogo) != 1)
+        printf("DEU MERDA COM O PLAYER\n");
+    if(fread(&player->vidas, sizeof(int), 1, fjogo) != 1)
+        printf("DEU MERDA COM O PLAYER\n");
+    if(fread(&player->naTela, sizeof(int), 1, fjogo) != 1)
+            printf("DEU MERDA COM O PLAYER\n");
+    if(fread(&player->timer, sizeof(int), 1, fjogo) != 1)
+        printf("DEU MERDA COM O PLAYER\n");
+    if(fread(&player->score, sizeof(int), 1, fjogo) != 1)
+        printf("DEU MERDA COM O PLAYER\n");
+    if(fread(&player->pers, sizeof(Rectangle), 1, fjogo) != 1)
+        printf("DEU MERDA COM O PLAYER RECTANGLE\n");
+
+    for(i = 0; i< QUANT_INIMIGOS; i++){
+        if(fread(&inimigo[i].x, sizeof(float), 1, fjogo) != 1)
+            printf("DEU MERDA COM O PLAYER\n");
+        if(fread(&inimigo[i].y, sizeof(float), 1, fjogo) != 1)
+            printf("DEU MERDA COM O PLAYER\n");
+        if(fread(&inimigo[i].r, sizeof(float), 1, fjogo) != 1)
+            printf("DEU MERDA COM O PLAYER\n");
+        if(fread(&inimigo[i].alinhado, sizeof(int), 1, fjogo) != 1)
+            printf("DEU MERDA COM O PLAYER\n");
+        if(fread(&inimigo[i].sizeX, sizeof(int), 1, fjogo) != 1)
+            printf("DEU MERDA COM O PLAYER\n");
+        if(fread(&inimigo[i].sizeY, sizeof(int), 1, fjogo) != 1)
+            printf("DEU MERDA COM O PLAYER\n");
+        if(fread(&inimigo[i].xAnt, sizeof(float), 1, fjogo) != 1)
+            printf("DEU MERDA COM O PLAYER\n");
+        if(fread(&inimigo[i].yAnt, sizeof(float), 1, fjogo) != 1)
+            printf("DEU MERDA COM O PLAYER\n");
+        if(fread(&inimigo[i].vel, sizeof(float), 1, fjogo) != 1)
+            printf("DEU MERDA COM O PLAYER\n");
+        if(fread(&inimigo[i].dogtag, sizeof(int), 1, fjogo) != 1)
+            printf("DEU MERDA COM O PLAYER\n");
+        if(fread(&inimigo[i].vidas, sizeof(int), 1, fjogo) != 1)
+            printf("DEU MERDA COM O PLAYER\n");
+        if(fread(&inimigo[i].naTela, sizeof(int), 1, fjogo) != 1)
+            printf("DEU MERDA COM O PLAYER\n");
+        if(fread(&inimigo[i].timer, sizeof(int), 1, fjogo) != 1)
+            printf("DEU MERDA COM O PLAYER\n");
+        if(fread(&inimigo[i].score, sizeof(int), 1, fjogo) != 1)
+            printf("DEU MERDA COM O PLAYER\n");
+        if(fread(&inimigo[i].pers, sizeof(Rectangle), 1, fjogo) != 1)
+            printf("DEU MERDA COM O PLAYER RECTANGLE\n");
+    }
+
+        /*
         player->sizeX = LARGURA_TANQUE;
         player->sizeY = TAMANHO_TANQUE;
 
@@ -193,8 +264,8 @@ void BackTOSavePlayer (Jogador *player){ //só da read
         player->vel = velocidade;
         player->vidas = hp;
         player->score = score;
-        printf(" esse eh do player %.2f \n", player->x);
-        printf(" do player %.2f \n", player->y);
+        printf(" esse eh do player %f \n", player->x);
+        printf(" do player %f \n", player->y);
         printf(" x eh: %f", x);
         printf(" y eh: %f", y);
         printf(" dogtag eh: %d", dogtag);
@@ -207,7 +278,16 @@ void BackTOSavePlayer (Jogador *player){ //só da read
         fclose(fr);
         fclose(fvel);
         fclose(fvidas);
-        /*fclose(fscore);*/
+        fclose(fscore);*/
+
+       // player->x = TESTE.x;
+        //player->y = TESTE.y;
+        //player->r = TESTE.r;
+       // player->dogtag = TESTE.dogtag;
+        //player->score = TESTE.score;
+        //player->vel= TESTE.vel;
+        //player->vidas = TESTE.vidas;
+        fclose(fjogo);
 }
 
 void BackTOSaveParedinha (int wall[][N_COLUNAS]){

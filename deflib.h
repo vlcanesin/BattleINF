@@ -124,7 +124,8 @@ void sorteiaPosInimigo(
 
 void UpdateINIMIGO(
     Jogador inimigo[], int contFrames,
-    Jogador player, Rectangle wallRecs[][N_COLUNAS]
+    Jogador player, Rectangle wallRecs[][N_COLUNAS],
+    int controle
 );
 
 int EnemyShots(Jogador *inimigo);
@@ -137,7 +138,7 @@ void CheckDEATH (int *screen_game, Jogador *player);
 
 void Save (Jogador *player, Jogador inimigo[],int wall[][N_COLUNAS], int IdNivel);
 
-void BackTOSavePlayer (Jogador *player);
+void BackTOSave (Jogador *player, Jogador inimigo[]);
 
 void BackTOSaveParedinha (int wall[][N_COLUNAS]);
 #endif

@@ -2,59 +2,59 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Debug" />
-	<File name="energia.c" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2862" topLine="98" />
-		</Cursor>
-	</File>
-	<File name="deflib.h" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="344" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="menu.c" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="598" topLine="3" />
-		</Cursor>
-	</File>
-	<File name="tab.c" open="1" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="5476" topLine="188" />
-		</Cursor>
-	</File>
-	<File name="main.c" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1753" topLine="20" />
-		</Cursor>
-	</File>
 	<File name="avoidColision.c" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2604" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="tiro.c" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="5618" topLine="119" />
+			<Cursor1 position="2604" topLine="27" />
 		</Cursor>
 	</File>
 	<File name="transitions.c" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="129" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="game.c" open="1" top="1" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="7212" topLine="197" />
-		</Cursor>
-	</File>
-	<File name="inimigo.c" open="1" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="4484" topLine="111" />
+			<Cursor1 position="129" topLine="3" />
 		</Cursor>
 	</File>
 	<File name="walls.c" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2953" topLine="21" />
+			<Cursor1 position="2953" topLine="39" />
+		</Cursor>
+	</File>
+	<File name="tab.c" open="1" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="7926" topLine="211" />
+		</Cursor>
+	</File>
+	<File name="game.c" open="1" top="1" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="13158" topLine="313" />
+		</Cursor>
+	</File>
+	<File name="energia.c" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3177" topLine="84" />
+		</Cursor>
+	</File>
+	<File name="tiro.c" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1986" topLine="125" />
+		</Cursor>
+	</File>
+	<File name="main.c" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1753" topLine="11" />
+		</Cursor>
+	</File>
+	<File name="inimigo.c" open="1" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3666" topLine="75" />
+		</Cursor>
+	</File>
+	<File name="deflib.h" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="973" topLine="35" />
+		</Cursor>
+	</File>
+	<File name="menu.c" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="598" topLine="0" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

@@ -74,7 +74,7 @@ void sorteiaPosInimigo(Jogador inimigo[], int end, Jogador player, Rectangle wal
 }
 
 void UpdateINIMIGO(Jogador inimigo[], int contFrames,
-                   Jogador player, Rectangle wallRecs[][N_COLUNAS]) {
+                   Jogador player, Rectangle wallRecs[][N_COLUNAS], int controle) {
 
     int end, i, passou;
 
@@ -99,12 +99,12 @@ void UpdateINIMIGO(Jogador inimigo[], int contFrames,
                 }
             }
         }
-
-        if(end < QUANT_INIMIGOS) {
-            sorteiaPosInimigo(inimigo, end, player, wallRecs);
-            //printf("End '%c': %.2f %.2f\n", end+'0', inimigo[end].x, inimigo[end].y);
+        //if(controle != 1 ){
+            if(end < QUANT_INIMIGOS) {
+                sorteiaPosInimigo(inimigo, end, player, wallRecs);
+                //printf("End '%c': %.2f %.2f\n", end+'0', inimigo[end].x, inimigo[end].y);
+          //  }
         }
-
     }
 
     // DEIXA APENAS OS QUE ESTÃO VIVOS

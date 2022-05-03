@@ -20,14 +20,14 @@
 
 1649471102 source:c:\users\user\battleinf\ler_usuario.c
 
-1651349412 source:c:\users\user\battleinf\main.c
+1651538847 source:c:\users\user\battleinf\main.c
 	"raylib.h"
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
 	"deflib.h"
 
-1651346422 source:c:\users\user\battleinf\menu.c
+1651538847 source:c:\users\user\battleinf\menu.c
 	"raylib.h"
 	<stdio.h>
 	"deflib.h"
@@ -35,7 +35,7 @@
 1649471102 source:c:\users\user\battleinf\movimentacao.c
 	<stdio.h>
 
-1651349154 source:c:\users\user\battleinf\game.c
+1651604118 source:c:\users\user\battleinf\game.c
 	"raylib.h"
 	<stdio.h>
 	<stdlib.h>
@@ -114,14 +114,14 @@
 	"raylib.h"
 	<stdio.h>
 
-1651347409 source:c:\users\user\battleinf\avoidcolision.c
+1651538847 source:c:\users\user\battleinf\avoidcolision.c
 	"raylib.h"
 	"deflib.h"
 	<stdio.h>
 
 1649471102 source:c:\users\user\battleinf\textures_test.c
 
-1651347254 source:c:\users\user\battleinf\walls.c
+1651538847 source:c:\users\user\battleinf\walls.c
 	"raylib.h"
 	<stdio.h>
 	"deflib.h"
@@ -151,23 +151,23 @@
 
 1650745230 d:\Área de trabalho\battleinf\deflib.h
 
-1651348987 c:\users\user\battleinf\deflib.h
+1651540735 c:\users\user\battleinf\deflib.h
 
-1651346422 source:c:\users\user\battleinf\energia.c
+1651538847 source:c:\users\user\battleinf\energia.c
 	<raylib.h>
 	<stdio.h>
 	<stdlib.h>
 	<limits.h>
 	"deflib.h"
 
-1651347546 source:c:\users\user\battleinf\tiro.c
+1651538847 source:c:\users\user\battleinf\tiro.c
 	"raylib.h"
 	<stdio.h>
 	<stdlib.h>
 	<limits.h>
 	"deflib.h"
 
-1651347503 source:c:\users\user\battleinf\inimigo.c
+1651541494 source:c:\users\user\battleinf\inimigo.c
 	<raylib.h>
 	<stdio.h>
 	<stdlib.h>
@@ -233,9 +233,10 @@
 	<string.h>
 	"deflib.h"
 
-1651346422 source:c:\users\user\battleinf\transitions.c
+1651538847 source:c:\users\user\battleinf\transitions.c
 	"raylib.h"
 	<stdio.h>
+	<string.h>
 	"deflib.h"
 
 1651524286 source:d:\Área de trabalho\clones\battleinf\tab.c
@@ -247,7 +248,7 @@
 1651090035 source:d:\Área de trabalho\clones\battleinf\asd.c
 	"raylib.h"
 
-1651348752 source:c:\users\user\battleinf\tab.c
+1651542277 source:c:\users\user\battleinf\tab.c
 	<stdio.h>
 	<math.h>
 	"raylib.h"
