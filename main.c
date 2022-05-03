@@ -8,7 +8,7 @@ int main(void) {
 
     srand(time(NULL));
 
-    int LOADED_OR_NOT = 1;
+    int LOADED_OR_NOT = 0;
 
     const int screenWidth = 1000;
     const int screenHeight = 700;
@@ -22,7 +22,9 @@ int main(void) {
     int screen = MENU;
     // Determines what screen should be displayed
 
-    int quit = 0, i;
+    // IMPORTANTE! i é inicializado aqui e não pode ser trocado
+    // em nenhum for, já que ele significa o número da fase a ser mostrada
+    int quit = 0, return_to_menu, i = 1;
 
     while (!WindowShouldClose() && !quit) {
 
@@ -33,45 +35,85 @@ int main(void) {
         break;
         case GAME:
 
-            for(i = 1; i <= N_FASES; i++) {
-                if(quit) break;
-
-                char path[16];
-                snprintf(path, sizeof(path), "fases/fase%c.txt", i+'0');
-
-                ShowLevel(i, path);
-                GameScreen(&quit, path, i, 0, &player_placar);
-
-            }
-
-            quit = 1;
-
-        break;
-        case LOADED_GAME:
-
-            if(LOADED_OR_NOT == 1){
-                FILE *ff;
-                ff = fopen("savedfiles/SaveF.bin", "r");
-                if(ff == NULL){
-                    printf("Nao Carregou FASE.\n");
-                }
-                fread(&i, sizeof(int), 1 , ff);
-                fclose(ff);
-            }
-            printf("%d", i);
             for(; i <= N_FASES; i++) {
                 if(quit) break;
 
                 char path[16];
                 snprintf(path, sizeof(path), "fases/fase%c.txt", i+'0');
 
-                ShowLevel(i, path);
-                GameScreen(&quit, path, i, LOADED_OR_NOT, &player_placar);
-                LOADED_OR_NOT++;
+                ShowLevel((char)i, path);
+                return_to_menu = 0;
+                GameScreen(&quit, &return_to_menu, path, (char)i, LOADED_OR_NOT, &player_placar);
+
+                if(return_to_menu) {
+                    screen = MENU;
+                    break;
+                }
             }
 
-            quit = 1;
+            if(i > N_FASES) {
+                screen = RANKING;
+            }
 
+        break;
+        case LOADED_GAME:
+
+            LOADED_OR_NOT = 1;
+            FILE *ff;
+            ff = fopen("savedfiles/SaveF.bin", "r");
+            if(ff == NULL){
+                printf("Nao Carregou FASE.\n");
+            }
+            fread(&i, sizeof(int), 1 , ff);
+            fclose(ff);
+            printf("%d", i);
+
+            if(i == (int)'x') {
+                screen = LOAD_MAP;
+            } else {
+
+                for(; i <= N_FASES; i++) {
+                    if(quit) break;
+
+                    char path[16];
+                    snprintf(path, sizeof(path), "fases/fase%c.txt", i+'0');
+
+                    ShowLevel((char)i, path);
+                    return_to_menu = 0;
+                    GameScreen(&quit, &return_to_menu, path, (char)i, LOADED_OR_NOT, &player_placar);
+                    LOADED_OR_NOT++;
+
+                    if(return_to_menu) {
+                        screen = MENU;
+                        break;
+                    }
+                }
+
+                if(i > N_FASES) {
+                    screen = RANKING;
+                }
+
+            }
+
+        break;
+        case LOAD_MAP:
+
+            char path[16] = "fases/faseX.txt";
+            ShowLevel('x', path);
+            return_to_menu = 0;
+            GameScreen(&quit, &return_to_menu, path, 'x', LOADED_OR_NOT, &player_placar);
+
+            if(return_to_menu) {
+                screen = MENU;
+                break;
+            }
+
+            screen = RANKING;
+
+        break;
+        case RANKING:
+            printf("ENTREI NO RANKING\n");
+            quit = 1;
         break;
         default: quit = 1; // MenuScreen() returned QuitScreen, so program should quit
         break;

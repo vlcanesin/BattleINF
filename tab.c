@@ -3,14 +3,18 @@
 #include "raylib.h"
 #include "deflib.h"
 
-void PrintTab(int idNivel, Jogador player, Texture2D vida, Texture2D enerTexture) {
+void PrintTab(char idNivel, Jogador player, Texture2D vida, Texture2D enerTexture) {
 
     const int screenHeight = GetScreenHeight();
     const int screenWidth = GetScreenWidth();
     int i;
 
     char text[7] = "Fase _ ";
-    text[5] = idNivel + '0';
+    if(idNivel == 'x') {
+        text[5] = 'x';
+    } else {
+        text[5] = idNivel + '0';
+    }
     text[6] = '\0';
 
     char score[14] = "Score: ______ ";

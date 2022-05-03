@@ -4,7 +4,7 @@
 #include <limits.h>
 #include "deflib.h"
 
-void UpdateShots(Jogador *player) {
+void UpdateShots(Jogador *player, int timerTiro) {
 
     int end, i, num;
     const int screenWidth = GetScreenWidth();
@@ -15,6 +15,8 @@ void UpdateShots(Jogador *player) {
      }
     else
         num = 0;
+
+    //num = timerTiro;
 
     // OBS: é verificado se player está na tela pois os inimigos precisam de
     // UpdateShots mesmo se eles não estão na tela
@@ -54,7 +56,7 @@ void UpdateShots(Jogador *player) {
         }
     }
     else if(player->dogtag == 100){
-            if(IsKeyPressed(KEY_SPACE)){
+        if(IsKeyPressed(KEY_SPACE)){
 
             for(end = 0; end < QUANT_TIROS; end++) {
                 if(player->tiros[end].naTela == 0) {

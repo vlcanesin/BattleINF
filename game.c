@@ -5,13 +5,15 @@
 #include <time.h>
 #include "deflib.h"
 
-void GameScreen(int *quit, char path[16], int idNivel, int LOADED_OR_NOT, int *player_placar) {
+void GameScreen(int *quit, int *return_to_menu, char path[16], char idNivel, int LOADED_OR_NOT, int *player_placar) {
     // Initialization
     //--------------------------------------------------------------------------------------
     const int screenWidth = GetScreenWidth();
     const int screenHeight = GetScreenHeight();
 
     int contFramesEnerg = 0, contFramesInimigo = 0;  // Usado para temporizar nascimentos aleatórios
+    int timerTiro = 1, timerLoucuraTotal = 0;
+    int spawnInimigo = 5;
 
     int i, j;
 
@@ -20,7 +22,7 @@ void GameScreen(int *quit, char path[16], int idNivel, int LOADED_OR_NOT, int *p
     float velIniP = 5;
     float velIniT = 10;
     float velIniP_inim = 2;
-    float velIniT_inim = velIniP+1;
+    float velIniT_inim = velIniP;
 
     Jogador inimigo[QUANT_INIMIGOS];
 
@@ -117,6 +119,11 @@ void GameScreen(int *quit, char path[16], int idNivel, int LOADED_OR_NOT, int *p
         inimigo[i].yAnt = 0;
         inimigo[i].x = 0;
         inimigo[i].y = 0;
+        inimigo[i].alinhado = 0;
+        for(j = 0; j < QUANT_TIROS; j++) {
+            inimigo[i].tiros[j].naTela = 0;
+            inimigo[i].tiros[j].vel = velIniT;
+        }
         //printf("%d\n", inimigo[i].dogtag);
     }
 
@@ -153,7 +160,7 @@ void GameScreen(int *quit, char path[16], int idNivel, int LOADED_OR_NOT, int *p
     }
 
     // Main game loop
-    while (!WindowShouldClose() && player.vidas > 0) {
+    while (!WindowShouldClose() && player.vidas > 0 && !*return_to_menu) {
 
         CheckPause(&screen_game);
 
@@ -199,30 +206,21 @@ void GameScreen(int *quit, char path[16], int idNivel, int LOADED_OR_NOT, int *p
             ////////////////////////////////////
              for(i = 0; i < QUANT_INIMIGOS; i++) {
                 if(inimigo[i].naTela == 1) {
-                    if(inimigo[i].x == player.x){
+                    int m = 20;
+                    inimigo[i].alinhado = 0;
+                    if(player.x-m < inimigo[i].x && inimigo[i].x < player.x+m){
                         inimigo[i].alinhado = 1;
                         if (inimigo[i].y > player.y)
                             inimigo[i].r = 0;
                         else
                             inimigo[i].r = 180;
                     }
-                    if(inimigo[i].y == player.y){
+                    if(player.y-m < inimigo[i].y && inimigo[i].y < player.y+m){
                         inimigo[i].alinhado = 1;
                         if (inimigo[i].x > player.x)
                             inimigo[i].r = 270;
                         else
                             inimigo[i].r = 90;
-                    }
-                    /*int m = 30;
-                    if((player.x-m < inimigo[i].x && inimigo[i].x < player.x+m) ||
-                       (player.y-m < inimigo[i].y && inimigo[i].y < player.y+m)){
-                        inimigo[i].alinhado = 1;
-                    }*/
-                    if(player.x == inimigo[i].x || player.y == inimigo[i].y){
-                        inimigo[i].alinhado = 1;
-                    }
-                    else {
-                        inimigo[i].alinhado = 0;
                     }
 
                     Movimenta_Random(&inimigo[i]);
@@ -230,40 +228,13 @@ void GameScreen(int *quit, char path[16], int idNivel, int LOADED_OR_NOT, int *p
                 }
                 // NOTA: Quando o inimigo sai da tela, pode ser que ainda existam tiros dele
                 // na tela. Optei por continuar simulando-os
-                UpdateShots(&inimigo[i]);
+                UpdateShots(&inimigo[i], timerTiro);
                 BreakWalls(wall, &inimigo[i]);
               }
-             /*if(IsKeyDown(KEY_UP)){
-                for(i = 0; i < QUANT_INIMIGOS; i++){
-                    inimigo[i].y -= inimigo[i].vel;
-                    inimigo[i].pers.y = inimigo[i].y;
-                    inimigo[i].r = 0;
-                }
-            }
-            if(IsKeyDown(KEY_DOWN)){
-                for(i = 0; i < QUANT_INIMIGOS; i++){
-                    inimigo[i].y += inimigo[i].vel;
-                    inimigo[i].pers.y = inimigo[i].y;
-                    inimigo[i].r = 180;
-                }
-            }
-            if(IsKeyDown(KEY_RIGHT)){
-                for(i = 0; i < QUANT_INIMIGOS; i++){
-                    inimigo[i].x += inimigo[i].vel;
-                    inimigo[i].pers.x = inimigo[i].x;
-                    inimigo[i].r = 90;
-                }
-            }
-            if(IsKeyDown(KEY_LEFT)){
-                for(i = 0; i < QUANT_INIMIGOS; i++){
-                    inimigo[i].x -= inimigo[i].vel;
-                    inimigo[i].pers.x = inimigo[i].x;
-                    inimigo[i].r = 270;
-                }
-            }*/
+
             ////////////////////////////////////
 
-            UpdateShots(&player);
+            UpdateShots(&player, timerTiro);
             BreakWalls(wall, &player);
             UpdateWalls(wall, wallRecs);
 
@@ -319,7 +290,6 @@ void GameScreen(int *quit, char path[16], int idNivel, int LOADED_OR_NOT, int *p
                 }
             }
 
-
             // DESENHA TIROS
             for(i = 0; i < QUANT_TIROS; i++) {
                 if(player.tiros[i].naTela == 1) {
@@ -343,7 +313,7 @@ void GameScreen(int *quit, char path[16], int idNivel, int LOADED_OR_NOT, int *p
                     Rectangle inimigo_tanque = {inimigo[i].x + OFFSET_X, inimigo[i].y + OFFSET_Y,TAMANHO_TANQUE,LARGURA_TANQUE};
                     //DrawTexture(inimigoTexture, inimigo[i].pers.x,inimigo[i].pers.y, RAYWHITE);
                     //DrawRectangle(inimigo[i].x, inimigo[i].y,TAMANHO_TANQUE,LARGURA_TANQUE, GREEN);
-                    DrawTexturePro(inimigoTexture,tanque,inimigo_tanque,origin,inimigo[i].r,RAYWHITE);
+                    DrawTexturePro(inimigoTexture,tanque,inimigo_tanque,origin,inimigo[i].r, RAYWHITE);
                     /*char id[2];
                     id[0] = i+'0';
                     id[1] = '\0';
@@ -358,8 +328,19 @@ void GameScreen(int *quit, char path[16], int idNivel, int LOADED_OR_NOT, int *p
             //DrawRectangle(pers.x-largura_t/2, pers.y-tamanho_t/2, pers.height, pers.width, GREEN);
 
             // ATUALIZA VARIÁVEIS DE TEMPO
-            contFramesEnerg = (contFramesEnerg + 1) % 60;
-            contFramesInimigo = (contFramesInimigo + 1) % 5;
+            timerLoucuraTotal++;
+            if(timerLoucuraTotal > 60*5) {
+                timerLoucuraTotal = 0;
+                if(spawnInimigo > 1) {
+                    spawnInimigo--;
+                }
+            }
+            velIniP_inim = 2 + (5-spawnInimigo)*0.1;
+            velIniT_inim = velIniP + (5-spawnInimigo)*0.1;
+
+            contFramesEnerg = (contFramesEnerg + 1) % 30;
+            contFramesInimigo = (contFramesInimigo + 1) % spawnInimigo;
+            timerTiro = (timerTiro + 1) % (60*3);
             if(player.timer > 0) {
                 player.timer--;
             }
@@ -379,10 +360,12 @@ void GameScreen(int *quit, char path[16], int idNivel, int LOADED_OR_NOT, int *p
             BeginDrawing();
             DrawText("PAUSED",
                     screenWidth-MeasureText("PAUSED", 20) - 25, N_LINHAS*LIN_SIZE + 25, 20, RAYWHITE);
-            DrawText("DO YOU WISH TO SAVE? S/N",
+            DrawText("RETURN TO MAIN MENU? S/N",
                     screenWidth-MeasureText("DO YOU WISH TO SAVE? S/N", 20) - 25, N_LINHAS*LIN_SIZE + 50, 20, YELLOW);
-            if(IsKeyPressed(KEY_S))
+            if(IsKeyPressed(KEY_S)) {
                 Save(&player, inimigo, wall, idNivel);
+                *return_to_menu = 1;
+            }
             EndDrawing();
         break;
         case DEATH:
@@ -417,10 +400,15 @@ void GameScreen(int *quit, char path[16], int idNivel, int LOADED_OR_NOT, int *p
     UnloadTexture(vida);
 
     // NOTA: mudar caso a condição do while mude
-    if(player.vidas > 0) {
+    if(player.vidas > 0 && !*return_to_menu) {
         *quit = 1;
         //printf("Entrei\n");
     }
 
-    *player_placar += player.score;
+    if(!*return_to_menu) {
+        *player_placar += player.score;
+    } else {
+        *player_placar = player.score;
+    }
+
 }

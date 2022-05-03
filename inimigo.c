@@ -23,7 +23,7 @@ void sorteiaPosInimigo(Jogador inimigo[], int end, Jogador player, Rectangle wal
 
         randPos = (Rectangle){randX, randY, inimigo[end].sizeX, inimigo[end].sizeY};
 
-        int m = 20;  // margem de distância até o player
+        int m = 100;  // margem de distância até o player
         if(CheckCollisionRecs(
            randPos, (Rectangle){player.x-m, player.y-m, player.sizeX+2*m, player.sizeY+2*m})){
            ok = 0;
@@ -56,10 +56,10 @@ void sorteiaPosInimigo(Jogador inimigo[], int end, Jogador player, Rectangle wal
         }
 
         //printf("%d\n", ok);
-    } while(ok == 0 && contador < 20);
+    } while(ok == 0 && contador < 50);
 
 
-    if (contador < 20){
+    if (contador < 50){
         inimigo[end].x = randX;
         inimigo[end].y = randY;
         inimigo[end].pers = (Rectangle){randX+OFFSET_X, randY+OFFSET_Y, LARGURA_TANQUE, TAMANHO_TANQUE};
@@ -141,7 +141,8 @@ int sorteiaR(Jogador *inimigo){
     return ((int)inimigo->r+vetorPosicao[escolha])%360;
 }
 
-
+// DESCONTINUADA: Sorteia momento que o inimigo deve atirar
+// Mentira, é melhor com ela
 int EnemyShots(Jogador *inimigo){
     int info = 0;
     if (inimigo->dogtag != 100 && inimigo->alinhado == 1){

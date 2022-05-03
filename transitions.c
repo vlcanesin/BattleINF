@@ -1,18 +1,24 @@
 #include "raylib.h"
 #include <stdio.h>
+#include <string.h>
 #include "deflib.h"
 
-void ShowLevel(int level, char path[16]) {
+void ShowLevel(char level, char path[16]) {
 
     int contFrames;
-    char text[7] = "Fase ", nomeFase[64];
-    text[5] = level + '0';
+    char text[7] = "Fase _", nomeFase[64];
+    if(level == 'x') {
+        text[5] = 'x';
+    } else {
+        text[5] = level + '0';
+    }
     text[6] = '\0';
 
     int screenWidth = GetScreenWidth();
 
     FILE *fp = fopen(path, "r");
-    if(fscanf(fp, "Nome: %s", nomeFase) < 0) {
+    fscanf(fp, "Nome: ");
+    if(fgets(nomeFase, 63, fp) == NULL) {
         printf("Erro na leitura do nome!\n");
     }
 
