@@ -60,8 +60,10 @@ void sorteiaPosInimigo(Jogador inimigo[], int end, Jogador player, Rectangle wal
 
 
     if (contador < 50){
+        printf("inimigo %d x: %.2f e %.2f y \n", end, inimigo[end].x, inimigo[end].y);
         inimigo[end].x = randX;
         inimigo[end].y = randY;
+        printf("inimigo %d x: %.2f e %.2f y \n", end, inimigo[end].x, inimigo[end].y);
         inimigo[end].pers = (Rectangle){randX+OFFSET_X, randY+OFFSET_Y, LARGURA_TANQUE, TAMANHO_TANQUE};
         //printf("'%c' RandX: %.2f RandY: %.2f\n", end+'0', randX, randY);
     } else {
@@ -74,7 +76,7 @@ void sorteiaPosInimigo(Jogador inimigo[], int end, Jogador player, Rectangle wal
 }
 
 void UpdateINIMIGO(Jogador inimigo[], int contFrames,
-                   Jogador player, Rectangle wallRecs[][N_COLUNAS], int controle) {
+                   Jogador player, Rectangle wallRecs[][N_COLUNAS]) {
 
     int end, i, passou;
 
@@ -103,9 +105,9 @@ void UpdateINIMIGO(Jogador inimigo[], int contFrames,
             if(end < QUANT_INIMIGOS) {
                 sorteiaPosInimigo(inimigo, end, player, wallRecs);
                 //printf("End '%c': %.2f %.2f\n", end+'0', inimigo[end].x, inimigo[end].y);
-          //  }
+            }
         }
-    }
+    //}
 
     // DEIXA APENAS OS QUE ESTÃO VIVOS
     for(end = 0; end < QUANT_INIMIGOS; end++) {

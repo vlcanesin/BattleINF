@@ -10,6 +10,8 @@
 #define ASK_NAME 7
 #define PAUSE 8
 #define DEATH 9
+#define SHOW_SCORE 10
+#define SHOW_HIGHSCORES 11
 
 #define N_LINHAS 15
 #define N_COLUNAS 40
@@ -18,6 +20,7 @@
 #define QUANT_TIROS 100
 #define QUANT_ENERG 100
 #define QUANT_INIMIGOS  5
+#define MAX_INPUT_CHARS 9
 
 #define TAMANHO_TANQUE 60
 #define LARGURA_TANQUE 60
@@ -64,6 +67,11 @@ typedef struct Jogador {
     Rectangle pers;
     Tiro tiros[QUANT_TIROS];
 } Jogador;
+
+typedef struct Highscore {
+    char nome[MAX_INPUT_CHARS];
+    int score;
+} Highscore;
 
 void MenuScreen(int *screen, int *menuOption);
 void GameScreen(
@@ -124,8 +132,8 @@ void sorteiaPosInimigo(
 
 void UpdateINIMIGO(
     Jogador inimigo[], int contFrames,
-    Jogador player, Rectangle wallRecs[][N_COLUNAS],
-    int controle
+    Jogador player, Rectangle wallRecs[][N_COLUNAS]
+
 );
 
 int EnemyShots(Jogador *inimigo);
@@ -136,9 +144,19 @@ int sorteiaR(Jogador *inimigo);
 
 void CheckDEATH (int *screen_game, Jogador *player);
 
+int CheckCompletion (Jogador inimigo[]);
+
 void Save (Jogador *player, Jogador inimigo[],int wall[][N_COLUNAS], int IdNivel);
 
 void BackTOSave (Jogador *player, Jogador inimigo[]);
 
 void BackTOSaveParedinha (int wall[][N_COLUNAS]);
+
+void GetScores(Highscore highScores[], int limpaArquivo);
+
+void ReadName(int *quit, char name[]);
+
+void EscreveNome(char nome[], int player_placar, Highscore highscores[]);
+
+void ShowHighScores(int *screen, Highscore highscores[]);
 #endif

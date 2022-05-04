@@ -83,6 +83,21 @@ void CheckDEATH (int *screen_game, Jogador *player){
      //}
 }
 
+int CheckCompletion (Jogador inimigo[]){
+    int i, ALL_KILLED = 0, soma = 0;
+    for(i = 0; i < QUANT_INIMIGOS; i++){
+        if(inimigo[i].naTela == 0 ){
+            soma ++;
+        }
+        //printf("SOMA : %d", soma);
+    }
+    if(soma == QUANT_INIMIGOS)
+        ALL_KILLED = 1;
+    else
+        ALL_KILLED = 0;
+    return ALL_KILLED;
+}
+
 void Save (Jogador *player, Jogador inimigo[],int wall[][N_COLUNAS], int IdNivel){ //fiz de quase todos os parametros pq tada dando errado s� passando a struct
     int i = 0, j = 0;
     printf(" O X E O Y DELE AGORA SAO: %.2f, %.2f", player->x, player->y);
@@ -121,6 +136,7 @@ void Save (Jogador *player, Jogador inimigo[],int wall[][N_COLUNAS], int IdNivel
         printf("DEU MERDA COM O PLAYER\n");
     if(fwrite(&player->pers, sizeof(Rectangle), 1, fjogo) != 1)
         printf("DEU MERDA COM O PLAYER RECTANGLE\n");
+
     for(i = 0; i< QUANT_INIMIGOS; i++){
         if(fwrite(&inimigo[i].x, sizeof(float), 1, fjogo) != 1)
             printf("DEU MERDA COM O PLAYER\n");

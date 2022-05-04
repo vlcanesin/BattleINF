@@ -16,6 +16,7 @@ void GameScreen(int *quit, int *return_to_menu, char path[16], char idNivel, int
     int spawnInimigo = 5;
 
     int i, j, controle;
+    int ALL_KILLED = 0;
     controle = LOADED_OR_NOT;
 
     int screen_game = GAME;
@@ -74,6 +75,9 @@ void GameScreen(int *quit, int *return_to_menu, char path[16], char idNivel, int
             inimigo[i].x = 0;
             inimigo[i].y = 0;
             inimigo[i].alinhado = 0;
+            printf("\nMUDEI O INIMIGO\n");
+            printf("\n%.2f x do inimigo %d", inimigo[i].x, i);
+            printf("\n%.2f y do inimigo %d", inimigo[i].y, i);
             for(j = 0; j < QUANT_TIROS; j++) {
                 inimigo[i].tiros[j].naTela = 0;
                 inimigo[i].tiros[j].vel = velIniT;
@@ -99,26 +103,30 @@ void GameScreen(int *quit, int *return_to_menu, char path[16], char idNivel, int
 
     // SPAWNA 3 TANQUES INICIAIS
     UpdateWalls(wall, wallRecs);
+        if(LOADED_OR_NOT != 1){
+            for(i = 0; i < 3; i++) {
+                for(end = 0; end < QUANT_INIMIGOS; end++) {
+                    if(inimigo[end].naTela == 0) {
+                        inimigo[end].naTela = 1;
+                        inimigo[end].vidas = 1;
+                        break;
+                    }
+                }
+                if(end < QUANT_INIMIGOS) {
+                sorteiaPosInimigo(inimigo, end, player, wallRecs);
+                }
 
-    for(i = 0; i < 3; i++) {
-        for(end = 0; end < QUANT_INIMIGOS; end++) {
-            if(inimigo[end].naTela == 0) {
-                inimigo[end].naTela = 1;
-                inimigo[end].vidas = 1;
-                break;
             }
         }
 
-        if(end < QUANT_INIMIGOS) {
-            sorteiaPosInimigo(inimigo, end, player, wallRecs);
-        }
-    }
-
     // Main game loop
-    while (!WindowShouldClose() && !*return_to_menu) {
+    while (!WindowShouldClose() && !*return_to_menu && !ALL_KILLED) {
 
         CheckPause(&screen_game);
-        CheckDEATH(&screen_game, &player);
+        if(LOADED_OR_NOT != 3)
+           CheckDEATH(&screen_game, &player);
+        if (LOADED_OR_NOT !=3)
+            ALL_KILLED = CheckCompletion(inimigo);
         switch(screen_game) {
 
         case GAME:
@@ -183,7 +191,7 @@ void GameScreen(int *quit, int *return_to_menu, char path[16], char idNivel, int
 
 
                 }
-                UpdateShots(&inimigo[i], timerTiro);
+                    UpdateShots(&inimigo[i], timerTiro);
                     BreakWalls(wall, &inimigo[i]);
                 // NOTA: Quando o inimigo sai da tela, pode ser que ainda existam tiros dele
                 // na tela. Optei por continuar simulando-os
@@ -199,8 +207,8 @@ void GameScreen(int *quit, int *return_to_menu, char path[16], char idNivel, int
 
             //Energia energCel[], int contFrames,
             //Jogador player, Rectangle wallRecs[][N_COLUNAS]
-            UpdateINIMIGO(inimigo,contFramesInimigo,player,wallRecs, controle);
-            controle++;
+            UpdateINIMIGO(inimigo,contFramesInimigo,player,wallRecs);
+
             UpdateEnergCels(energCel, contFramesEnerg, player, wallRecs);
 
             AvoidColision(&player, inimigo,
@@ -360,7 +368,7 @@ void GameScreen(int *quit, int *return_to_menu, char path[16], char idNivel, int
     UnloadTexture(vida);
 
     // NOTA: mudar caso a condição do while mude
-    if(player.vidas > 0 && !*return_to_menu) {
+    if(player.vidas > 0 && !*return_to_menu && !ALL_KILLED) {
         *quit = 1;
         //printf("Entrei\n");
     }
