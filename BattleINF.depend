@@ -174,21 +174,21 @@
 	<limits.h>
 	"deflib.h"
 
-1651522058 source:d:\햞ea de trabalho\clones\battleinf\avoidcolision.c
+1651716795 source:d:\햞ea de trabalho\clones\battleinf\avoidcolision.c
 	"raylib.h"
 	"deflib.h"
 	<stdio.h>
 
-1651536092 d:\햞ea de trabalho\clones\battleinf\deflib.h
+1651712341 d:\햞ea de trabalho\clones\battleinf\deflib.h
 
-1651367752 source:d:\햞ea de trabalho\clones\battleinf\energia.c
+1651716795 source:d:\햞ea de trabalho\clones\battleinf\energia.c
 	<raylib.h>
 	<stdio.h>
 	<stdlib.h>
 	<limits.h>
 	"deflib.h"
 
-1651537946 source:d:\햞ea de trabalho\clones\battleinf\game.c
+1651716795 source:d:\햞ea de trabalho\clones\battleinf\game.c
 	"raylib.h"
 	<stdio.h>
 	<stdlib.h>
@@ -196,38 +196,38 @@
 	<time.h>
 	"deflib.h"
 
-1651522168 source:d:\햞ea de trabalho\clones\battleinf\inimigo.c
+1651716795 source:d:\햞ea de trabalho\clones\battleinf\inimigo.c
 	<raylib.h>
 	<stdio.h>
 	<stdlib.h>
 	<limits.h>
 	"deflib.h"
 
-1651533353 source:d:\햞ea de trabalho\clones\battleinf\main.c
+1651717545 source:d:\햞ea de trabalho\clones\battleinf\main.c
 	"raylib.h"
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
 	"deflib.h"
 
-1651369162 source:d:\햞ea de trabalho\clones\battleinf\menu.c
+1651716795 source:d:\햞ea de trabalho\clones\battleinf\menu.c
 	"raylib.h"
 	<stdio.h>
 	"deflib.h"
 
-1651522131 source:d:\햞ea de trabalho\clones\battleinf\tiro.c
+1651716795 source:d:\햞ea de trabalho\clones\battleinf\tiro.c
 	"raylib.h"
 	<stdio.h>
 	<stdlib.h>
 	<limits.h>
 	"deflib.h"
 
-1651369184 source:d:\햞ea de trabalho\clones\battleinf\walls.c
+1651716795 source:d:\햞ea de trabalho\clones\battleinf\walls.c
 	"raylib.h"
 	<stdio.h>
 	"deflib.h"
 
-1651523780 source:d:\햞ea de trabalho\clones\battleinf\transitions.c
+1651716795 source:d:\햞ea de trabalho\clones\battleinf\transitions.c
 	"raylib.h"
 	<stdio.h>
 	<string.h>
@@ -239,7 +239,7 @@
 	<string.h>
 	"deflib.h"
 
-1651524286 source:d:\햞ea de trabalho\clones\battleinf\tab.c
+1651716795 source:d:\햞ea de trabalho\clones\battleinf\tab.c
 	<stdio.h>
 	<math.h>
 	"raylib.h"
@@ -255,6 +255,12 @@
 	"deflib.h"
 
 1651619124 source:c:\users\user\battleinf\highscores.c
+	<stdio.h>
+	<string.h>
+	"raylib.h"
+	"deflib.h"
+
+1651716795 source:d:\햞ea de trabalho\clones\battleinf\highscores.c
 	<stdio.h>
 	<string.h>
 	"raylib.h"

@@ -3,6 +3,12 @@
 #include "raylib.h"
 #include "deflib.h"
 
+/*
+- HIGHSCORES:
+  - Possui as funções que manipulam o arquivo binário
+  de highscores
+*/
+
 void GetScores(Highscore highscores[], int limpaArquivo) {
 
     FILE *fp;
@@ -179,7 +185,7 @@ void DeslocaFiles(FILE *fp, int limite) {
         /*if(fwrite(&temp.nome, sizeof(temp.nome), 1, fp) != 1) {
             printf("Erro na escrita do nome em DeslocaFiles!\n");
         }*/
-        printf("em DeslocaFiles: nome: %s score: %d\n", temp.nome, temp.score);
+        //printf("em DeslocaFiles: nome: %s score: %d\n", temp.nome, temp.score);
         fseek(fp, (i) * (sizeof(temp.nome) + sizeof(temp.score)), SEEK_SET);
         fputs(temp.nome, fp);
         if(fwrite(&temp.score, sizeof(temp.score), 1, fp) != 1) {
@@ -210,7 +216,7 @@ void EscreveNome(char nome[], int player_placar, Highscore highscores[]) {
             highscores[i].nome[j] = '\0';
             highscores[i].score = player_placar;
 
-            printf("highscores[i]: nome %s score %d\n", highscores[i].nome, highscores[i].score);
+            //printf("highscores[i]: nome %s score %d\n", highscores[i].nome, highscores[i].score);
 
             DeslocaFiles(fp, i);
             /*if(fwrite(&nome, sizeof(*nome), 1, fp) != 1) {

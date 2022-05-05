@@ -2,6 +2,13 @@
 #include <stdio.h>
 #include "deflib.h"
 
+/*
+- WALLS:
+  - Possui as funções de inicialização de paredes
+  - OBS: wall é um array de ints que atualiza wallRecs,
+  um vetor de retângulos.
+*/
+
 void initField(int wall[][N_COLUNAS], Rectangle wallRecs[][N_COLUNAS], Jogador *player, char path[16], int LOADED_OR_NOT) {
 
     /*int wallArray[15][40] = {
@@ -28,7 +35,8 @@ void initField(int wall[][N_COLUNAS], Rectangle wallRecs[][N_COLUNAS], Jogador *
     char nomeFase[64];
     fscanf(fp, "Nome: %s\n", nomeFase); // pula o nome da fase
 
-     if(LOADED_OR_NOT != 1){
+    // CASO SEJA NECESSÁRIO LER INFORMAÇÕES DO ARQUIVO DE TEXTO ORIGINAL
+     if(LOADED_OR_NOT == INICIO_FASE_NORMAL || LOADED_OR_NOT == INICIO_FASE_CRIADA){
 
         for(i = 0; i < N_LINHAS; i++) {
             for(j = 0; j < N_COLUNAS; j++) {
@@ -50,6 +58,8 @@ void initField(int wall[][N_COLUNAS], Rectangle wallRecs[][N_COLUNAS], Jogador *
 }
 
 void UpdateWalls(int wall[][N_COLUNAS], Rectangle wallRecs[][N_COLUNAS]) {
+
+    //ATUALIZA WALL EM WALLRECS
 
     //BeginDrawing();
     int lin, col;

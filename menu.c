@@ -2,6 +2,11 @@
 #include <stdio.h>
 #include "deflib.h"
 
+/*
+- MENU:
+  - Controla o funcionamento do menu
+*/
+
 void MenuScreen(int *screen, int *menuOption) {
 
     //------------- UPDATING --------------//

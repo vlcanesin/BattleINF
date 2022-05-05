@@ -4,6 +4,12 @@
 #include <limits.h>
 #include "deflib.h"
 
+/*
+- INIMIGO:
+  - Possui a função que gera os inimigos e
+  as funções que os movimentam.
+*/
+
 void sorteiaPosInimigo(Jogador inimigo[], int end, Jogador player, Rectangle wallRecs[][N_COLUNAS]) {
 
     int screenWidth = GetScreenWidth();
@@ -13,7 +19,7 @@ void sorteiaPosInimigo(Jogador inimigo[], int end, Jogador player, Rectangle wal
 
     Rectangle randPos;
 
-    do {
+    do {   // TENTA SORTEAR UMA POSIÇÃO ALEATÓRIA PARA UM INIMIGO 50 VEZES
         contador ++;
         ok = 1;
         int shouldBreak = 0;
@@ -60,10 +66,10 @@ void sorteiaPosInimigo(Jogador inimigo[], int end, Jogador player, Rectangle wal
 
 
     if (contador < 50){
-        printf("inimigo %d x: %.2f e %.2f y \n", end, inimigo[end].x, inimigo[end].y);
+        //printf("inimigo %d x: %.2f e %.2f y \n", end, inimigo[end].x, inimigo[end].y);
         inimigo[end].x = randX;
         inimigo[end].y = randY;
-        printf("inimigo %d x: %.2f e %.2f y \n", end, inimigo[end].x, inimigo[end].y);
+        //printf("inimigo %d x: %.2f e %.2f y \n", end, inimigo[end].x, inimigo[end].y);
         inimigo[end].pers = (Rectangle){randX+OFFSET_X, randY+OFFSET_Y, LARGURA_TANQUE, TAMANHO_TANQUE};
         //printf("'%c' RandX: %.2f RandY: %.2f\n", end+'0', randX, randY);
     } else {
@@ -101,6 +107,8 @@ void UpdateINIMIGO(Jogador inimigo[], int contFrames,
                 }
             }
         }
+        // OBS: NESSE MOMENTO, END POSSUI O PRIMEIRO ENDEREÇO LIVRE DO
+        // ARRAY DE INIMIGOS
         //if(controle != 1 ){
             if(end < QUANT_INIMIGOS) {
                 sorteiaPosInimigo(inimigo, end, player, wallRecs);
@@ -124,17 +132,43 @@ void UpdateINIMIGO(Jogador inimigo[], int contFrames,
 
 }
 
-void Movimenta_Random (Jogador *inimigo){
+/*float abs(float a) {
+
+    float res = a;
+    if(res < 0) res = -res;
+
+    return res;
+
+}*/
+
+void Movimenta_Random (Jogador *inimigo, Jogador player){
+
+    float xAnt = inimigo->x, yAnt = inimigo->y;
+
     switch((int)inimigo->r){
-    case 0: inimigo->y -= inimigo->vel;
-            break;
-    case 180: inimigo->y += inimigo->vel;
-              break;
-    case 90: inimigo->x += inimigo->vel;
-             break;
-    case 270: inimigo->x -= inimigo->vel;
-              break;
+    case 0:
+        inimigo->y -= inimigo->vel;
+    break;
+    case 180:
+        inimigo->y += inimigo->vel;
+    break;
+    case 90:
+        inimigo->x += inimigo->vel;
+    break;
+    case 270:
+        inimigo->x -= inimigo->vel;
+    break;
     }
+
+    int distanciamento_social = 100;
+    float dX = abs(inimigo->x - player.x), dY = abs(inimigo->y - player.y);
+
+    // OS INIMIGOS NÃO SE APROXIMAM DO PLAYER
+    if(dX < distanciamento_social && dY < distanciamento_social) {
+        inimigo->x = xAnt;
+        inimigo->y = yAnt;
+    }
+
 }
 int sorteiaR(Jogador *inimigo){
     int vetorPosicao[4] = {0,90,180,270};

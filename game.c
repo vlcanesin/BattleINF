@@ -5,34 +5,78 @@
 #include <time.h>
 #include "deflib.h"
 
+/*
+- GAME:
+  - Possui a função que roda cada fase.
+  - O Game, assim como o main, também gerencia
+  algumas telas, sendo elas a principal (da fase),
+  a de pause, e a de game over.
+*/
+
 void GameScreen(int *quit, int *return_to_menu, char path[16], char idNivel, int LOADED_OR_NOT, int *player_placar) {
     // Initialization
     //--------------------------------------------------------------------------------------
+
     const int screenWidth = GetScreenWidth();
     const int screenHeight = GetScreenHeight();
 
     int contFramesEnerg = 0, contFramesInimigo = 0;  // Usado para temporizar nascimentos aleatórios
     int timerTiro = 1, timerLoucuraTotal = 0;
+    // OBS: O timer loucura total está desativado
     int spawnInimigo = 5;
 
-    int i, j, controle;
+    int i, j;
     int ALL_KILLED = 0;
-    controle = LOADED_OR_NOT;
+    //int controle;
+    //controle = LOADED_OR_NOT;
 
     int screen_game = GAME;
 
-    float velIniP = 5;
+    float velIniP = 5;         // VELOCIDADES INICIAIS
     float velIniT = 10;
     float velIniP_inim = 2;
     float velIniT_inim = velIniP;
 
     Jogador inimigo[QUANT_INIMIGOS];
-
     Jogador player;
-    if (LOADED_OR_NOT == 1){
-        BackTOSave(&player , inimigo);
+
+    float limitey = 0, limitex = 0;
+
+    //Tiro tiros[quantTiros]; // FAZER PARA INIMIGOS TAMBÉM
+    for(i = 0; i < QUANT_TIROS; i++) {
+        player.tiros[i].naTela = 0;
+        player.tiros[i].vel = velIniT;
     }
-    else if(LOADED_OR_NOT != 1){
+
+    for(i = 0; i < QUANT_INIMIGOS; i++) {
+        //inimigo[i].alinhado_vesgo = 0;
+        for(j = 0; j < QUANT_TIROS; j++) {
+            inimigo[i].tiros[j].naTela = 0;
+            inimigo[i].tiros[j].vel = velIniT;
+        }
+    }
+
+    Energia energCel[QUANT_ENERG];
+    for(i = 0; i < QUANT_ENERG; i++) {
+        energCel[i].naTela = 0;
+        energCel[i].sizeX = 30;
+        energCel[i].sizeY = 44;
+    }
+
+    Texture2D tankTexture = LoadTexture("resources/tanque_player.png");
+    Texture2D wallTexture = LoadTexture("resources/brick_texture2.png");
+    Texture2D enerTexture = LoadTexture("resources/energy_drop_cortado.png");
+    Texture2D inimigoTexture = LoadTexture("resources/tanque_inimigo.png");
+    Texture2D vida = LoadTexture("resources/vida.png");
+
+    int wall[N_LINHAS][N_COLUNAS];
+    Rectangle wallRecs[N_LINHAS][N_COLUNAS];
+
+    if (LOADED_OR_NOT == CONTINUA_FASE_NORMAL || LOADED_OR_NOT == CONTINUA_FASE_CRIADA){
+        //printf("Estou carregando a fase\n");
+        BackTOSave(&player , inimigo);
+        BackTOSaveParedinha (wall);
+    } else {   // SÓ INICIALIZA VARIÁVEIS CASO NÃO SEJA PARA CARREGAR DO ARQUIVO SALVO
         player.x = 0;
         player.y = 0;
         player.r = 0;
@@ -43,22 +87,7 @@ void GameScreen(int *quit, int *return_to_menu, char path[16], char idNivel, int
         player.vidas = 3;
         player.timer = 0;
         player.score = *player_placar;
-    }
-    float limitey = 0, limitex = 0;
 
-    //Tiro tiros[quantTiros]; // FAZER PARA INIMIGOS TAMBÉM
-    for(i = 0; i < QUANT_TIROS; i++) {
-        player.tiros[i].naTela = 0;
-        player.tiros[i].vel = velIniT;
-    }
-
-    Energia energCel[QUANT_ENERG];
-    for(i = 0; i < QUANT_ENERG; i++) {
-        energCel[i].naTela = 0;
-        energCel[i].sizeX = 30;
-        energCel[i].sizeY = 44;
-    }
-    if(LOADED_OR_NOT != 1){
         for(i = 0; i < QUANT_INIMIGOS; i++) {
             //printf("x e y de '%c': %.2f %.2f\n", i+'0',inimigo[i].x, inimigo[i].y);
             inimigo[i].naTela = 0;
@@ -75,35 +104,19 @@ void GameScreen(int *quit, int *return_to_menu, char path[16], char idNivel, int
             inimigo[i].x = 0;
             inimigo[i].y = 0;
             inimigo[i].alinhado = 0;
-            printf("\nMUDEI O INIMIGO\n");
+            /*printf("\nMUDEI O INIMIGO\n");
             printf("\n%.2f x do inimigo %d", inimigo[i].x, i);
-            printf("\n%.2f y do inimigo %d", inimigo[i].y, i);
-            for(j = 0; j < QUANT_TIROS; j++) {
-                inimigo[i].tiros[j].naTela = 0;
-                inimigo[i].tiros[j].vel = velIniT;
-            }
+            printf("\n%.2f y do inimigo %d", inimigo[i].y, i);*/
             //printf("%d\n", inimigo[i].dogtag);
         }
     }
-    Texture2D tankTexture = LoadTexture("resources/tanque_player.png");
-    Texture2D wallTexture = LoadTexture("resources/brick_texture2.png");
-    Texture2D enerTexture = LoadTexture("resources/energy_drop_cortado.png");
-    Texture2D inimigoTexture = LoadTexture("resources/tanque_inimigo.png");
-    Texture2D vida = LoadTexture("resources/vida.png");
-
-    int wall[N_LINHAS][N_COLUNAS];
-    if(LOADED_OR_NOT == 1){
-        BackTOSaveParedinha (wall);
-    }
-    Rectangle wallRecs[N_LINHAS][N_COLUNAS];
 
     initField(wall, wallRecs, &player, path, LOADED_OR_NOT);
-
     int end;
 
     // SPAWNA 3 TANQUES INICIAIS
     UpdateWalls(wall, wallRecs);
-        if(LOADED_OR_NOT != 1){
+        if(LOADED_OR_NOT == INICIO_FASE_NORMAL || LOADED_OR_NOT == INICIO_FASE_CRIADA){
             for(i = 0; i < 3; i++) {
                 for(end = 0; end < QUANT_INIMIGOS; end++) {
                     if(inimigo[end].naTela == 0) {
@@ -119,14 +132,17 @@ void GameScreen(int *quit, int *return_to_menu, char path[16], char idNivel, int
             }
         }
 
+    int fimDeLOAD_MAP = 0;
+
     // Main game loop
-    while (!WindowShouldClose() && !*return_to_menu && !ALL_KILLED) {
+    while (!WindowShouldClose() && !*return_to_menu && !ALL_KILLED && !fimDeLOAD_MAP) {
 
         CheckPause(&screen_game);
-        if(LOADED_OR_NOT != 3)
-           CheckDEATH(&screen_game, &player);
-        if (LOADED_OR_NOT !=3)
+        CheckDEATH(&screen_game, &player);
+        if (LOADED_OR_NOT == INICIO_FASE_NORMAL || LOADED_OR_NOT == CONTINUA_FASE_NORMAL) {
             ALL_KILLED = CheckCompletion(inimigo);
+        }
+
         switch(screen_game) {
 
         case GAME:
@@ -149,6 +165,7 @@ void GameScreen(int *quit, int *return_to_menu, char path[16], char idNivel, int
                 inimigo[i].yAnt = inimigo[i].y;
             }
 
+            // MOVIMENTAÇÃO DO PLAYER
             if(IsKeyDown(KEY_UP)){
                 player.y -= player.vel;
                 player.r = 0;
@@ -170,6 +187,7 @@ void GameScreen(int *quit, int *return_to_menu, char path[16], char idNivel, int
              for(i = 0; i < QUANT_INIMIGOS; i++) {
                 if(inimigo[i].naTela == 1) {
                     int m = 20;
+                    //int m_vesgo = TAMANHO_TANQUE+10;
                     inimigo[i].alinhado = 0;
                     if(player.x-m < inimigo[i].x && inimigo[i].x < player.x+m){
                         if (inimigo[i].y > player.y)
@@ -187,7 +205,12 @@ void GameScreen(int *quit, int *return_to_menu, char path[16], char idNivel, int
                         inimigo[i].alinhado = 1;
                     else
                         inimigo[i].alinhado = 0;
-                    Movimenta_Random(&inimigo[i]);
+                    /*if((player.x-m_vesgo < inimigo[i].x && inimigo[i].x < player.x+m_vesgo) || (player.y-m_vesgo < inimigo[i].y && inimigo[i].y < player.y+m_vesgo))
+                        inimigo[i].alinhado_vesgo = 1;
+                    else
+                        inimigo[i].alinhado_vesgo = 0;*/
+
+                    Movimenta_Random(&inimigo[i], player);
 
 
                 }
@@ -298,7 +321,7 @@ void GameScreen(int *quit, int *return_to_menu, char path[16], char idNivel, int
             if(timerLoucuraTotal > 60*5) {
                 timerLoucuraTotal = 0;
                 if(spawnInimigo > 1) {
-                    spawnInimigo--;
+                    //spawnInimigo--;  // TIMER LOUCURA TOTAL ESTÁ DESATIVADO
                 }
             }
             velIniP_inim = 2 + (5-spawnInimigo)*0.1;
@@ -308,7 +331,7 @@ void GameScreen(int *quit, int *return_to_menu, char path[16], char idNivel, int
             contFramesInimigo = (contFramesInimigo + 1) % spawnInimigo;
             timerTiro = (timerTiro + 1) % (60*3);
             if(player.timer > 0) {
-                player.timer--;
+                player.timer--;  // TIMER PARA CÉLULA DE ENERGIA
             }
             for(i = 0; i < QUANT_INIMIGOS; i++) {
                 if(inimigo[i].naTela == 1) {
@@ -326,32 +349,44 @@ void GameScreen(int *quit, int *return_to_menu, char path[16], char idNivel, int
             BeginDrawing();
             DrawText("PAUSED",
                     screenWidth-MeasureText("PAUSED", 20) - 25, N_LINHAS*LIN_SIZE + 25, 20, RAYWHITE);
+            //if(LOADED_OR_NOT != 3) {   // IMPEDE QUE ELE VOLTE AO MENU QUANDO CARREGA A FASE X
             DrawText("RETURN TO MAIN MENU? S/N",
-                    screenWidth-MeasureText("DO YOU WISH TO SAVE? S/N", 20) - 25, N_LINHAS*LIN_SIZE + 50, 20, YELLOW);
+                    screenWidth-MeasureText("RETURN TO MAIN MENU? S/N", 20) - 25, N_LINHAS*LIN_SIZE + 50, 20, YELLOW);
+
             if(IsKeyPressed(KEY_S)) {
                 Save(&player, inimigo, wall, idNivel);
+                //printf("SALVEI!!\n");
                 *return_to_menu = 1;
             }
+            //}
             EndDrawing();
         break;
         case DEATH:
-            char DEATHNAME[8] = "YOU DIED";
-            //printf("EU MORRI");
+            // CASO O PLAYER MORRA EM UMA FASE NORMAL, MOSTRA TELA DE GAME OVER
+            if(LOADED_OR_NOT == INICIO_FASE_NORMAL || LOADED_OR_NOT == CONTINUA_FASE_NORMAL) {
+                char DEATHNAME[8] = "YOU DIED";
+                //printf("EU MORRI");
 
-            ClearBackground(BLACK);
-
+                ClearBackground(BLACK);
                 //printf("Entrei\n");
                 BeginDrawing();
                 DrawText(DEATHNAME,(screenWidth-MeasureText(DEATHNAME, 50))/2, 300, 50, RED);
                 DrawText("APERTE ENTER PARA VOLTAR AO MENU",(screenWidth-MeasureText("APERTE ENTER PARA VOLTAR AO MENU", 15))/2, 360, 15, GRAY);
                 if(IsKeyPressed(KEY_ENTER)){
-                printf("\nVAZEI\n");
-                *return_to_menu = 1;
-                //return;
-            }
+                    //printf("\nVAZEI\n");
+                    *return_to_menu = 1;
+                    //return;
+                }
                 EndDrawing();
 
+            // CASO O PLAYER MORRA EM UMA FASE CRIADA, FECHA O WHILE,
+            // EM MAIN, VAI PARA TELA QUE MOSTRA APENAS O SCORE FINAL
+            // DO PLAYER.
+            } else {
 
+                fimDeLOAD_MAP = 1;
+
+            }
 
         break;
 
@@ -368,7 +403,7 @@ void GameScreen(int *quit, int *return_to_menu, char path[16], char idNivel, int
     UnloadTexture(vida);
 
     // NOTA: mudar caso a condição do while mude
-    if(player.vidas > 0 && !*return_to_menu && !ALL_KILLED) {
+    if(player.vidas > 0 && !*return_to_menu && !ALL_KILLED && !fimDeLOAD_MAP) {
         *quit = 1;
         //printf("Entrei\n");
     }

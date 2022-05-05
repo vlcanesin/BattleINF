@@ -3,6 +3,12 @@
 #include "raylib.h"
 #include "deflib.h"
 
+/*
+- TAB:
+  - Funções relativas à aba de informações da fase,
+  como mostrar score, pausar e salvar e carregar fases.
+*/
+
 void PrintTab(char idNivel, Jogador player, Texture2D vida, Texture2D enerTexture) {
 
     const int screenHeight = GetScreenHeight();
@@ -83,6 +89,7 @@ void CheckDEATH (int *screen_game, Jogador *player){
      //}
 }
 
+// SE TODOS OS INIMIGOS FORAM MATADOS, A FASE NORMAL FOI CONCLUIDA
 int CheckCompletion (Jogador inimigo[]){
     int i, ALL_KILLED = 0, soma = 0;
     for(i = 0; i < QUANT_INIMIGOS; i++){
@@ -98,9 +105,10 @@ int CheckCompletion (Jogador inimigo[]){
     return ALL_KILLED;
 }
 
+// SALVA OS ATRIBUTOS DO PLAYER E DOS INIMIGOS, AS PAREDES E O ID DO NIVEL SALVO
 void Save (Jogador *player, Jogador inimigo[],int wall[][N_COLUNAS], int IdNivel){ //fiz de quase todos os parametros pq tada dando errado s� passando a struct
     int i = 0, j = 0;
-    printf(" O X E O Y DELE AGORA SAO: %.2f, %.2f", player->x, player->y);
+    //printf(" O X E O Y DELE AGORA SAO: %.2f, %.2f", player->x, player->y);
     FILE *fjogo,*fw,*ff;
     fjogo = fopen("savedfiles/jogosalvo.bin", "wb");
     if (fjogo == NULL)
@@ -190,17 +198,19 @@ void Save (Jogador *player, Jogador inimigo[],int wall[][N_COLUNAS], int IdNivel
     if(fwrite(&IdNivel, sizeof(int), 1, ff) != 1)
         printf("DEU MERDA COM A FASE\n");
 
-    printf("Tudo foi salvo no arquivo de save");
+    //printf("Tudo foi salvo no arquivo de save");
 
     fclose(fw);
     fclose(ff);
     fclose(fjogo);
 }
 
+// LE OS ATRIBUTOS DO PLAYER E DOS INIMIGOS
 void BackTOSave (Jogador *player, Jogador inimigo[]){ //s� da read
     //////////////
     FILE *fjogo;
-    int i = 0, j = 0;
+    int i = 0;
+    //int j = 0;
     fjogo = fopen("savedfiles/jogosalvo.bin", "rb");
     if (fjogo == NULL)
         printf("Deu algo errado em abrir.");
@@ -303,9 +313,12 @@ void BackTOSave (Jogador *player, Jogador inimigo[]){ //s� da read
         //player->score = TESTE.score;
         //player->vel= TESTE.vel;
         //player->vidas = TESTE.vidas;
+
+        //printf("player.x em BackTOSave: %f\n", player->x);
         fclose(fjogo);
 }
 
+// LE AS PAREDINHAS
 void BackTOSaveParedinha (int wall[][N_COLUNAS]){
     FILE *fw;
     int paredinha = 0, i,j;

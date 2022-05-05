@@ -4,22 +4,33 @@
 #include <limits.h>
 #include "deflib.h"
 
+/*
+- TIRO:
+  - Possui todas as funções de geração de tiros e
+  utilização dos mesmos.
+*/
+
 void UpdateShots(Jogador *player, int timerTiro) {
+
+    // DOGTAG É A IDENTIFICAÇÃO DE UM Jogador. CASO ELE
+    // SEJA 100, O Jogador É O PLAYER. CASO CONTRÁRIO,
+    // ELE É O INIMIGO
 
     int end, i, num;
     const int screenWidth = GetScreenWidth();
     const int screenHeight = GetScreenHeight();
 
     if (player->dogtag != 100){
-         num = EnemyShots(player);
+         num = EnemyShots(player);  // FUNÇÃO QUE SORTEIA TIRO DE UM INIMIGO
      }
     else
         num = 0;
 
     //num = timerTiro;
 
-    // OBS: é verificado se player está na tela pois os inimigos precisam de
-    // UpdateShots mesmo se eles não estão na tela
+    // OBS: é verificado se player está na tela pois, para que o tiro seja
+    // gerado, o Jogador precisa estar na tela.
+    // (continua abaixo)...
     if (player->dogtag != 100 && player->naTela == 1){
         if(num == 1 && player->alinhado == 1){
 
@@ -92,6 +103,8 @@ void UpdateShots(Jogador *player, int timerTiro) {
 
     }
 
+    // ... MAS, todos os tiros que estão na tela são atualizados, mesmo
+    // se o Jogador que o atirou não está mais na tela
     for(i = 0; i < QUANT_TIROS; i++) {
         if(player->tiros[i].naTela == 1) {
             switch(player->tiros[i].Pr){
@@ -148,7 +161,8 @@ void PlayerShot(Jogador *player, Jogador inimigo[]) {
                     (Rectangle){inimigo[j].x, inimigo[j].y, inimigo[j].sizeX, inimigo[j].sizeY}) &&
                inimigo[j].naTela == 1) {
                 inimigo[j].vidas--;
-                if(inimigo[j].vidas == 0) {
+                if(inimigo[j].vidas == 0) {  // SCORE DO PLAYER AUMENTA AQUI
+                    inimigo[j].naTela = 0;
                     player->score += 800;
                 }
                 player->tiros[i].naTela = 0;

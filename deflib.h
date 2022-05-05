@@ -13,9 +13,14 @@
 #define SHOW_SCORE 10
 #define SHOW_HIGHSCORES 11
 
+#define INICIO_FASE_NORMAL 0
+#define CONTINUA_FASE_NORMAL 1
+#define INICIO_FASE_CRIADA 2
+#define CONTINUA_FASE_CRIADA 3
+
 #define N_LINHAS 15
 #define N_COLUNAS 40
-#define N_FASES 2
+#define N_FASES 4
 
 #define QUANT_TIROS 100
 #define QUANT_ENERG 100
@@ -138,7 +143,7 @@ void UpdateINIMIGO(
 
 int EnemyShots(Jogador *inimigo);
 
-void Movimenta_Random (Jogador *inimigo);
+void Movimenta_Random (Jogador *inimigo, Jogador player);
 
 int sorteiaR(Jogador *inimigo);
 
@@ -159,4 +164,7 @@ void ReadName(int *quit, char name[]);
 void EscreveNome(char nome[], int player_placar, Highscore highscores[]);
 
 void ShowHighScores(int *screen, Highscore highscores[]);
+
+void ShowScores (int *screen ,int player_placar);
+
 #endif

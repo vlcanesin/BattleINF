@@ -3,6 +3,12 @@
 #include <string.h>
 #include "deflib.h"
 
+/*
+- TRANSITIONS:
+  - Possui a função que mostra a tela de transição
+  entre fases.
+*/
+
 void ShowLevel(char level, char path[16]) {
 
     int contFrames;
@@ -22,7 +28,7 @@ void ShowLevel(char level, char path[16]) {
         printf("Erro na leitura do nome!\n");
     }
 
-    for(contFrames = 0; contFrames < 60; contFrames++) {
+    for(contFrames = 0; contFrames < 60; contFrames++) {  // CONTA 1 SEGUNDO
 
         BeginDrawing();
         ClearBackground(RAYWHITE);

@@ -2,6 +2,12 @@
 #include "deflib.h"
 #include <stdio.h>
 
+/*
+- AVOID COLISION:
+  - Possui a função que detecta e corrige a colisão
+  entre tanques
+*/
+
 void AvoidColision(
     Jogador *player, Jogador inimigo[],
     Rectangle wallRecs[][N_COLUNAS], float limitex, float limitey) {
@@ -43,13 +49,15 @@ void AvoidColision(
         for (i = 0; i < QUANT_INIMIGOS; i ++){
             Rectangle inimigo_tanque = {inimigo[i].x , inimigo[i].y, TAMANHO_TANQUE,LARGURA_TANQUE};
             if(CheckCollisionRecs(tank,inimigo_tanque) && inimigo[i].naTela == 1){
-                if((inimigo[i].r == 90 && player->x < player->xAnt) ||
+                /*if((inimigo[i].r == 90 && player->x < player->xAnt) ||
                    (inimigo[i].r == 270 && player->x > player->xAnt)) {
                     player->x = player->xAnt;
                 } else if((inimigo[i].r == 0 && player->y > player->yAnt) ||
                    (inimigo[i].r == 180 && player->y < player->yAnt)) {
                     player->y = player->yAnt;
-                }
+                }*/
+                player->x = player->xAnt;
+                player->y = player->yAnt;
                 inimigo[i].x = inimigo[i].xAnt;
                 inimigo[i].y = inimigo[i].yAnt;
                 //if(inimigo[i].alinhado == 0)

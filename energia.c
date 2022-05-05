@@ -4,6 +4,13 @@
 #include <limits.h>
 #include "deflib.h"
 
+/*
+- ENERGIA:
+  - Possui todas as funções de geração das células
+  de energia e utilização das mesmas.
+*/
+
+
 int sorteiaZero(int contFrames) {
 
     int res = 0;
@@ -27,7 +34,7 @@ void sorteiaPos(Energia energCel[], int end, Jogador player, Rectangle wallRecs[
     int lin, col, ok, i;
     int cont = 0;
 
-    do {
+    do {  // TENTA SORTEAR UMA POSIÇÃO ALEATÓRIA PARA UMA CÉLULA DE ENERGIA 20 VEZES
 
         cont++;
         ok = 1;
@@ -95,6 +102,9 @@ void UpdateEnergCels(Energia energCel[], int contFrames,
             }
         }
 
+        // OBS: NESSE MOMENTO, END POSSUI O PRIMEIRO ENDEREÇO LIVRE DO
+        // ARRAY DE CÉLULAS DE ENERGIA
+
         if(end < QUANT_ENERG) {
             sorteiaPos(energCel, end, player, wallRecs);
         }
@@ -120,6 +130,7 @@ void UseEnergCels(Energia energCel[], Jogador *player,
         }
     }
 
+    // OBS: TIMER É ATUALIZADO EM GAME
     if(player->timer > 0) {
         player->vel = 1.5*velIniP;
         for(i = 0; i < QUANT_TIROS; i++) {
