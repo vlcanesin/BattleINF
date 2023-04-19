@@ -115,67 +115,67 @@ void Save (Jogador *player, Jogador inimigo[],int wall[][N_COLUNAS], int IdNivel
         printf("Deu algo errado em abrir.");
 
     if(fwrite(&player->x, sizeof(float), 1, fjogo) != 1)
-        printf("DEU MERDA COM O PLAYER\n");
+        printf("Erro na leitura do player!\n");
     if(fwrite(&player->y, sizeof(float), 1, fjogo) != 1)
-        printf("DEU MERDA COM O PLAYER\n");
+        printf("Erro na leitura do player!\n");
     if(fwrite(&player->r, sizeof(float), 1, fjogo) != 1)
-        printf("DEU MERDA COM O PLAYER\n");
+        printf("Erro na leitura do player!\n");
     if(fwrite(&player->alinhado, sizeof(int), 1, fjogo) != 1)
-        printf("DEU MERDA COM O PLAYER\n");
+        printf("Erro na leitura do player!\n");
     if(fwrite(&player->sizeX, sizeof(int), 1, fjogo) != 1)
-        printf("DEU MERDA COM O PLAYER\n");
+        printf("Erro na leitura do player!\n");
     if(fwrite(&player->sizeY, sizeof(int), 1, fjogo) != 1)
-        printf("DEU MERDA COM O PLAYER\n");
+        printf("Erro na leitura do player!\n");
     if(fwrite(&player->xAnt, sizeof(float), 1, fjogo) != 1)
-        printf("DEU MERDA COM O PLAYER\n");
+        printf("Erro na leitura do player!\n");
     if(fwrite(&player->yAnt, sizeof(float), 1, fjogo) != 1)
-        printf("DEU MERDA COM O PLAYER\n");
+        printf("Erro na leitura do player!\n");
     if(fwrite(&player->vel, sizeof(float), 1, fjogo) != 1)
-        printf("DEU MERDA COM O PLAYER\n");
+        printf("Erro na leitura do player!\n");
     if(fwrite(&player->dogtag, sizeof(int), 1, fjogo) != 1)
-        printf("DEU MERDA COM O PLAYER\n");
+        printf("Erro na leitura do player!\n");
     if(fwrite(&player->vidas, sizeof(int), 1, fjogo) != 1)
-        printf("DEU MERDA COM O PLAYER\n");
+        printf("Erro na leitura do player!\n");
     if(fwrite(&player->naTela, sizeof(int), 1, fjogo) != 1)
-        printf("DEU MERDA COM O PLAYER\n");
+        printf("Erro na leitura do player!\n");
     if(fwrite(&player->timer, sizeof(int), 1, fjogo) != 1)
-        printf("DEU MERDA COM O PLAYER\n");
+        printf("Erro na leitura do player!\n");
     if(fwrite(&player->score, sizeof(int), 1, fjogo) != 1)
-        printf("DEU MERDA COM O PLAYER\n");
+        printf("Erro na leitura do player!\n");
     if(fwrite(&player->pers, sizeof(Rectangle), 1, fjogo) != 1)
-        printf("DEU MERDA COM O PLAYER RECTANGLE\n");
+        printf("Erro na leitura do player!\n");
 
     for(i = 0; i< QUANT_INIMIGOS; i++){
         if(fwrite(&inimigo[i].x, sizeof(float), 1, fjogo) != 1)
-            printf("DEU MERDA COM O PLAYER\n");
+            printf("Erro na leitura do player!\n");
         if(fwrite(&inimigo[i].y, sizeof(float), 1, fjogo) != 1)
-            printf("DEU MERDA COM O PLAYER\n");
+            printf("Erro na leitura do player!\n");
         if(fwrite(&inimigo[i].r, sizeof(float), 1, fjogo) != 1)
-            printf("DEU MERDA COM O PLAYER\n");
+            printf("Erro na leitura do player!\n");
         if(fwrite(&inimigo[i].alinhado, sizeof(int), 1, fjogo) != 1)
-            printf("DEU MERDA COM O PLAYER\n");
+            printf("Erro na leitura do player!\n");
         if(fwrite(&inimigo[i].sizeX, sizeof(int), 1, fjogo) != 1)
-            printf("DEU MERDA COM O PLAYER\n");
+            printf("Erro na leitura do player!\n");
         if(fwrite(&inimigo[i].sizeY, sizeof(int), 1, fjogo) != 1)
-            printf("DEU MERDA COM O PLAYER\n");
+            printf("Erro na leitura do player!\n");
         if(fwrite(&inimigo[i].xAnt, sizeof(float), 1, fjogo) != 1)
-            printf("DEU MERDA COM O PLAYER\n");
+            printf("Erro na leitura do player!\n");
         if(fwrite(&inimigo[i].yAnt, sizeof(float), 1, fjogo) != 1)
-            printf("DEU MERDA COM O PLAYER\n");
+            printf("Erro na leitura do player!\n");
         if(fwrite(&inimigo[i].vel, sizeof(float), 1, fjogo) != 1)
-            printf("DEU MERDA COM O PLAYER\n");
+            printf("Erro na leitura do player!\n");
         if(fwrite(&inimigo[i].dogtag, sizeof(int), 1, fjogo) != 1)
-            printf("DEU MERDA COM O PLAYER\n");
+            printf("Erro na leitura do player!\n");
         if(fwrite(&inimigo[i].vidas, sizeof(int), 1, fjogo) != 1)
-            printf("DEU MERDA COM O PLAYER\n");
+            printf("Erro na leitura do player!\n");
         if(fwrite(&inimigo[i].naTela, sizeof(int), 1, fjogo) != 1)
-            printf("DEU MERDA COM O PLAYER\n");
+            printf("Erro na leitura do player!\n");
         if(fwrite(&inimigo[i].timer, sizeof(int), 1, fjogo) != 1)
-            printf("DEU MERDA COM O PLAYER\n");
+            printf("Erro na leitura do player!\n");
         if(fwrite(&inimigo[i].score, sizeof(int), 1, fjogo) != 1)
-            printf("DEU MERDA COM O PLAYER\n");
+            printf("Erro na leitura do player!\n");
         if(fwrite(&inimigo[i].pers, sizeof(Rectangle), 1, fjogo) != 1)
-            printf("DEU MERDA COM O PLAYER RECTANGLE\n");
+            printf("Erro na leitura do player!\n");
     }
 
        ///////////////////////////////////////
@@ -196,7 +196,7 @@ void Save (Jogador *player, Jogador inimigo[],int wall[][N_COLUNAS], int IdNivel
         }
     }
     if(fwrite(&IdNivel, sizeof(int), 1, ff) != 1)
-        printf("DEU MERDA COM A FASE\n");
+        printf("Erro na leitura da fase!\n");
 
     //printf("Tudo foi salvo no arquivo de save");
 
@@ -216,105 +216,69 @@ void BackTOSave (Jogador *player, Jogador inimigo[]){ //s� da read
         printf("Deu algo errado em abrir.");
 
     if(fread(&player->x, sizeof(float), 1, fjogo) != 1)
-        printf("DEU MERDA COM O PLAYER\n");
+        printf("Erro na leitura do player!\n");
     if(fread(&player->y, sizeof(float), 1, fjogo) != 1)
-        printf("DEU MERDA COM O PLAYER\n");
+        printf("Erro na leitura do player!\n");
     if(fread(&player->r, sizeof(float), 1, fjogo) != 1)
-        printf("DEU MERDA COM O PLAYER\n");
+        printf("Erro na leitura do player!\n");
     if(fread(&player->alinhado, sizeof(int), 1, fjogo) != 1)
-        printf("DEU MERDA COM O PLAYER\n");
+        printf("Erro na leitura do player!\n");
     if(fread(&player->sizeX, sizeof(int), 1, fjogo) != 1)
-        printf("DEU MERDA COM O PLAYER\n");
+        printf("Erro na leitura do player!\n");
     if(fread(&player->sizeY, sizeof(int), 1, fjogo) != 1)
-        printf("DEU MERDA COM O PLAYER\n");
+        printf("Erro na leitura do player!\n");
     if(fread(&player->xAnt, sizeof(float), 1, fjogo) != 1)
-        printf("DEU MERDA COM O PLAYER\n");
+        printf("Erro na leitura do player!\n");
     if(fread(&player->yAnt, sizeof(float), 1, fjogo) != 1)
-        printf("DEU MERDA COM O PLAYER\n");
+        printf("Erro na leitura do player!\n");
     if(fread(&player->vel, sizeof(float), 1, fjogo) != 1)
-        printf("DEU MERDA COM O PLAYER\n");
+        printf("Erro na leitura do player!\n");
     if(fread(&player->dogtag, sizeof(int), 1, fjogo) != 1)
-        printf("DEU MERDA COM O PLAYER\n");
+        printf("Erro na leitura do player!\n");
     if(fread(&player->vidas, sizeof(int), 1, fjogo) != 1)
-        printf("DEU MERDA COM O PLAYER\n");
+        printf("Erro na leitura do player!\n");
     if(fread(&player->naTela, sizeof(int), 1, fjogo) != 1)
-            printf("DEU MERDA COM O PLAYER\n");
+            printf("Erro na leitura do player!\n");
     if(fread(&player->timer, sizeof(int), 1, fjogo) != 1)
-        printf("DEU MERDA COM O PLAYER\n");
+        printf("Erro na leitura do player!\n");
     if(fread(&player->score, sizeof(int), 1, fjogo) != 1)
-        printf("DEU MERDA COM O PLAYER\n");
+        printf("Erro na leitura do player!\n");
     if(fread(&player->pers, sizeof(Rectangle), 1, fjogo) != 1)
-        printf("DEU MERDA COM O PLAYER RECTANGLE\n");
+        printf("Erro na leitura do player!\n");
 
     for(i = 0; i< QUANT_INIMIGOS; i++){
         if(fread(&inimigo[i].x, sizeof(float), 1, fjogo) != 1)
-            printf("DEU MERDA COM O PLAYER\n");
+            printf("Erro na leitura do player!\n");
         if(fread(&inimigo[i].y, sizeof(float), 1, fjogo) != 1)
-            printf("DEU MERDA COM O PLAYER\n");
+            printf("Erro na leitura do player!\n");
         if(fread(&inimigo[i].r, sizeof(float), 1, fjogo) != 1)
-            printf("DEU MERDA COM O PLAYER\n");
+            printf("Erro na leitura do player!\n");
         if(fread(&inimigo[i].alinhado, sizeof(int), 1, fjogo) != 1)
-            printf("DEU MERDA COM O PLAYER\n");
+            printf("Erro na leitura do player!\n");
         if(fread(&inimigo[i].sizeX, sizeof(int), 1, fjogo) != 1)
-            printf("DEU MERDA COM O PLAYER\n");
+            printf("Erro na leitura do player!\n");
         if(fread(&inimigo[i].sizeY, sizeof(int), 1, fjogo) != 1)
-            printf("DEU MERDA COM O PLAYER\n");
+            printf("Erro na leitura do player!\n");
         if(fread(&inimigo[i].xAnt, sizeof(float), 1, fjogo) != 1)
-            printf("DEU MERDA COM O PLAYER\n");
+            printf("Erro na leitura do player!\n");
         if(fread(&inimigo[i].yAnt, sizeof(float), 1, fjogo) != 1)
-            printf("DEU MERDA COM O PLAYER\n");
+            printf("Erro na leitura do player!\n");
         if(fread(&inimigo[i].vel, sizeof(float), 1, fjogo) != 1)
-            printf("DEU MERDA COM O PLAYER\n");
+            printf("Erro na leitura do player!\n");
         if(fread(&inimigo[i].dogtag, sizeof(int), 1, fjogo) != 1)
-            printf("DEU MERDA COM O PLAYER\n");
+            printf("Erro na leitura do player!\n");
         if(fread(&inimigo[i].vidas, sizeof(int), 1, fjogo) != 1)
-            printf("DEU MERDA COM O PLAYER\n");
+            printf("Erro na leitura do player!\n");
         if(fread(&inimigo[i].naTela, sizeof(int), 1, fjogo) != 1)
-            printf("DEU MERDA COM O PLAYER\n");
+            printf("Erro na leitura do player!\n");
         if(fread(&inimigo[i].timer, sizeof(int), 1, fjogo) != 1)
-            printf("DEU MERDA COM O PLAYER\n");
+            printf("Erro na leitura do player!\n");
         if(fread(&inimigo[i].score, sizeof(int), 1, fjogo) != 1)
-            printf("DEU MERDA COM O PLAYER\n");
+            printf("Erro na leitura do player!\n");
         if(fread(&inimigo[i].pers, sizeof(Rectangle), 1, fjogo) != 1)
-            printf("DEU MERDA COM O PLAYER RECTANGLE\n");
+            printf("Erro na leitura do player!\n");
     }
 
-        /*
-        player->sizeX = LARGURA_TANQUE;
-        player->sizeY = TAMANHO_TANQUE;
-
-        player->dogtag = dogtag;
-        player->x = x;
-        player->y = y;
-        player->r = raio;
-        player->vel = velocidade;
-        player->vidas = hp;
-        player->score = score;
-        printf(" esse eh do player %f \n", player->x);
-        printf(" do player %f \n", player->y);
-        printf(" x eh: %f", x);
-        printf(" y eh: %f", y);
-        printf(" dogtag eh: %d", dogtag);
-        printf(" raio eh: %f", raio);
-        printf(" hp eh: %d", hp);
-        printf(" score eh: %d", score);
-        fclose(fdogtag);
-        fclose(fpers_x);
-        fclose(fpers_y);
-        fclose(fr);
-        fclose(fvel);
-        fclose(fvidas);
-        fclose(fscore);*/
-
-       // player->x = TESTE.x;
-        //player->y = TESTE.y;
-        //player->r = TESTE.r;
-       // player->dogtag = TESTE.dogtag;
-        //player->score = TESTE.score;
-        //player->vel= TESTE.vel;
-        //player->vidas = TESTE.vidas;
-
-        //printf("player.x em BackTOSave: %f\n", player->x);
         fclose(fjogo);
 }
 

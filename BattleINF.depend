@@ -266,3 +266,50 @@
 	"raylib.h"
 	"deflib.h"
 
+1681927061 source:d:\햞ea de trabalho\teste_battle_inf\battleinf\avoidcolision.c
+	"raylib.h"
+	"deflib.h"
+	<stdio.h>
+
+1681927061 d:\햞ea de trabalho\teste_battle_inf\battleinf\deflib.h
+
+1681927061 source:d:\햞ea de trabalho\teste_battle_inf\battleinf\energia.c
+	<raylib.h>
+	<stdio.h>
+	<stdlib.h>
+	<limits.h>
+	"deflib.h"
+
+1681927061 source:d:\햞ea de trabalho\teste_battle_inf\battleinf\game.c
+	"raylib.h"
+	<stdio.h>
+	<stdlib.h>
+	<limits.h>
+	<time.h>
+	"deflib.h"
+
+1681927061 source:d:\햞ea de trabalho\teste_battle_inf\battleinf\highscores.c
+	<stdio.h>
+	<string.h>
+	"raylib.h"
+	"deflib.h"
+
+1681927061 source:d:\햞ea de trabalho\teste_battle_inf\battleinf\inimigo.c
+	<raylib.h>
+	<stdio.h>
+	<stdlib.h>
+	<limits.h>
+	"deflib.h"
+
+1681927061 source:d:\햞ea de trabalho\teste_battle_inf\battleinf\main.c
+	"raylib.h"
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	"deflib.h"
+
+1681927061 source:d:\햞ea de trabalho\teste_battle_inf\battleinf\menu.c
+	"raylib.h"
+	<stdio.h>
+	"deflib.h"
+
