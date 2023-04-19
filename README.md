@@ -1,7 +1,7 @@
 # BattleINF
 Projeto da disciplina Algorítmos e Programação - UFRGS
 
-Este é um jogo baseado em _"Battle City" (NES, 1985)_. Ele consiste em controlar um tanque de guerra para destruir tanques inimigos em diversas fases. Para jogá-lo, basta clonar o repositório e rodar o arquivo **BattleINF.exe**!
+Este é um jogo baseado em _"Battle City" (NES, 1985)_. Ele consiste em controlar um tanque de guerra para destruir tanques inimigos em fases diversas. Para jogá-lo, basta clonar o repositório e rodar o arquivo **BattleINF.exe**!
 
 <div align="center">
 
